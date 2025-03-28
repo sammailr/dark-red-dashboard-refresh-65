@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Users, Globe, Inbox, Settings } from 'lucide-react';
+import { ShoppingCart, Users, Globe, Inbox, Settings, BookOpen, Wrench, Share2 } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -11,6 +11,9 @@ const Sidebar = () => {
     { name: 'Sending Platform Accounts', path: '/sending-platform', icon: Users },
     { name: 'Domains', path: '/domains', icon: Globe },
     { name: 'Master Inbox', path: '/master-inbox', icon: Inbox },
+    { name: 'Guide', path: '/guide', icon: BookOpen },
+    { name: 'Tools', path: '/tools', icon: Wrench },
+    { name: 'Affiliate Portal', path: '/affiliate', icon: Share2 },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 

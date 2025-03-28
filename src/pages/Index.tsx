@@ -29,27 +29,6 @@ const Index = () => {
       value: `${(totalDomains * emailsPerDomain).toLocaleString()}`,
       icon: TrendingUp,
       color: 'text-green-500'
-    },
-    {
-      title: 'Subscription - Total',
-      value: `$${(totalDomains * pricePerDomain).toLocaleString()}`,
-      icon: DollarSign,
-      color: 'text-yellow-500'
-    }
-  ];
-
-  const billingInfo = [
-    {
-      title: 'Next Billing',
-      value: '$1,680',
-      icon: DollarSign,
-      color: 'text-purple-500'
-    },
-    {
-      title: 'Next Billing Date',
-      value: 'Oct 15, 2023',
-      icon: Calendar,
-      color: 'text-pink-500'
     }
   ];
 
@@ -79,7 +58,7 @@ const Index = () => {
 
   return (
     <MainLayout title="Dashboard">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {dashboardStats.map((stat) => (
           <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-2">
@@ -97,22 +76,31 @@ const Index = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {billingInfo.map((item) => (
-          <Card key={item.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-sm font-medium text-gray-400">{item.title}</CardTitle>
-                <item.icon className={`h-5 w-5 ${item.color}`} />
+      <div className="mb-8">
+        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-start">
+              <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
+              <DollarSign className="h-5 w-5 text-yellow-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-gray-400 text-sm">Total</p>
+                <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-between items-end">
-                <p className="text-2xl font-bold">{item.value}</p>
+              <div>
+                <p className="text-gray-400 text-sm">Next Billing</p>
+                <p className="text-2xl font-bold">$1,680</p>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+              <div>
+                <p className="text-gray-400 text-sm">Next Billing Date</p>
+                <p className="text-2xl font-bold">Oct 15, 2023</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-6 mb-8">

@@ -3,7 +3,7 @@ import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Clock, Mail, ShoppingCart, Users } from 'lucide-react';
+import { Clock, Mail, ShoppingCart, Users, Globe } from 'lucide-react';
 
 const MasterInboxPage = () => {
   // Sample data

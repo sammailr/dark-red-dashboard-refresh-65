@@ -2,58 +2,78 @@
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, ShoppingCart, Users, Globe, Mail } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
+  // Example data - would typically come from an API
+  const totalDomains = 28;
+  const pricePerDomain = 60;
+  const emailsPerDomain = 990;
+  
   const dashboardStats = [
     {
-      title: 'Total Orders',
-      value: '1,254',
-      icon: ShoppingCart,
-      trend: '+12%',
+      title: 'Total Domains',
+      value: totalDomains.toString(),
+      icon: Globe,
       color: 'text-mailr-red'
     },
     {
-      title: 'Active Domains',
-      value: '28',
-      icon: Globe,
-      trend: '+3',
+      title: 'Total Inboxes',
+      value: '154',
+      icon: Inbox,
       color: 'text-blue-500'
     },
     {
-      title: 'Total Messages',
-      value: '8,742',
-      icon: Mail,
-      trend: '+24%',
+      title: 'Sending Volume per Month',
+      value: `${(totalDomains * emailsPerDomain).toLocaleString()}`,
+      icon: TrendingUp,
       color: 'text-green-500'
     },
     {
-      title: 'Subscribers',
-      value: '3,891',
-      icon: Users,
-      trend: '+7%',
+      title: 'Subscription - Total',
+      value: `$${(totalDomains * pricePerDomain).toLocaleString()}`,
+      icon: DollarSign,
       color: 'text-yellow-500'
     }
   ];
 
-  const recentActivity = [
+  const billingInfo = [
     {
-      id: 1,
-      icon: Clock,
-      description: 'New order received #1234',
-      time: '5 mins ago'
+      title: 'Next Billing',
+      value: '$1,680',
+      icon: DollarSign,
+      color: 'text-purple-500'
     },
     {
-      id: 2,
-      icon: Users,
-      description: 'New subscriber joined',
-      time: '1 hour ago'
+      title: 'Next Billing Date',
+      value: 'Oct 15, 2023',
+      icon: Calendar,
+      color: 'text-pink-500'
+    }
+  ];
+
+  const orderHistory = [
+    {
+      id: 'ORD-1234',
+      domain: 'example.com',
+      date: '2023-09-01',
+      amount: '$60.00',
+      invoiceId: 'INV-5678'
     },
     {
-      id: 3,
-      icon: Mail,
-      description: 'Unread message from support',
-      time: '3 hours ago'
+      id: 'ORD-1235',
+      domain: 'testdomain.io',
+      date: '2023-08-15',
+      amount: '$60.00',
+      invoiceId: 'INV-5679'
+    },
+    {
+      id: 'ORD-1236',
+      domain: 'newsite.org',
+      date: '2023-07-22',
+      amount: '$60.00',
+      invoiceId: 'INV-5680'
     }
   ];
 
@@ -71,28 +91,65 @@ const Index = () => {
             <CardContent>
               <div className="flex justify-between items-end">
                 <p className="text-2xl font-bold">{stat.value}</p>
-                <p className="text-xs text-green-400">{stat.trend}</p>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-6">
-        <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
-        <div className="space-y-4">
-          {recentActivity.map((activity) => (
-            <div 
-              key={activity.id} 
-              className="flex items-center justify-between border-b border-mailr-lightgray pb-4 last:border-b-0"
-            >
-              <div className="flex items-center space-x-4">
-                <activity.icon className="h-5 w-5 text-gray-400" />
-                <span className="text-white">{activity.description}</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {billingInfo.map((item) => (
+          <Card key={item.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-sm font-medium text-gray-400">{item.title}</CardTitle>
+                <item.icon className={`h-5 w-5 ${item.color}`} />
               </div>
-              <span className="text-sm text-gray-500">{activity.time}</span>
-            </div>
-          ))}
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-end">
+                <p className="text-2xl font-bold">{item.value}</p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">Orders History</h2>
+          <FileText className="h-5 w-5 text-gray-400" />
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="border-b border-mailr-lightgray">
+              <tr>
+                <th className="text-left py-3 text-gray-400 font-medium">Order ID</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Domain</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Date</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Amount</th>
+                <th className="text-right py-3 text-gray-400 font-medium">Invoice</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orderHistory.map((order) => (
+                <tr 
+                  key={order.id} 
+                  className="border-b border-mailr-lightgray last:border-b-0"
+                >
+                  <td className="py-4">{order.id}</td>
+                  <td className="py-4">{order.domain}</td>
+                  <td className="py-4">{order.date}</td>
+                  <td className="py-4">{order.amount}</td>
+                  <td className="py-4 text-right">
+                    <Link to={`/invoices/${order.invoiceId}`} className="text-mailr-red hover:underline">
+                      View Invoice
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </MainLayout>

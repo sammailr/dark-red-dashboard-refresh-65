@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -102,7 +103,7 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
                 <div>
                   <p className="text-gray-400 text-sm">Total</p>
                   <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
@@ -121,7 +122,7 @@ const Index = () => {
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-[300px]">
+          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-[200px]">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-sm font-medium text-gray-400">Pending Domains</CardTitle>
@@ -129,7 +130,7 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[210px] pr-4">
+              <ScrollArea className="h-[110px] pr-4">
                 <div className="space-y-3">
                   {pendingDomains.map((domain) => (
                     <div key={domain.domain} className="space-y-1">

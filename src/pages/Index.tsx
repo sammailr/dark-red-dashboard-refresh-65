@@ -1,10 +1,10 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Index = () => {
   // Example data - would typically come from an API
@@ -67,7 +67,9 @@ const Index = () => {
     { domain: 'newdomain.com', status: 'DNS Verification', progress: 65 },
     { domain: 'awaiting.org', status: 'Payment Processing', progress: 30 },
     { domain: 'verify-me.net', status: 'Email Verification', progress: 85 },
-    { domain: 'setup-pending.io', status: 'Setup Pending', progress: 15 }
+    { domain: 'setup-pending.io', status: 'Setup Pending', progress: 15 },
+    { domain: 'extra-domain1.net', status: 'DNS Verification', progress: 45 },
+    { domain: 'extra-domain2.com', status: 'Email Verification', progress: 55 }
   ];
 
   return (
@@ -92,7 +94,7 @@ const Index = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2">
-          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-full">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
@@ -119,7 +121,7 @@ const Index = () => {
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-full">
+          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-[300px]">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-sm font-medium text-gray-400">Pending Domains</CardTitle>
@@ -127,22 +129,24 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {pendingDomains.map((domain) => (
-                  <div key={domain.domain} className="space-y-1">
-                    <div className="flex justify-between">
-                      <p className="text-sm font-medium">{domain.domain}</p>
-                      <p className="text-xs text-gray-400">{domain.status}</p>
+              <ScrollArea className="h-[210px] pr-4">
+                <div className="space-y-3">
+                  {pendingDomains.map((domain) => (
+                    <div key={domain.domain} className="space-y-1">
+                      <div className="flex justify-between">
+                        <p className="text-sm font-medium">{domain.domain}</p>
+                        <p className="text-xs text-gray-400">{domain.status}</p>
+                      </div>
+                      <div className="w-full bg-mailr-lightgray rounded-full h-2">
+                        <div 
+                          className="bg-mailr-red h-2 rounded-full" 
+                          style={{ width: `${domain.progress}%` }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="w-full bg-mailr-lightgray rounded-full h-2">
-                      <div 
-                        className="bg-mailr-red h-2 rounded-full" 
-                        style={{ width: `${domain.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </ScrollArea>
             </CardContent>
           </Card>
         </div>

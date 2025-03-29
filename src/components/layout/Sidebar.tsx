@@ -1,12 +1,12 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Users, Globe, Inbox, Settings, BookOpen, Wrench, Share2 } from 'lucide-react';
+import { ShoppingCart, Users, Globe, Inbox, Settings, BookOpen, Wrench, Share2, LayoutDashboard } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
   
   const navigationItems = [
+    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Order Inboxes', path: '/order-inboxes', icon: ShoppingCart },
     { name: 'Sending Platform Accounts', path: '/sending-platform', icon: Users },
     { name: 'Domains', path: '/domains', icon: Globe },
@@ -32,8 +32,8 @@ const Sidebar = () => {
         <ul className="space-y-2">
           {navigationItems.map((item) => {
             const isActive = location.pathname === item.path || 
-                            (location.pathname === '/' && item.path === '/order-inboxes');
-                            
+                            (item.path === '/' && location.pathname === '/');
+                          
             return (
               <li key={item.name}>
                 <Link

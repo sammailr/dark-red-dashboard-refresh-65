@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { User, CreditCard, Bell, Lock, Shield, Language } from 'lucide-react';
+import { User, CreditCard, Bell, Lock, Shield, Languages } from 'lucide-react';
 
 const SettingsPage = () => {
   return (
@@ -36,7 +36,7 @@ const SettingsPage = () => {
               API
             </TabsTrigger>
             <TabsTrigger value="localization" className="data-[state=active]:bg-mailr-red">
-              <Language className="h-4 w-4 mr-2" />
+              <Languages className="h-4 w-4 mr-2" />
               Localization
             </TabsTrigger>
           </TabsList>

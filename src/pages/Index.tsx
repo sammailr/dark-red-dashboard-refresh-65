@@ -2,7 +2,7 @@
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -29,6 +29,12 @@ const Index = () => {
       value: `${(totalDomains * emailsPerDomain).toLocaleString()}`,
       icon: TrendingUp,
       color: 'text-green-500'
+    },
+    {
+      title: 'Pending Domains',
+      value: '4',
+      icon: Clock,
+      color: 'text-amber-500'
     }
   ];
 
@@ -56,9 +62,16 @@ const Index = () => {
     }
   ];
 
+  const pendingDomains = [
+    { domain: 'newdomain.com', status: 'DNS Verification', progress: 65 },
+    { domain: 'awaiting.org', status: 'Payment Processing', progress: 30 },
+    { domain: 'verify-me.net', status: 'Email Verification', progress: 85 },
+    { domain: 'setup-pending.io', status: 'Setup Pending', progress: 15 }
+  ];
+
   return (
     <MainLayout title="Dashboard">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {dashboardStats.map((stat) => (
           <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-2">
@@ -76,34 +89,65 @@ const Index = () => {
         ))}
       </div>
 
-      <div className="mb-8">
-        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-start">
-              <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
-              <DollarSign className="h-5 w-5 text-yellow-500" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-gray-400 text-sm">Total</p>
-                <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="lg:col-span-2">
+          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
+                <DollarSign className="h-5 w-5 text-yellow-500" />
               </div>
-              <div>
-                <p className="text-gray-400 text-sm">Next Billing</p>
-                <p className="text-2xl font-bold">$1,680</p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-gray-400 text-sm">Total</p>
+                  <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-sm">Next Billing</p>
+                  <p className="text-2xl font-bold">$1,680</p>
+                </div>
+                <div>
+                  <p className="text-gray-400 text-sm">Next Billing Date</p>
+                  <p className="text-2xl font-bold">Oct 15, 2023</p>
+                </div>
               </div>
-              <div>
-                <p className="text-gray-400 text-sm">Next Billing Date</p>
-                <p className="text-2xl font-bold">Oct 15, 2023</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-1">
+          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-full">
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-start">
+                <CardTitle className="text-sm font-medium text-gray-400">Pending Domains</CardTitle>
+                <Clock className="h-5 w-5 text-amber-500" />
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingDomains.map((domain) => (
+                  <div key={domain.domain} className="space-y-1">
+                    <div className="flex justify-between">
+                      <p className="text-sm font-medium">{domain.domain}</p>
+                      <p className="text-xs text-gray-400">{domain.status}</p>
+                    </div>
+                    <div className="w-full bg-mailr-lightgray rounded-full h-2">
+                      <div 
+                        className="bg-mailr-red h-2 rounded-full" 
+                        style={{ width: `${domain.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
-      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-6 mb-8">
+      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold">Orders History</h2>
           <FileText className="h-5 w-5 text-gray-400" />

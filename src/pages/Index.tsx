@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,9 +7,10 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
-  const { isFreeTrial, daysRemaining } = useSubscription();
+  const { isFreeTrial, daysRemaining, hasPaymentMethod } = useSubscription();
 
   // Example data - would typically come from an API
   const totalDomains = 28;
@@ -117,20 +117,30 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
-                <div>
-                  <p className="text-gray-400 text-sm">Total</p>
-                  <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
+              {isFreeTrial && !hasPaymentMethod ? (
+                <div className="py-4">
+                  <p className="text-gray-400 mb-4">Add a payment method to continue using the service after your trial ends.</p>
+                  <Button className="bg-mailr-red hover:bg-red-600">
+                    <CreditCard className="h-4 w-4 mr-2" />
+                    Add Payment Method
+                  </Button>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Next Billing</p>
-                  <p className="text-2xl font-bold">$1,680</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
+                  <div>
+                    <p className="text-gray-400 text-sm">Total</p>
+                    <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Next Billing</p>
+                    <p className="text-2xl font-bold">$1,680</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm">Next Billing Date</p>
+                    <p className="text-2xl font-bold">Oct 15, 2023</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm">Next Billing Date</p>
-                  <p className="text-2xl font-bold">Oct 15, 2023</p>
-                </div>
-              </div>
+              )}
               
               {isFreeTrial && (
                 <div className="mt-2 bg-mailr-lightgray/20 p-3 rounded-md border border-amber-600/30 flex items-center gap-2">

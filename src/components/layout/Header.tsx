@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChevronDown, ToggleRight } from 'lucide-react';
+import { ChevronDown, ToggleRight, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -10,7 +10,7 @@ type HeaderProps = {
 };
 
 const Header = ({ title }: HeaderProps) => {
-  const { isFreeTrial, toggleSubscriptionStatus } = useSubscription();
+  const { isFreeTrial, hasPaymentMethod, toggleSubscriptionStatus, togglePaymentMethodStatus } = useSubscription();
   
   return (
     <div className="flex justify-between items-center pb-6 pt-4 border-b border-mailr-lightgray">
@@ -32,6 +32,25 @@ const Header = ({ title }: HeaderProps) => {
             </TooltipTrigger>
             <TooltipContent>
               <p>Toggle between Free Trial and Paid Subscription (for testing)</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="bg-mailr-darkgray border-mailr-lightgray flex items-center gap-1"
+                onClick={togglePaymentMethodStatus}
+              >
+                <CreditCard className="h-4 w-4 text-green-500" />
+                <span className="text-xs">{hasPaymentMethod ? 'Has Payment' : 'No Payment'}</span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Toggle payment method status (for testing)</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

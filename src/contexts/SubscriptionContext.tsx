@@ -4,7 +4,9 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 type SubscriptionState = {
   isFreeTrial: boolean;
   daysRemaining: number;
+  hasPaymentMethod: boolean;
   toggleSubscriptionStatus: () => void;
+  togglePaymentMethodStatus: () => void;
 };
 
 const SubscriptionContext = createContext<SubscriptionState | undefined>(undefined);
@@ -12,9 +14,14 @@ const SubscriptionContext = createContext<SubscriptionState | undefined>(undefin
 export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [isFreeTrial, setIsFreeTrial] = useState(true);
   const [daysRemaining, setDaysRemaining] = useState(14);
+  const [hasPaymentMethod, setHasPaymentMethod] = useState(false);
 
   const toggleSubscriptionStatus = () => {
     setIsFreeTrial(prev => !prev);
+  };
+
+  const togglePaymentMethodStatus = () => {
+    setHasPaymentMethod(prev => !prev);
   };
 
   return (
@@ -22,7 +29,9 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       value={{ 
         isFreeTrial, 
         daysRemaining, 
-        toggleSubscriptionStatus 
+        hasPaymentMethod,
+        toggleSubscriptionStatus,
+        togglePaymentMethodStatus
       }}
     >
       {children}

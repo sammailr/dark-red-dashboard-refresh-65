@@ -2,12 +2,16 @@
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
+  const { isFreeTrial, daysRemaining } = useSubscription();
+
   // Example data - would typically come from an API
   const totalDomains = 28;
   const pricePerDomain = 60;
@@ -98,7 +102,17 @@ const Index = () => {
           <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-full">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
-                <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
+                <div className="flex items-center gap-2">
+                  <CardTitle className="text-sm font-medium text-gray-400">
+                    {isFreeTrial ? 'Free Trial' : 'Subscription'}
+                  </CardTitle>
+                  {isFreeTrial && (
+                    <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500">
+                      <AlertCircle className="h-3 w-3 mr-1" />
+                      {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining
+                    </Badge>
+                  )}
+                </div>
                 <DollarSign className="h-5 w-5 text-yellow-500" />
               </div>
             </CardHeader>
@@ -117,6 +131,18 @@ const Index = () => {
                   <p className="text-2xl font-bold">Oct 15, 2023</p>
                 </div>
               </div>
+              
+              {isFreeTrial && (
+                <div className="mt-2 bg-mailr-lightgray/20 p-3 rounded-md border border-amber-600/30 flex items-center gap-2">
+                  <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
+                  <p className="text-sm text-amber-200">
+                    Your free trial will expire in {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}. 
+                    <Link to="/settings" className="text-mailr-red hover:underline ml-1">
+                      Upgrade now
+                    </Link>
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

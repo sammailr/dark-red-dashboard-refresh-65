@@ -7,6 +7,7 @@ type Subscription = {
   status: 'active' | 'canceled' | 'trial';
   price: number;
   billingDate: string;
+  quantity?: number;
   daysRemaining?: number;
 };
 
@@ -31,17 +32,11 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
     {
       id: '1',
-      name: 'Basic Plan',
+      name: 'Mailr Standard',
       status: 'active',
       price: 60,
+      quantity: 1,
       billingDate: 'Oct 15, 2023'
-    },
-    {
-      id: '2',
-      name: 'Premium Domains',
-      status: 'active',
-      price: 120,
-      billingDate: 'Oct 22, 2023'
     }
   ]);
 

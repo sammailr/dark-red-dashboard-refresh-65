@@ -4,11 +4,13 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 type Subscription = {
   id: string;
   name: string;
-  status: 'active' | 'canceled' | 'trial';
+  status: 'active' | 'canceled' | 'trial' | 'expired';
   price: number;
   billingDate: string;
-  quantity?: number;
+  quantity: number;
   daysRemaining?: number;
+  lastBillingDate?: string;
+  orderId?: string;
 };
 
 type SubscriptionState = {
@@ -31,12 +33,54 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [hasPaymentMethod, setHasPaymentMethod] = useState(false);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
     {
-      id: '1',
+      id: 'sub_1',
       name: 'Mailr Standard',
       status: 'active',
       price: 60,
       quantity: 1,
-      billingDate: 'Oct 15, 2023'
+      billingDate: 'Apr 15, 2024',
+      lastBillingDate: 'Mar 15, 2024',
+      orderId: 'ord_12345abc'
+    },
+    {
+      id: 'sub_2',
+      name: 'Mailr Standard',
+      status: 'active',
+      price: 60,
+      quantity: 2,
+      billingDate: 'Apr 22, 2024',
+      lastBillingDate: 'Mar 22, 2024',
+      orderId: 'ord_67890def'
+    },
+    {
+      id: 'sub_3',
+      name: 'Mailr Standard',
+      status: 'canceled',
+      price: 60,
+      quantity: 1,
+      billingDate: 'May 05, 2024',
+      lastBillingDate: 'Apr 05, 2024',
+      orderId: 'ord_abcde123'
+    },
+    {
+      id: 'sub_4',
+      name: 'Mailr Standard',
+      status: 'expired',
+      price: 60,
+      quantity: 3,
+      billingDate: 'N/A',
+      lastBillingDate: 'Feb 10, 2024',
+      orderId: 'ord_fghij456'
+    },
+    {
+      id: 'sub_5',
+      name: 'Mailr Standard',
+      status: 'active',
+      price: 60,
+      quantity: 5,
+      billingDate: 'Apr 30, 2024',
+      lastBillingDate: 'Mar 30, 2024',
+      orderId: 'ord_klmno789'
     }
   ]);
 

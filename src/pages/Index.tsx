@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,9 +8,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 const Index = () => {
-  const { isFreeTrial, daysRemaining, hasPaymentMethod } = useSubscription();
+  const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
 
   // Example data - would typically come from an API
   const totalDomains = 28;
@@ -78,6 +78,8 @@ const Index = () => {
     { domain: 'extra-domain2.com', status: 'Email Verification', progress: 55 }
   ];
 
+  const totalSubscriptionCost = subscriptions.reduce((total, sub) => total + sub.price, 0);
+
   return (
     <MainLayout title="Dashboard">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -105,7 +107,7 @@ const Index = () => {
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-sm font-medium text-gray-400">
-                    {isFreeTrial ? 'Free Trial' : 'Subscription'}
+                    {isFreeTrial ? 'Free Trial' : 'Subscriptions'}
                   </CardTitle>
                   {isFreeTrial && (
                     <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500">
@@ -127,20 +129,41 @@ const Index = () => {
                   </Button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
-                  <div>
-                    <p className="text-gray-400 text-sm">Total</p>
-                    <p className="text-2xl font-bold">${(totalDomains * pricePerDomain).toLocaleString()}</p>
+                <>
+                  <div className="py-4">
+                    {!isFreeTrial && subscriptions.length > 0 && (
+                      <div className="space-y-4">
+                        {subscriptions.map((subscription) => (
+                          <div key={subscription.id} className="flex justify-between items-center p-3 bg-mailr-lightgray/10 rounded-md">
+                            <div>
+                              <p className="font-medium">{subscription.name}</p>
+                              <p className="text-sm text-gray-400">Next billing: {subscription.billingDate}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-bold">${subscription.price}</p>
+                              <Badge variant={subscription.status === 'active' ? 'default' : 'outline'} 
+                                className={subscription.status === 'active' ? 'bg-green-500/20 text-green-300 border-green-500' : 'bg-amber-500/20 text-amber-300 border-amber-500'}>
+                                {subscription.status === 'active' ? 'Active' : 'Canceled'}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="flex justify-between pt-2 border-t border-mailr-lightgray">
+                          <p className="text-gray-400 text-sm">Total Monthly Cost</p>
+                          <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="mt-4">
+                      <Link to="/subscriptions">
+                        <Button variant="outline" className="w-full">
+                          Manage Subscriptions
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-gray-400 text-sm">Next Billing</p>
-                    <p className="text-2xl font-bold">$1,680</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-400 text-sm">Next Billing Date</p>
-                    <p className="text-2xl font-bold">Oct 15, 2023</p>
-                  </div>
-                </div>
+                </>
               )}
               
               {isFreeTrial && (
@@ -148,7 +171,7 @@ const Index = () => {
                   <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
                   <p className="text-sm text-amber-200">
                     Your free trial will expire in {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}. 
-                    <Link to="/settings" className="text-mailr-red hover:underline ml-1">
+                    <Link to="/subscriptions" className="text-mailr-red hover:underline ml-1">
                       Upgrade now
                     </Link>
                   </p>

@@ -7,7 +7,7 @@ import {
   SendHorizontal,
   Globe,
   Book,
-  Tools,
+  Wrench, // Changed from Tools to Wrench
   Users,
   Settings,
   FileText
@@ -47,7 +47,7 @@ const Sidebar = () => {
     { 
       name: 'Tools', 
       path: '/tools', 
-      icon: <Tools className="h-5 w-5" /> 
+      icon: <Wrench className="h-5 w-5" /> // Changed from Tools to Wrench
     },
     { 
       name: 'Affiliate', 

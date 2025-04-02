@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Invoice = {
@@ -12,7 +11,6 @@ type Invoice = {
 
 type Subscription = {
   id: string;
-  name: string;
   status: 'active' | 'canceled' | 'trial' | 'expired';
   price: number;
   billingDate: string;
@@ -48,7 +46,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([
     {
       id: 'sub_1',
-      name: 'Mailr Standard',
       status: 'active',
       price: 60,
       quantity: 1,
@@ -59,7 +56,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     },
     {
       id: 'sub_2',
-      name: 'Mailr Standard',
       status: 'active',
       price: 60,
       quantity: 2,
@@ -70,7 +66,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     },
     {
       id: 'sub_3',
-      name: 'Mailr Standard',
       status: 'canceled',
       price: 60,
       quantity: 1,
@@ -81,7 +76,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     },
     {
       id: 'sub_4',
-      name: 'Mailr Standard',
       status: 'expired',
       price: 60,
       quantity: 3,
@@ -92,7 +86,6 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     },
     {
       id: 'sub_5',
-      name: 'Mailr Standard',
       status: 'active',
       price: 60,
       quantity: 5,

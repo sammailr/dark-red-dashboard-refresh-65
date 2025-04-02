@@ -46,15 +46,12 @@ import {
   Calendar, 
   CreditCard, 
   Download, 
-  FileText, 
   ArrowLeft, 
   Trash2, 
   AlertTriangle, 
   Edit, 
   MinusCircle,
   PlusCircle,
-  Check,
-  X,
   RefreshCw
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
@@ -202,7 +199,7 @@ const SubscriptionDetail = () => {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-xl">{subscription.name}</CardTitle>
+                <CardTitle className="text-xl">${subscription.price}/mo per domain</CardTitle>
                 <CardDescription>ID: {subscription.id}</CardDescription>
               </div>
               <div>{getStatusBadge(subscription.status)}</div>

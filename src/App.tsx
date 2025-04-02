@@ -16,6 +16,7 @@ import ToolsPage from "./pages/Tools";
 import AffiliatePage from "./pages/Affiliate";
 import SettingsPage from "./pages/Settings";
 import Subscriptions from "./pages/Subscriptions";
+import SubscriptionDetail from "./pages/SubscriptionDetail";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/affiliate" element={<AffiliatePage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

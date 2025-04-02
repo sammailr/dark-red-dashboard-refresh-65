@@ -1,6 +1,15 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+type Invoice = {
+  id: string;
+  subscriptionId: string;
+  amount: number;
+  date: string;
+  status: 'paid' | 'pending' | 'failed';
+  pdfUrl?: string;
+};
+
 type Subscription = {
   id: string;
   name: string;
@@ -11,6 +20,7 @@ type Subscription = {
   daysRemaining?: number;
   lastBillingDate?: string;
   orderId?: string;
+  availableDomainSlots?: number;
 };
 
 type SubscriptionState = {
@@ -18,11 +28,15 @@ type SubscriptionState = {
   daysRemaining: number;
   hasPaymentMethod: boolean;
   subscriptions: Subscription[];
+  invoices: Invoice[];
   toggleSubscriptionStatus: () => void;
   togglePaymentMethodStatus: () => void;
   addSubscription: (subscription: Subscription) => void;
   removeSubscription: (id: string) => void;
   updateSubscription: (id: string, updates: Partial<Subscription>) => void;
+  updateSubscriptionQuantity: (id: string, newQuantity: number) => boolean;
+  getSubscriptionById: (id: string) => Subscription | undefined;
+  getInvoicesForSubscription: (subscriptionId: string) => Invoice[];
 };
 
 const SubscriptionContext = createContext<SubscriptionState | undefined>(undefined);
@@ -40,7 +54,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       quantity: 1,
       billingDate: 'Apr 15, 2024',
       lastBillingDate: 'Mar 15, 2024',
-      orderId: 'ord_12345abc'
+      orderId: 'ord_12345abc',
+      availableDomainSlots: 1
     },
     {
       id: 'sub_2',
@@ -50,7 +65,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       quantity: 2,
       billingDate: 'Apr 22, 2024',
       lastBillingDate: 'Mar 22, 2024',
-      orderId: 'ord_67890def'
+      orderId: 'ord_67890def',
+      availableDomainSlots: 1
     },
     {
       id: 'sub_3',
@@ -60,7 +76,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       quantity: 1,
       billingDate: 'May 05, 2024',
       lastBillingDate: 'Apr 05, 2024',
-      orderId: 'ord_abcde123'
+      orderId: 'ord_abcde123',
+      availableDomainSlots: 0
     },
     {
       id: 'sub_4',
@@ -70,7 +87,8 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       quantity: 3,
       billingDate: 'N/A',
       lastBillingDate: 'Feb 10, 2024',
-      orderId: 'ord_fghij456'
+      orderId: 'ord_fghij456',
+      availableDomainSlots: 0
     },
     {
       id: 'sub_5',
@@ -80,8 +98,24 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       quantity: 5,
       billingDate: 'Apr 30, 2024',
       lastBillingDate: 'Mar 30, 2024',
-      orderId: 'ord_klmno789'
+      orderId: 'ord_klmno789',
+      availableDomainSlots: 3
     }
+  ]);
+
+  const [invoices, setInvoices] = useState<Invoice[]>([
+    { id: 'inv_001', subscriptionId: 'sub_1', amount: 60, date: 'Mar 15, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_002', subscriptionId: 'sub_1', amount: 60, date: 'Feb 15, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_003', subscriptionId: 'sub_1', amount: 60, date: 'Jan 15, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_004', subscriptionId: 'sub_2', amount: 120, date: 'Mar 22, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_005', subscriptionId: 'sub_2', amount: 120, date: 'Feb 22, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_006', subscriptionId: 'sub_3', amount: 60, date: 'Apr 05, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_007', subscriptionId: 'sub_3', amount: 60, date: 'Mar 05, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_008', subscriptionId: 'sub_4', amount: 180, date: 'Feb 10, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_009', subscriptionId: 'sub_4', amount: 180, date: 'Jan 10, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_010', subscriptionId: 'sub_5', amount: 300, date: 'Mar 30, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_011', subscriptionId: 'sub_5', amount: 300, date: 'Feb 29, 2024', status: 'paid', pdfUrl: '#' },
+    { id: 'inv_012', subscriptionId: 'sub_5', amount: 300, date: 'Jan 30, 2024', status: 'paid', pdfUrl: '#' },
   ]);
 
   const toggleSubscriptionStatus = () => {
@@ -106,6 +140,34 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const updateSubscriptionQuantity = (id: string, newQuantity: number): boolean => {
+    const subscription = subscriptions.find(sub => sub.id === id);
+    
+    if (!subscription) return false;
+    
+    // Check if new quantity is valid (can only decrease based on availableDomainSlots)
+    const currentQuantity = subscription.quantity;
+    const availableSlots = subscription.availableDomainSlots || 0;
+    
+    // Minimum quantity must be (current - availableSlots)
+    const minAllowedQuantity = currentQuantity - availableSlots;
+    
+    if (newQuantity < minAllowedQuantity) {
+      return false; // Cannot decrease below used slots
+    }
+    
+    updateSubscription(id, { quantity: newQuantity });
+    return true;
+  };
+
+  const getSubscriptionById = (id: string) => {
+    return subscriptions.find(sub => sub.id === id);
+  };
+
+  const getInvoicesForSubscription = (subscriptionId: string) => {
+    return invoices.filter(invoice => invoice.subscriptionId === subscriptionId);
+  };
+
   return (
     <SubscriptionContext.Provider 
       value={{ 
@@ -113,11 +175,15 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
         daysRemaining, 
         hasPaymentMethod,
         subscriptions,
+        invoices,
         toggleSubscriptionStatus,
         togglePaymentMethodStatus,
         addSubscription,
         removeSubscription,
-        updateSubscription
+        updateSubscription,
+        updateSubscriptionQuantity,
+        getSubscriptionById,
+        getInvoicesForSubscription
       }}
     >
       {children}

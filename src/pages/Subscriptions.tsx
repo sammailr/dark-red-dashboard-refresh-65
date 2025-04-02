@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { 
@@ -32,7 +33,8 @@ import {
   CheckCircle, 
   FileText, 
   Search,
-  CreditCard
+  CreditCard,
+  ChevronRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -170,7 +172,11 @@ const SubscriptionsPage = () => {
                     </TableRow>
                   ) : (
                     filteredSubscriptions.map((subscription) => (
-                      <TableRow key={subscription.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
+                      <TableRow 
+                        key={subscription.id} 
+                        className="hover:bg-mailr-lightgray/10 border-mailr-lightgray cursor-pointer group"
+                        onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
+                      >
                         <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
                         <TableCell>{subscription.name}</TableCell>
                         <TableCell>{getStatusBadge(subscription.status)}</TableCell>
@@ -181,11 +187,25 @@ const SubscriptionsPage = () => {
                         <TableCell className="font-mono text-xs">{subscription.orderId || 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="invisible group-hover:visible text-gray-400 hover:text-white hover:bg-transparent"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                window.location.href = `/subscriptions/${subscription.id}`;
+                              }}
+                            >
+                              <ChevronRight className="h-4 w-4" />
+                            </Button>
                             {subscription.status === 'active' && (
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleStatusChange(subscription.id, 'canceled')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStatusChange(subscription.id, 'canceled');
+                                }}
                                 className="text-mailr-red hover:text-red-400 hover:bg-transparent"
                               >
                                 <XCircle className="h-4 w-4" />
@@ -195,16 +215,29 @@ const SubscriptionsPage = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() => handleStatusChange(subscription.id, 'active')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStatusChange(subscription.id, 'active');
+                                }}
                                 className="text-green-500 hover:text-green-400 hover:bg-transparent"
                               >
                                 <RefreshCw className="h-4 w-4" />
                               </Button>
                             )}
-                            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-gray-400 hover:text-white hover:bg-transparent"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <FileText className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-gray-400 hover:text-white hover:bg-transparent"
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <CreditCard className="h-4 w-4" />
                             </Button>
                           </div>
@@ -238,7 +271,11 @@ const SubscriptionsPage = () => {
                     sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
-                    <TableRow key={subscription.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
+                    <TableRow 
+                      key={subscription.id} 
+                      className="hover:bg-mailr-lightgray/10 border-mailr-lightgray cursor-pointer group"
+                      onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
+                    >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
                       <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
@@ -251,15 +288,28 @@ const SubscriptionsPage = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleStatusChange(subscription.id, 'canceled')}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(subscription.id, 'canceled');
+                            }}
                             className="text-mailr-red hover:text-red-400 hover:bg-transparent"
                           >
                             <XCircle className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-400 hover:text-white hover:bg-transparent"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <FileText className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-400 hover:text-white hover:bg-transparent"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <CreditCard className="h-4 w-4" />
                           </Button>
                         </div>
@@ -292,7 +342,11 @@ const SubscriptionsPage = () => {
                     sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
-                    <TableRow key={subscription.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
+                    <TableRow 
+                      key={subscription.id} 
+                      className="hover:bg-mailr-lightgray/10 border-mailr-lightgray cursor-pointer group"
+                      onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
+                    >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
                       <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
@@ -305,12 +359,20 @@ const SubscriptionsPage = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleStatusChange(subscription.id, 'active')}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(subscription.id, 'active');
+                            }}
                             className="text-green-500 hover:text-green-400 hover:bg-transparent"
                           >
                             <RefreshCw className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-400 hover:text-white hover:bg-transparent"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <FileText className="h-4 w-4" />
                           </Button>
                         </div>
@@ -342,7 +404,11 @@ const SubscriptionsPage = () => {
                     sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
-                    <TableRow key={subscription.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
+                    <TableRow 
+                      key={subscription.id} 
+                      className="hover:bg-mailr-lightgray/10 border-mailr-lightgray cursor-pointer group"
+                      onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
+                    >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
                       <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
@@ -354,12 +420,20 @@ const SubscriptionsPage = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleStatusChange(subscription.id, 'active')}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleStatusChange(subscription.id, 'active');
+                            }}
                             className="text-green-500 hover:text-green-400 hover:bg-transparent"
                           >
                             <CheckCircle className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-transparent">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="text-gray-400 hover:text-white hover:bg-transparent"
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <FileText className="h-4 w-4" />
                           </Button>
                         </div>

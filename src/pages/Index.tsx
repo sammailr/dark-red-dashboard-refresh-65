@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -136,7 +137,7 @@ const Index = () => {
                         {subscriptions.map((subscription) => (
                           <div key={subscription.id} className="flex justify-between items-center p-3 bg-mailr-lightgray/10 rounded-md">
                             <div>
-                              <p className="font-medium">{subscription.name}</p>
+                              <p className="font-medium">${subscription.price} subscription</p>
                               <p className="text-sm text-gray-400">Next billing: {subscription.billingDate}</p>
                             </div>
                             <div className="text-right">

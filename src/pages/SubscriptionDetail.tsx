@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { useSubscription } from '@/contexts/SubscriptionContext';
-import { 
+import SubscriptionHeader from '@/components/subscription/SubscriptionHeader';
+import {
   Table, 
   TableBody, 
   TableCell, 
@@ -16,32 +17,21 @@ import {
   Card, 
   CardContent, 
   CardDescription, 
+  CardFooter,
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
 import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle, 
   DialogTrigger,
+  DialogClose
 } from '@/components/ui/dialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { 
   Calendar, 
   CreditCard, 
@@ -55,30 +45,21 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Pagination, 
-  PaginationContent, 
-  PaginationItem, 
-  PaginationLink, 
-  PaginationNext, 
-  PaginationPrevious 
-} from '@/components/ui/pagination';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 
 const SubscriptionDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { 
     getSubscriptionById, 
     getInvoicesForSubscription, 
-    updateSubscriptionQuantity,
-    updateSubscription
+    updateSubscription,
+    updateSubscriptionQuantity
   } = useSubscription();
-  
   const [newQuantity, setNewQuantity] = useState<number>(0);
-  const [quantityError, setQuantityError] = useState<string | null>(null);
-  const [showQuantityDialog, setShowQuantityDialog] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const { toast } = useToast();
   
   const subscription = getSubscriptionById(id || '');
   const invoices = getInvoicesForSubscription(id || '');
@@ -86,18 +67,54 @@ const SubscriptionDetail = () => {
   if (!subscription) {
     return (
       <MainLayout title="Subscription Not Found">
-        <div className="flex flex-col items-center justify-center p-8">
-          <h2 className="text-2xl font-bold mb-4">Subscription Not Found</h2>
-          <p className="text-gray-400 mb-6">The subscription you're looking for doesn't exist.</p>
-          <Button onClick={() => navigate('/subscriptions')}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Subscriptions
+        <div className="flex flex-col items-center justify-center py-12">
+          <AlertTriangle className="h-16 w-16 text-red-500 mb-4" />
+          <h2 className="text-2xl font-bold mb-2">Subscription Not Found</h2>
+          <p className="text-gray-400 mb-6">The subscription you're looking for doesn't exist or has been removed.</p>
+          <Button asChild>
+            <Link to="/subscriptions">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Subscriptions
+            </Link>
           </Button>
         </div>
       </MainLayout>
     );
   }
-  
+
+  const handleStatusChange = (newStatus: 'active' | 'canceled' | 'expired') => {
+    updateSubscription(subscription.id, { status: newStatus });
+    
+    toast({
+      title: `Subscription ${newStatus}`,
+      description: `The subscription has been ${newStatus === 'active' ? 'reactivated' : newStatus}.`,
+      variant: newStatus === 'active' ? 'default' : 'destructive',
+    });
+  };
+
+  const handleQuantityChange = () => {
+    const success = updateSubscriptionQuantity(subscription.id, newQuantity);
+    
+    if (success) {
+      toast({
+        title: "Quantity Updated",
+        description: `The subscription quantity has been updated to ${newQuantity}.`,
+      });
+      setDialogOpen(false);
+    } else {
+      toast({
+        title: "Error Updating Quantity",
+        description: "Unable to decrease quantity below the number of used domains.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const openQuantityDialog = () => {
+    setNewQuantity(subscription.quantity);
+    setDialogOpen(true);
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
@@ -112,242 +129,163 @@ const SubscriptionDetail = () => {
         return <Badge className="bg-gray-600">Unknown</Badge>;
     }
   };
-  
-  const handleQuantitySubmit = () => {
-    if (!newQuantity) {
-      setQuantityError("Please enter a valid quantity");
-      return;
-    }
-    
-    const success = updateSubscriptionQuantity(subscription.id, newQuantity);
-    
-    if (success) {
-      setShowQuantityDialog(false);
-      setQuantityError(null);
-    } else {
-      setQuantityError(`Quantity cannot be lower than ${subscription.quantity - (subscription.availableDomainSlots || 0)} (domains in use)`);
+
+  const getInvoiceStatusBadge = (status: string) => {
+    switch (status) {
+      case 'paid':
+        return <Badge className="bg-green-600">Paid</Badge>;
+      case 'pending':
+        return <Badge className="bg-yellow-600">Pending</Badge>;
+      case 'failed':
+        return <Badge className="bg-red-600">Failed</Badge>;
+      default:
+        return <Badge className="bg-gray-600">Unknown</Badge>;
     }
   };
-  
-  const handleCancel = () => {
-    updateSubscription(subscription.id, { status: 'canceled' });
-  };
-  
-  const handleReactivate = () => {
-    updateSubscription(subscription.id, { status: 'active' });
-  };
-  
-  // Pagination logic
-  const paginatedInvoices = invoices.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  
-  const totalPages = Math.ceil(invoices.length / itemsPerPage);
-  
+
   return (
-    <MainLayout title={`Subscription Details - ${subscription.id}`}>
+    <MainLayout title="Subscription Details">
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Button variant="ghost" onClick={() => navigate('/subscriptions')}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Subscriptions
+        <div className="flex items-center mb-6">
+          <Button variant="outline" size="sm" className="mr-4" asChild>
+            <Link to="/subscriptions">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Link>
           </Button>
-          
-          {subscription.status === 'active' ? (
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm" className="bg-red-600 hover:bg-red-700">
-                  <Trash2 className="h-4 w-4 mr-1" />
-                  Cancel Subscription
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className="bg-mailr-darkgray border-mailr-lightgray">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Cancel Subscription?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to cancel this subscription? You'll still have access until the end of your current billing period ({subscription.billingDate}).
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel className="bg-mailr-lightgray text-white hover:bg-mailr-lightgray/80">Cancel</AlertDialogCancel>
-                  <AlertDialogAction 
-                    className="bg-red-600 hover:bg-red-700" 
-                    onClick={handleCancel}
-                  >
-                    Yes, Cancel Subscription
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          ) : (
-            subscription.status === 'canceled' && (
-              <Button 
-                variant="default"
-                size="sm"
-                className="bg-green-600 hover:bg-green-700"
-                onClick={handleReactivate}
-              >
-                <RefreshCw className="h-4 w-4 mr-1" />
-                Reactivate Subscription
-              </Button>
-            )
-          )}
         </div>
-        
-        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="text-xl">${subscription.price}/mo per domain</CardTitle>
-                <CardDescription>ID: {subscription.id}</CardDescription>
-              </div>
-              <div>{getStatusBadge(subscription.status)}</div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <div className="text-sm text-gray-400">Billing Period</div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-mailr-red" />
-                  {subscription.lastBillingDate || 'N/A'} to {subscription.billingDate}
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="text-sm text-gray-400">Quantity</div>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center">
-                    {subscription.quantity} {subscription.quantity === 1 ? 'domain' : 'domains'}
+
+        {/* Using the new SubscriptionHeader component */}
+        <SubscriptionHeader 
+          id={subscription.id}
+          status={subscription.status}
+          price={subscription.price}
+          quantity={subscription.quantity}
+          billingDate={subscription.billingDate}
+          lastBillingDate={subscription.lastBillingDate}
+        />
+
+        <Tabs defaultValue="details" className="w-full">
+          <TabsList className="w-full bg-mailr-darkgray border-mailr-lightgray">
+            <TabsTrigger value="details" className="flex-1">Details</TabsTrigger>
+            <TabsTrigger value="invoices" className="flex-1">Invoice History</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="details" className="mt-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-mailr-darkgray border-mailr-lightgray">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center">
+                    <CreditCard className="h-5 w-5 mr-2 text-mailr-red" />
+                    Billing Information
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-400">Order ID</p>
+                    <p className="font-mono text-sm">{subscription.orderId || 'N/A'}</p>
                   </div>
-                  
-                  {subscription.status === 'active' && (
-                    <Dialog open={showQuantityDialog} onOpenChange={setShowQuantityDialog}>
-                      <DialogTrigger asChild>
-                        <Button variant="ghost" size="sm" className="ml-2 h-7 w-7 p-0">
-                          <Edit className="h-4 w-4" />
+                  <div>
+                    <p className="text-sm text-gray-400">Last Billing Date</p>
+                    <p>{subscription.lastBillingDate || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400">Next Billing Date</p>
+                    <p>{subscription.billingDate}</p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-mailr-darkgray border-mailr-lightgray">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center">
+                    <Edit className="h-5 w-5 mr-2 text-blue-400" />
+                    Subscription Management
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-400">Status</p>
+                    <div className="mt-1">{getStatusBadge(subscription.status)}</div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400">Quantity</p>
+                    <div className="flex items-center mt-1">
+                      <p className="mr-2">{subscription.quantity} domains</p>
+                      {subscription.status === 'active' && (
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={openQuantityDialog}
+                          className="text-xs h-7"
+                        >
+                          Adjust
                         </Button>
-                      </DialogTrigger>
-                      <DialogContent className="bg-mailr-darkgray border-mailr-lightgray">
-                        <DialogHeader>
-                          <DialogTitle>Adjust Subscription Quantity</DialogTitle>
-                          <DialogDescription>
-                            Change the number of domains in your subscription.
-                            {subscription.availableDomainSlots !== undefined && subscription.availableDomainSlots > 0 && (
-                              <div className="mt-2 p-2 bg-amber-500/20 rounded-md text-amber-200 border border-amber-500/30 flex items-center">
-                                <AlertTriangle className="h-4 w-4 mr-2 flex-shrink-0" />
-                                <span>
-                                  You have {subscription.availableDomainSlots} unused domain {subscription.availableDomainSlots === 1 ? 'slot' : 'slots'}. 
-                                  You can reduce your quantity to a minimum of {subscription.quantity - subscription.availableDomainSlots}.
-                                </span>
-                              </div>
-                            )}
-                          </DialogDescription>
-                        </DialogHeader>
-                        
-                        <div className="space-y-4 py-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="quantity">Quantity</Label>
-                            <div className="flex items-center">
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                size="sm"
-                                className="h-9 px-2"
-                                onClick={() => setNewQuantity(prev => Math.max((prev || subscription.quantity) - 1, 1))}
-                              >
-                                <MinusCircle className="h-4 w-4" />
-                              </Button>
-                              
-                              <Input
-                                id="quantity"
-                                value={newQuantity || subscription.quantity}
-                                onChange={(e) => {
-                                  const value = parseInt(e.target.value);
-                                  if (!isNaN(value)) {
-                                    setNewQuantity(value);
-                                  }
-                                }}
-                                className="mx-2 text-center bg-mailr-lightgray/20 border-mailr-lightgray"
-                              />
-                              
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                size="sm"
-                                className="h-9 px-2"
-                                onClick={() => setNewQuantity(prev => (prev || subscription.quantity) + 1)}
-                              >
-                                <PlusCircle className="h-4 w-4" />
-                              </Button>
-                            </div>
-                            {quantityError && (
-                              <p className="text-red-500 text-sm mt-1">{quantityError}</p>
-                            )}
-                          </div>
-                          
-                          <div className="bg-mailr-lightgray/10 p-3 rounded-md">
-                            <div className="flex justify-between">
-                              <span>Price per domain:</span>
-                              <span>${subscription.price}</span>
-                            </div>
-                            <div className="flex justify-between font-bold mt-2 pt-2 border-t border-mailr-lightgray/20">
-                              <span>New monthly total:</span>
-                              <span>${(newQuantity || subscription.quantity) * subscription.price}</span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <DialogFooter>
-                          <Button 
-                            variant="ghost" 
-                            onClick={() => {
-                              setShowQuantityDialog(false);
-                              setQuantityError(null);
-                              setNewQuantity(subscription.quantity);
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button 
-                            className="bg-mailr-red hover:bg-red-600" 
-                            onClick={handleQuantitySubmit}
-                          >
-                            Save Changes
-                          </Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                      )}
+                    </div>
+                  </div>
+                  {subscription.availableDomainSlots !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-400">Available Domain Slots</p>
+                      <p>{subscription.availableDomainSlots} slots unused</p>
+                    </div>
                   )}
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="text-sm text-gray-400">Monthly Price</div>
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-mailr-red" />
-                  ${subscription.price * subscription.quantity}
-                </div>
-              </div>
+                </CardContent>
+                <CardFooter className="flex justify-end pt-2 pb-6 px-6">
+                  {subscription.status === 'active' && (
+                    <Button 
+                      variant="destructive" 
+                      className="bg-red-600 hover:bg-red-700"
+                      onClick={() => handleStatusChange('canceled')}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Cancel Subscription
+                    </Button>
+                  )}
+                  {subscription.status === 'canceled' && (
+                    <Button 
+                      variant="default" 
+                      className="bg-green-600 hover:bg-green-700"
+                      onClick={() => handleStatusChange('active')}
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reactivate Subscription
+                    </Button>
+                  )}
+                  {subscription.status === 'expired' && (
+                    <Button 
+                      variant="default" 
+                      className="bg-green-600 hover:bg-green-700"
+                      onClick={() => handleStatusChange('active')}
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Renew Subscription
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
             </div>
-            
-            <Separator className="my-6 bg-mailr-lightgray/20" />
-            
-            <div>
-              <h3 className="font-medium text-lg mb-4">Invoice History</h3>
-              
-              {invoices.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">
-                  No invoices found for this subscription
-                </div>
-              ) : (
-                <>
-                  <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
+          </TabsContent>
+          
+          <TabsContent value="invoices" className="mt-6">
+            <Card className="bg-mailr-darkgray border-mailr-lightgray">
+              <CardHeader>
+                <CardTitle className="text-lg">Invoice History</CardTitle>
+                <CardDescription>
+                  View and download your past invoices
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {invoices.length === 0 ? (
+                  <div className="text-center py-6">
+                    <p className="text-gray-400">No invoices found for this subscription</p>
+                  </div>
+                ) : (
+                  <div className="rounded-md border border-mailr-lightgray overflow-hidden">
                     <Table>
                       <TableHeader className="bg-black/30">
                         <TableRow className="hover:bg-transparent border-mailr-lightgray">
-                          <TableHead>Invoice #</TableHead>
+                          <TableHead>Invoice ID</TableHead>
                           <TableHead>Date</TableHead>
                           <TableHead>Amount</TableHead>
                           <TableHead>Status</TableHead>
@@ -355,70 +293,111 @@ const SubscriptionDetail = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {paginatedInvoices.map((invoice) => (
+                        {invoices.map((invoice) => (
                           <TableRow key={invoice.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
-                            <TableCell className="font-mono">{invoice.id}</TableCell>
+                            <TableCell className="font-mono text-xs">{invoice.id}</TableCell>
                             <TableCell>{invoice.date}</TableCell>
                             <TableCell>${invoice.amount}</TableCell>
-                            <TableCell>
-                              <Badge 
-                                className={
-                                  invoice.status === 'paid' 
-                                    ? 'bg-green-600' 
-                                    : invoice.status === 'pending' 
-                                    ? 'bg-amber-600' 
-                                    : 'bg-red-600'
-                                }
-                              >
-                                {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
-                              </Badge>
-                            </TableCell>
+                            <TableCell>{getInvoiceStatusBadge(invoice.status)}</TableCell>
                             <TableCell className="text-right">
-                              <Button variant="ghost" size="sm" className="text-mailr-red hover:text-red-400 hover:bg-transparent">
-                                <Download className="h-4 w-4" />
-                              </Button>
+                              {invoice.pdfUrl && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-gray-400 hover:text-white"
+                                  asChild
+                                >
+                                  <a href={invoice.pdfUrl} target="_blank" rel="noopener noreferrer">
+                                    <Download className="h-4 w-4" />
+                                  </a>
+                                </Button>
+                              )}
                             </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
                   </div>
-                  
-                  {totalPages > 1 && (
-                    <Pagination className="mt-4">
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious 
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-                          />
-                        </PaginationItem>
-                        
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                          <PaginationItem key={page}>
-                            <PaginationLink 
-                              isActive={currentPage === page} 
-                              onClick={() => setCurrentPage(page)}
-                            >
-                              {page}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-                        
-                        <PaginationItem>
-                          <PaginationNext 
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                            className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  )}
-                </>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="sm:max-w-md bg-mailr-darkgray border-mailr-lightgray">
+            <DialogHeader>
+              <DialogTitle>Adjust Subscription Quantity</DialogTitle>
+              <DialogDescription>
+                Update the number of domains for this subscription. 
+                {subscription.availableDomainSlots !== undefined && (
+                  <span className="block mt-1 text-xs">
+                    {subscription.availableDomainSlots === 0 
+                      ? "You have no available domain slots. You can only increase quantity."
+                      : `You have ${subscription.availableDomainSlots} unused domain slots.`}
+                  </span>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4 py-4">
+              <div className="flex items-center justify-center">
+                <Button
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setNewQuantity(Math.max(newQuantity - 1, subscription.quantity - (subscription.availableDomainSlots || 0)))}
+                  disabled={newQuantity <= (subscription.quantity - (subscription.availableDomainSlots || 0))}
+                  className="rounded-r-none"
+                >
+                  <MinusCircle className="h-4 w-4" />
+                </Button>
+                <Input
+                  className="w-20 text-center rounded-none"
+                  type="number"
+                  value={newQuantity}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (!isNaN(value) && value >= (subscription.quantity - (subscription.availableDomainSlots || 0))) {
+                      setNewQuantity(value);
+                    }
+                  }}
+                  min={subscription.quantity - (subscription.availableDomainSlots || 0)}
+                />
+                <Button
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setNewQuantity(newQuantity + 1)}
+                  className="rounded-l-none"
+                >
+                  <PlusCircle className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <div className="text-center text-sm text-gray-400">
+                Total price: ${newQuantity * subscription.price}/month
+              </div>
+              
+              {newQuantity < subscription.quantity && (
+                <div className="text-amber-500 text-sm flex items-center mt-2">
+                  <AlertTriangle className="h-4 w-4 mr-2" />
+                  Decreasing quantity will reduce your available domain slots.
+                </div>
               )}
             </div>
-          </CardContent>
-        </Card>
+            
+            <DialogFooter className="sm:justify-between">
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button 
+                onClick={handleQuantityChange}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                Update Quantity
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </MainLayout>
   );

@@ -69,7 +69,6 @@ const SubscriptionsPage = () => {
   const filteredSubscriptions = subscriptions.filter(sub => {
     return (
       sub.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sub.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sub.billingDate.toLowerCase().includes(searchTerm.toLowerCase())
@@ -153,7 +152,6 @@ const SubscriptionsPage = () => {
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
                     <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Last Billing</TableHead>
                     <TableHead>Next Billing</TableHead>
@@ -166,7 +164,7 @@ const SubscriptionsPage = () => {
                 <TableBody>
                   {filteredSubscriptions.length === 0 ? (
                     <TableRow className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
-                      <TableCell colSpan={9} className="text-center py-4">
+                      <TableCell colSpan={8} className="text-center py-4">
                         No subscriptions found
                       </TableCell>
                     </TableRow>
@@ -178,7 +176,6 @@ const SubscriptionsPage = () => {
                         onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
                       >
                         <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
-                        <TableCell>{subscription.name}</TableCell>
                         <TableCell>{getStatusBadge(subscription.status)}</TableCell>
                         <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
                         <TableCell>{subscription.billingDate}</TableCell>
@@ -256,7 +253,6 @@ const SubscriptionsPage = () => {
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
                     <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
                     <TableHead>Last Billing</TableHead>
                     <TableHead>Next Billing</TableHead>
                     <TableHead>Quantity</TableHead>
@@ -268,7 +264,6 @@ const SubscriptionsPage = () => {
                 <TableBody>
                   {activeSubscriptions.filter(sub => 
                     sub.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
                     <TableRow 
@@ -277,7 +272,6 @@ const SubscriptionsPage = () => {
                       onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
                     >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
-                      <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
                       <TableCell>{subscription.billingDate}</TableCell>
                       <TableCell>{subscription.quantity}</TableCell>
@@ -327,7 +321,6 @@ const SubscriptionsPage = () => {
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
                     <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
                     <TableHead>Last Billing</TableHead>
                     <TableHead>Next Billing</TableHead>
                     <TableHead>Quantity</TableHead>
@@ -339,7 +332,6 @@ const SubscriptionsPage = () => {
                 <TableBody>
                   {canceledSubscriptions.filter(sub => 
                     sub.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
                     <TableRow 
@@ -348,7 +340,6 @@ const SubscriptionsPage = () => {
                       onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
                     >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
-                      <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
                       <TableCell>{subscription.billingDate}</TableCell>
                       <TableCell>{subscription.quantity}</TableCell>
@@ -390,7 +381,6 @@ const SubscriptionsPage = () => {
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
                     <TableHead>ID</TableHead>
-                    <TableHead>Name</TableHead>
                     <TableHead>Last Billing</TableHead>
                     <TableHead>Quantity</TableHead>
                     <TableHead>Price</TableHead>
@@ -401,7 +391,6 @@ const SubscriptionsPage = () => {
                 <TableBody>
                   {expiredSubscriptions.filter(sub => 
                     sub.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     sub.orderId?.toLowerCase().includes(searchTerm.toLowerCase())
                   ).map((subscription) => (
                     <TableRow 
@@ -410,7 +399,6 @@ const SubscriptionsPage = () => {
                       onClick={() => window.location.href = `/subscriptions/${subscription.id}`}
                     >
                       <TableCell className="font-mono text-xs">{subscription.id}</TableCell>
-                      <TableCell>{subscription.name}</TableCell>
                       <TableCell>{subscription.lastBillingDate || 'N/A'}</TableCell>
                       <TableCell>{subscription.quantity}</TableCell>
                       <TableCell>${subscription.price * subscription.quantity}</TableCell>

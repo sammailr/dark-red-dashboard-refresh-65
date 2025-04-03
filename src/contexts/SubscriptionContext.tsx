@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type Invoice = {
@@ -35,6 +36,8 @@ type SubscriptionState = {
   updateSubscriptionQuantity: (id: string, newQuantity: number) => boolean;
   getSubscriptionById: (id: string) => Subscription | undefined;
   getInvoicesForSubscription: (subscriptionId: string) => Invoice[];
+  cancelSubscription: (id: string) => void;
+  reactivateSubscription: (id: string) => void;
 };
 
 const SubscriptionContext = createContext<SubscriptionState | undefined>(undefined);
@@ -149,8 +152,24 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       return false; // Cannot decrease below used slots
     }
     
-    updateSubscription(id, { quantity: newQuantity });
+    updateSubscription(id, { 
+      quantity: newQuantity,
+      // Update the availableDomainSlots if decreasing quantity
+      availableDomainSlots: newQuantity < currentQuantity 
+        ? Math.max(0, availableSlots - (currentQuantity - newQuantity))
+        : newQuantity > currentQuantity
+          ? availableSlots + (newQuantity - currentQuantity)
+          : availableSlots
+    });
     return true;
+  };
+
+  const cancelSubscription = (id: string) => {
+    updateSubscription(id, { status: 'canceled' });
+  };
+
+  const reactivateSubscription = (id: string) => {
+    updateSubscription(id, { status: 'active' });
   };
 
   const getSubscriptionById = (id: string) => {
@@ -176,7 +195,9 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
         updateSubscription,
         updateSubscriptionQuantity,
         getSubscriptionById,
-        getInvoicesForSubscription
+        getInvoicesForSubscription,
+        cancelSubscription,
+        reactivateSubscription
       }}
     >
       {children}

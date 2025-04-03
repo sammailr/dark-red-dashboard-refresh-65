@@ -55,10 +55,13 @@ const SubscriptionDetail = () => {
     getSubscriptionById, 
     getInvoicesForSubscription, 
     updateSubscription,
-    updateSubscriptionQuantity
+    updateSubscriptionQuantity,
+    cancelSubscription,
+    reactivateSubscription
   } = useSubscription();
   const [newQuantity, setNewQuantity] = useState<number>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const { toast } = useToast();
   
   const subscription = getSubscriptionById(id || '');
@@ -83,13 +86,21 @@ const SubscriptionDetail = () => {
   }
 
   const handleStatusChange = (newStatus: 'active' | 'canceled' | 'expired') => {
-    updateSubscription(subscription.id, { status: newStatus });
+    if (newStatus === 'canceled') {
+      cancelSubscription(subscription.id);
+    } else if (newStatus === 'active') {
+      reactivateSubscription(subscription.id);
+    } else {
+      updateSubscription(subscription.id, { status: newStatus });
+    }
     
     toast({
       title: `Subscription ${newStatus}`,
       description: `The subscription has been ${newStatus === 'active' ? 'reactivated' : newStatus}.`,
       variant: newStatus === 'active' ? 'default' : 'destructive',
     });
+    
+    setCancelDialogOpen(false);
   };
 
   const handleQuantityChange = () => {
@@ -155,7 +166,7 @@ const SubscriptionDetail = () => {
           </Button>
         </div>
 
-        {/* Using the new SubscriptionHeader component */}
+        {/* Using the SubscriptionHeader component */}
         <SubscriptionHeader 
           id={subscription.id}
           status={subscription.status}
@@ -236,7 +247,7 @@ const SubscriptionDetail = () => {
                     <Button 
                       variant="destructive" 
                       className="bg-red-600 hover:bg-red-700"
-                      onClick={() => handleStatusChange('canceled')}
+                      onClick={() => setCancelDialogOpen(true)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Cancel Subscription
@@ -324,6 +335,7 @@ const SubscriptionDetail = () => {
           </TabsContent>
         </Tabs>
 
+        {/* Dialog for updating quantity */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent className="sm:max-w-md bg-mailr-darkgray border-mailr-lightgray">
             <DialogHeader>
@@ -394,6 +406,40 @@ const SubscriptionDetail = () => {
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 Update Quantity
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Confirmation dialog for cancellation */}
+        <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+          <DialogContent className="sm:max-w-md bg-mailr-darkgray border-mailr-lightgray">
+            <DialogHeader>
+              <DialogTitle>Cancel Subscription</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to cancel this subscription? You will still have access to your domains until the end of the current billing period.
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="py-4">
+              <div className="flex items-center p-3 bg-amber-500/10 border border-amber-500/20 rounded-md">
+                <AlertTriangle className="h-5 w-5 text-amber-500 mr-3" />
+                <p className="text-sm text-amber-200">
+                  Canceling will stop automatic renewals. Your subscription will remain active until {subscription.billingDate}.
+                </p>
+              </div>
+            </div>
+            
+            <DialogFooter className="sm:justify-between">
+              <DialogClose asChild>
+                <Button variant="outline">Keep Subscription</Button>
+              </DialogClose>
+              <Button 
+                variant="destructive"
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => handleStatusChange('canceled')}
+              >
+                Cancel Subscription
               </Button>
             </DialogFooter>
           </DialogContent>

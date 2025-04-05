@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SubscriptionProvider } from "./contexts/SubscriptionContext";
+import { OrderProvider } from "./contexts/OrderContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import OrderInboxesPage from "./pages/OrderInboxes";
@@ -17,33 +18,39 @@ import AffiliatePage from "./pages/Affiliate";
 import SettingsPage from "./pages/Settings";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionDetail from "./pages/SubscriptionDetail";
+import OrdersPage from "./pages/Orders";
+import OrderDetail from "./pages/OrderDetail";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SubscriptionProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/order-inboxes" element={<OrderInboxesPage />} />
-            <Route path="/sending-platform" element={<SendingPlatformPage />} />
-            <Route path="/domains" element={<DomainsPage />} />
-            <Route path="/master-inbox" element={<MasterInboxPage />} />
-            <Route path="/guide" element={<GuidePage />} />
-            <Route path="/tools" element={<ToolsPage />} />
-            <Route path="/affiliate" element={<AffiliatePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/subscriptions" element={<Subscriptions />} />
-            <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <OrderProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/order-inboxes" element={<OrderInboxesPage />} />
+              <Route path="/sending-platform" element={<SendingPlatformPage />} />
+              <Route path="/domains" element={<DomainsPage />} />
+              <Route path="/master-inbox" element={<MasterInboxPage />} />
+              <Route path="/guide" element={<GuidePage />} />
+              <Route path="/tools" element={<ToolsPage />} />
+              <Route path="/affiliate" element={<AffiliatePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
+              <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
+              <Route path="/orders" element={<OrdersPage />} />
+              <Route path="/orders/:id" element={<OrderDetail />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </OrderProvider>
     </SubscriptionProvider>
   </QueryClientProvider>
 );

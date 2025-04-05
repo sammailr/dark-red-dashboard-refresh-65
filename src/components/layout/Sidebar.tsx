@@ -7,10 +7,11 @@ import {
   SendHorizontal,
   Globe,
   Book,
-  Wrench, // Changed from Tools to Wrench
+  Wrench,
   Users,
   Settings,
-  FileText
+  FileText,
+  Package
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -40,6 +41,11 @@ const Sidebar = () => {
       icon: <Globe className="h-5 w-5" /> 
     },
     { 
+      name: 'Orders', 
+      path: '/orders', 
+      icon: <Package className="h-5 w-5" /> 
+    },
+    { 
       name: 'Guide', 
       path: '/guide', 
       icon: <Book className="h-5 w-5" /> 
@@ -47,7 +53,7 @@ const Sidebar = () => {
     { 
       name: 'Tools', 
       path: '/tools', 
-      icon: <Wrench className="h-5 w-5" /> // Changed from Tools to Wrench
+      icon: <Wrench className="h-5 w-5" />
     },
     { 
       name: 'Affiliate', 

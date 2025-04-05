@@ -29,7 +29,7 @@ const OrderDetail = () => {
 
   if (!order) {
     return (
-      <MainLayout>
+      <MainLayout title="Order Not Found">
         <div className="flex flex-col items-center justify-center h-[50vh]">
           <h2 className="text-2xl font-bold">Order not found</h2>
           <Button 
@@ -60,7 +60,7 @@ const OrderDetail = () => {
   const totalProgress = order.domains.reduce((sum, domain) => sum + domain.progress, 0) / order.domains.length;
 
   return (
-    <MainLayout>
+    <MainLayout title={`Order ${order.id}`}>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Button 

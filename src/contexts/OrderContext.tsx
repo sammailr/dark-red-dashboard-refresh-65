@@ -67,7 +67,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       prevOrders.map(order => {
         if (order.id === orderId) {
           const updatedDomains = order.domains.map(domain => 
-            domain.id === domainId ? { ...domain, status: 'cancelled', progress: 0 } : domain
+            domain.id === domainId ? { ...domain, status: 'cancelled' as const, progress: 0 } : domain
           );
           
           // Check if all domains are cancelled

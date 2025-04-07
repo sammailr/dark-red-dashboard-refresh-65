@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState } from 'react';
 export type Domain = {
   id: string;
   name: string;
-  status: 'pending' | 'active' | 'failed';
+  status: 'pending' | 'active' | 'failed' | 'cancelled';
   progress: number;
 };
 
@@ -19,6 +19,8 @@ export type Order = {
 type OrderContextType = {
   orders: Order[];
   getOrderById: (id: string) => Order | undefined;
+  cancelDomain: (orderId: string, domainId: string) => void;
+  cancelOrder: (orderId: string) => void;
 };
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -54,14 +56,54 @@ const sampleOrders: Order[] = [
 ];
 
 export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [orders] = useState<Order[]>(sampleOrders);
+  const [orders, setOrders] = useState<Order[]>(sampleOrders);
 
   const getOrderById = (id: string) => {
     return orders.find(order => order.id === id);
   };
 
+  const cancelDomain = (orderId: string, domainId: string) => {
+    setOrders(prevOrders => 
+      prevOrders.map(order => {
+        if (order.id === orderId) {
+          const updatedDomains = order.domains.map(domain => 
+            domain.id === domainId ? { ...domain, status: 'cancelled', progress: 0 } : domain
+          );
+          
+          // Check if all domains are cancelled
+          const allDomainsCancelled = updatedDomains.every(domain => domain.status === 'cancelled');
+          
+          return {
+            ...order,
+            domains: updatedDomains,
+            status: allDomainsCancelled ? 'cancelled' : order.status
+          };
+        }
+        return order;
+      })
+    );
+  };
+
+  const cancelOrder = (orderId: string) => {
+    setOrders(prevOrders => 
+      prevOrders.map(order => 
+        order.id === orderId
+          ? {
+              ...order,
+              status: 'cancelled',
+              domains: order.domains.map(domain => ({ 
+                ...domain, 
+                status: 'cancelled',
+                progress: 0
+              }))
+            }
+          : order
+      )
+    );
+  };
+
   return (
-    <OrderContext.Provider value={{ orders, getOrderById }}>
+    <OrderContext.Provider value={{ orders, getOrderById, cancelDomain, cancelOrder }}>
       {children}
     </OrderContext.Provider>
   );

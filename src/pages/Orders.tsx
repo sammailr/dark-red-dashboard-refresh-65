@@ -1,15 +1,28 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { Package, ChevronRight } from 'lucide-react';
-import { useOrders } from '@/contexts/OrderContext';
+import { Package, ChevronRight, X } from 'lucide-react';
+import { useOrders, Order } from '@/contexts/OrderContext';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import MainLayout from '@/components/layout/MainLayout';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useToast } from '@/hooks/use-toast';
 
 const OrdersPage = () => {
-  const { orders } = useOrders();
+  const { orders, cancelOrder } = useOrders();
+  const { toast } = useToast();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -21,6 +34,25 @@ const OrdersPage = () => {
         return 'destructive';
       default:
         return 'outline';
+    }
+  };
+
+  const handleOpenOrderCancelDialog = (order: Order, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedOrder(order);
+    setDialogOpen(true);
+  };
+
+  const handleCancelOrder = () => {
+    if (selectedOrder) {
+      cancelOrder(selectedOrder.id);
+      toast({
+        title: "Order Cancelled",
+        description: `Order ${selectedOrder.id} has been cancelled.`,
+      });
+      setDialogOpen(false);
+      setSelectedOrder(null);
     }
   };
 
@@ -51,7 +83,7 @@ const OrdersPage = () => {
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Domains</TableHead>
-                  <TableHead className="w-[80px]"></TableHead>
+                  <TableHead className="w-[160px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -66,13 +98,27 @@ const OrdersPage = () => {
                     </TableCell>
                     <TableCell>{order.domains.length}</TableCell>
                     <TableCell>
-                      <Link 
-                        to={`/orders/${order.id}`}
-                        className="inline-flex items-center justify-center gap-1 text-sm font-medium text-primary"
-                      >
-                        Details
-                        <ChevronRight className="w-4 h-4" />
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          to={`/orders/${order.id}`}
+                          className="inline-flex items-center justify-center gap-1 text-sm font-medium text-primary"
+                        >
+                          Details
+                          <ChevronRight className="w-4 h-4" />
+                        </Link>
+                        
+                        {order.status !== 'cancelled' && (
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="text-destructive hover:bg-destructive/10"
+                            onClick={(e) => handleOpenOrderCancelDialog(order, e)}
+                          >
+                            <X className="w-4 h-4 mr-1" />
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -81,6 +127,36 @@ const OrdersPage = () => {
           </div>
         )}
       </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancel Order</DialogTitle>
+            <DialogDescription>
+              {selectedOrder && 
+                `Are you sure you want to cancel order ${selectedOrder.id}? All domains will be cancelled. This action cannot be undone.`
+              }
+            </DialogDescription>
+          </DialogHeader>
+          
+          <DialogFooter className="sm:justify-start gap-3">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleCancelOrder}
+            >
+              Confirm Cancellation
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 };

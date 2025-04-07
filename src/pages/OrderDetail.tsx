@@ -103,8 +103,6 @@ const OrderDetail = () => {
     }
   };
 
-  const isCancellable = order.status !== 'cancelled' && order.status !== 'completed';
-
   return (
     <MainLayout title={`Order ${order.id}`}>
       <div className="space-y-6">
@@ -131,7 +129,7 @@ const OrderDetail = () => {
             </div>
           </div>
           
-          {isCancellable && (
+          {order.status !== 'cancelled' && (
             <Button 
               variant="outline"
               className="text-destructive border-destructive hover:bg-destructive/10"
@@ -150,7 +148,7 @@ const OrderDetail = () => {
             <CardContent className="p-0">
               <ul className="divide-y">
                 {order.domains.map((domain) => (
-                  <li key={domain.id} className="flex items-center justify-between p-4">
+                  <li key={domain.id} className="flex items-center justify-between p-3">
                     <div className="flex flex-col">
                       <span className="font-medium">{domain.name}</span>
                     </div>
@@ -158,7 +156,7 @@ const OrderDetail = () => {
                     <div className="flex items-center gap-3">
                       {getDomainStatusBadge(domain)}
                       
-                      {isCancellable && domain.status !== 'cancelled' && domain.status !== 'active' && (
+                      {domain.status !== 'cancelled' && (
                         <Button 
                           variant="ghost" 
                           size="sm"

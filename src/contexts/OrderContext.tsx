@@ -93,7 +93,7 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               status: 'cancelled',
               domains: order.domains.map(domain => ({ 
                 ...domain, 
-                status: 'cancelled',
+                status: 'cancelled' as const,
                 progress: 0
               }))
             }

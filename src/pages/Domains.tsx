@@ -4,11 +4,12 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings } from 'lucide-react';
+import { Settings, AlertTriangle } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const DomainsPage = () => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -65,7 +66,8 @@ const DomainsPage = () => {
         </Button>
         
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground mr-2">
+          <span className={`text-sm ${availableDomainSlots === 0 ? 'text-red-400' : availableDomainSlots < 3 ? 'text-yellow-400' : 'text-muted-foreground'} mr-2 flex items-center gap-1`}>
+            {availableDomainSlots === 0 && <AlertTriangle className="h-3 w-3" />}
             Available slots: {availableDomainSlots}
           </span>
           <Button 
@@ -79,6 +81,15 @@ const DomainsPage = () => {
           </Button>
         </div>
       </div>
+      
+      {availableDomainSlots === 0 && (
+        <Alert className="bg-red-900/30 border-red-400/30 text-red-400 mb-4">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            You have no domain slots available. Please upgrade your subscription to add more domains.
+          </AlertDescription>
+        </Alert>
+      )}
       
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
         <Table>

@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, X, AlertCircle } from 'lucide-react';
+import { Upload, X, AlertCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,6 +14,7 @@ import {
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 type DomainEntry = {
   domain: string;
@@ -56,6 +57,10 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
     const domainRegex = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
     return domainRegex.test(domain);
   };
+
+  // Check if CSV domains exceed available slots
+  const validCsvDomains = csvDomains.filter(entry => entry.valid);
+  const exceedsAvailableSlots = validCsvDomains.length > availableDomainSlots;
 
   const handleManualSubmit = () => {
     if (!validateDomain(domain)) {
@@ -251,46 +256,58 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
             </div>
 
             {csvDomains.length > 0 && (
-              <div className="border rounded-md overflow-hidden">
-                <table className="w-full">
-                  <thead className="bg-muted/50">
-                    <tr>
-                      <th className="text-xs font-medium text-left p-2">Domain</th>
-                      <th className="text-xs font-medium text-left p-2">URL</th>
-                      <th className="text-xs font-medium text-center p-2">Status</th>
-                      <th className="text-xs font-medium text-right p-2">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {csvDomains.map((entry, index) => (
-                      <tr key={index} className={`border-t ${!entry.valid ? 'bg-destructive/10' : ''}`}>
-                        <td className="p-2 text-sm">{entry.domain}</td>
-                        <td className="p-2 text-sm">{entry.url}</td>
-                        <td className="p-2 text-center">
-                          {entry.valid ? (
-                            <span className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-400">Valid</span>
-                          ) : (
-                            <span className="px-2 py-1 rounded text-xs bg-red-900/30 text-red-400 flex items-center gap-1 justify-center">
-                              <AlertCircle className="h-3 w-3" />
-                              {entry.error}
-                            </span>
-                          )}
-                        </td>
-                        <td className="p-2 text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => removeCsvDomain(index)}
-                            className="h-7 w-7 p-0"
-                          >
-                            <X className="h-4 w-4" />
-                          </Button>
-                        </td>
+              <>
+                {exceedsAvailableSlots && (
+                  <Alert className="bg-yellow-900/30 border-yellow-400/30 text-yellow-400">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      You're trying to import {validCsvDomains.length} domains but only have {availableDomainSlots} slots available.
+                      Please remove {validCsvDomains.length - availableDomainSlots} domains or upgrade your subscription.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="border rounded-md overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-muted/50">
+                      <tr>
+                        <th className="text-xs font-medium text-left p-2">Domain</th>
+                        <th className="text-xs font-medium text-left p-2">URL</th>
+                        <th className="text-xs font-medium text-center p-2">Status</th>
+                        <th className="text-xs font-medium text-right p-2">Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {csvDomains.map((entry, index) => (
+                        <tr key={index} className={`border-t ${!entry.valid ? 'bg-destructive/10' : ''}`}>
+                          <td className="p-2 text-sm">{entry.domain}</td>
+                          <td className="p-2 text-sm">{entry.url}</td>
+                          <td className="p-2 text-center">
+                            {entry.valid ? (
+                              <span className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-400">Valid</span>
+                            ) : (
+                              <span className="px-2 py-1 rounded text-xs bg-red-900/30 text-red-400 flex items-center gap-1 justify-center">
+                                <AlertCircle className="h-3 w-3" />
+                                {entry.error}
+                              </span>
+                            )}
+                          </td>
+                          <td className="p-2 text-right">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => removeCsvDomain(index)}
+                              className="h-7 w-7 p-0"
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         )}
@@ -299,14 +316,23 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
           <div className="text-sm text-muted-foreground">
             {isManual 
               ? "1 domain will be imported"
-              : `${csvDomains.filter(d => d.valid).length} valid domains out of ${csvDomains.length} total`
+              : <>
+                  <span className={`${exceedsAvailableSlots ? 'text-yellow-400' : ''}`}>
+                    {validCsvDomains.length} valid domains out of {csvDomains.length} total
+                    {exceedsAvailableSlots && ` (exceeds ${availableDomainSlots} available slots)`}
+                  </span>
+                </>
             }
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button onClick={isManual ? handleManualSubmit : handleCsvSubmit}>
+            <Button 
+              onClick={isManual ? handleManualSubmit : handleCsvSubmit}
+              disabled={!isManual && (validCsvDomains.length === 0 || exceedsAvailableSlots)}
+              className={exceedsAvailableSlots ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+            >
               Import Domains
             </Button>
           </div>

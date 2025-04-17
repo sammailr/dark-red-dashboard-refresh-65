@@ -1,14 +1,23 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Settings } from 'lucide-react';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useOrders } from '@/contexts/OrderContext';
+import ImportDomainModal from '@/components/domain/ImportDomainModal';
+import { useToast } from '@/hooks/use-toast';
 
 const DomainsPage = () => {
-  // Sample data
-  const domains = [
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const { subscriptions } = useSubscription();
+  const { orders } = useOrders();
+  const { toast } = useToast();
+  
+  // Sample data - in a real app this would be fetched from your backend
+  const [domains, setDomains] = useState([
     {
       id: 1,
       domain: 'example.com',
@@ -23,7 +32,30 @@ const DomainsPage = () => {
       status: 'Pending',
       nameservers: 'ns1.test.org, ns2.test.org'
     }
-  ];
+  ]);
+
+  // Calculate available domain slots from all active subscriptions
+  const availableDomainSlots = subscriptions
+    .filter(sub => sub.status === 'active')
+    .reduce((total, sub) => total + (sub.availableDomainSlots || 0), 0);
+
+  const handleImportDomains = (newDomains: Array<{ domain: string; url: string }>) => {
+    // In a real application, you would send this data to your backend API
+    const domainsToAdd = newDomains.map((domainData, index) => ({
+      id: Math.max(0, ...domains.map(d => d.id)) + index + 1,
+      domain: domainData.domain,
+      url: domainData.url,
+      status: 'Pending',
+      nameservers: 'Awaiting configuration'
+    }));
+
+    setDomains(prev => [...prev, ...domainsToAdd]);
+    
+    toast({
+      title: "Domains Imported",
+      description: `Successfully imported ${newDomains.length} domain${newDomains.length > 1 ? 's' : ''}.`,
+    });
+  };
 
   return (
     <MainLayout title="Manage Domains">
@@ -32,9 +64,20 @@ const DomainsPage = () => {
           <Settings className="h-4 w-4" />
         </Button>
         
-        <Button variant="default" size="sm" className="bg-mailr-red hover:bg-red-600">
-          Import Domain
-        </Button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground mr-2">
+            Available slots: {availableDomainSlots}
+          </span>
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="bg-mailr-red hover:bg-red-600"
+            onClick={() => setIsImportModalOpen(true)}
+            disabled={availableDomainSlots <= 0}
+          >
+            Import Domain
+          </Button>
+        </div>
       </div>
       
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
@@ -71,6 +114,12 @@ const DomainsPage = () => {
           </TableBody>
         </Table>
       </div>
+
+      <ImportDomainModal 
+        open={isImportModalOpen} 
+        onOpenChange={setIsImportModalOpen}
+        onImport={handleImportDomains}
+      />
     </MainLayout>
   );
 };

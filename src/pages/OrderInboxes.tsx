@@ -1,15 +1,27 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import SendingPlatformSelect from '@/components/order/SendingPlatformSelect';
+import { 
+  AlertDialog, 
+  AlertDialogAction, 
+  AlertDialogCancel, 
+  AlertDialogContent, 
+  AlertDialogDescription, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle, 
+  AlertDialogTrigger 
+} from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 const OrderInboxesPage = () => {
   // Sample data
-  const inboxes = [
+  const [inboxes, setInboxes] = useState([
     {
       id: 1,
       domain: 'example.com',
@@ -20,14 +32,26 @@ const OrderInboxesPage = () => {
       domain: 'test.org',
       displayName: 'Test Organization'
     }
-  ];
+  ]);
+
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
 
   const handlePlatformSelect = (value: string) => {
-    console.log('Selected platform:', value);
+    setSelectedPlatform(value);
   };
 
   const handleAddPlatform = () => {
-    console.log('Add new platform clicked');
+    toast.info('Add new platform functionality to be implemented');
+  };
+
+  const handleSubmit = () => {
+    if (!selectedPlatform) {
+      toast.error('Please select a sending platform first');
+      return;
+    }
+
+    // Perform submission logic here
+    toast.success(`Order submitted with platform: ${selectedPlatform}`);
   };
 
   return (
@@ -44,9 +68,25 @@ const OrderInboxesPage = () => {
             </Button>
           </div>
           
-          <Button variant="default" size="sm" className="bg-mailr-red hover:bg-red-600">
-            Submit
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="default" size="sm" className="bg-mailr-red hover:bg-red-600">
+                Submit
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirm Order Submission</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to submit this order with the selected sending platform?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleSubmit}>Confirm</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         <SendingPlatformSelect 
@@ -98,3 +138,4 @@ const OrderInboxesPage = () => {
 };
 
 export default OrderInboxesPage;
+

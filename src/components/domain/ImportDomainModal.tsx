@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, X, AlertCircle, AlertTriangle } from 'lucide-react';
+import { Upload, X, AlertCircle, AlertTriangle, Google, Microsoft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,6 +15,7 @@ import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 type DomainEntry = {
   domain: string;
@@ -30,6 +31,10 @@ interface ImportDomainModalProps {
 }
 
 const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalProps) => {
+  // Added state for the provider selection step
+  const [step, setStep] = useState<'provider' | 'import'>('provider');
+  const [provider, setProvider] = useState<'google' | 'microsoft' | null>(null);
+  
   const [domain, setDomain] = useState('');
   const [url, setUrl] = useState('https://');
   const [csvDomains, setCsvDomains] = useState<DomainEntry[]>([]);
@@ -122,6 +127,8 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
   };
 
   const resetForm = () => {
+    setStep('provider');
+    setProvider(null);
     setDomain('');
     setUrl('https://');
     setCsvDomains([]);
@@ -129,6 +136,11 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  const handleProviderSelect = (selectedProvider: 'google' | 'microsoft') => {
+    setProvider(selectedProvider);
+    setStep('import');
   };
 
   const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,8 +198,15 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
     setCsvDomains(prev => prev.filter((_, i) => i !== index));
   };
 
+  const handleBack = () => {
+    setStep('provider');
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      if (!isOpen) resetForm();
+      onOpenChange(isOpen);
+    }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Import Domain</DialogTitle>
@@ -196,146 +215,192 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex space-x-4 mb-4">
-          <Button 
-            variant={isManual ? "default" : "outline"} 
-            onClick={() => setIsManual(true)}
-            className="flex-1"
-          >
-            Manual Entry
-          </Button>
-          <Button 
-            variant={!isManual ? "default" : "outline"} 
-            onClick={() => setIsManual(false)}
-            className="flex-1"
-          >
-            CSV Upload
-          </Button>
-        </div>
-
-        {isManual ? (
+        {step === 'provider' ? (
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="domain">Domain Name</Label>
-              <Input
-                id="domain"
-                placeholder="example.com"
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-              />
+            <div className="text-center mb-2">
+              <h3 className="text-lg font-medium">Select Provider</h3>
+              <p className="text-sm text-muted-foreground">Choose your domain provider</p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="url">Forwarding URL (must include https://)</Label>
-              <Input
-                id="url"
-                placeholder="https://example.com"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
+            <div className="grid grid-cols-2 gap-4 py-4">
+              <Button
+                variant={provider === 'google' ? "default" : "outline"}
+                className="flex flex-col items-center justify-center h-28 px-2 py-6"
+                onClick={() => handleProviderSelect('google')}
+              >
+                <Google className="h-10 w-10 mb-2" />
+                <span>Google Domains</span>
+              </Button>
+              <Button
+                variant={provider === 'microsoft' ? "default" : "outline"}
+                className="flex flex-col items-center justify-center h-28 px-2 py-6"
+                onClick={() => handleProviderSelect('microsoft')}
+              >
+                <Microsoft className="h-10 w-10 mb-2" />
+                <span>Microsoft Domains</span>
+              </Button>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer bg-background hover:bg-accent/50 transition-colors"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Upload className="h-10 w-10 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground mb-1">
-                Click to upload or drag and drop
-              </p>
-              <p className="text-xs text-muted-foreground">
-                CSV file with domain and forwarding URL columns
-              </p>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-                accept=".csv"
-                className="hidden"
-              />
+          <>
+            <div className="flex items-center space-x-2 mb-4">
+              <Button variant="outline" size="sm" onClick={handleBack}>
+                Back
+              </Button>
+              <div className="flex-1 text-sm font-medium">
+                Provider: {provider === 'google' ? 'Google' : 'Microsoft'} Domains
+              </div>
+            </div>
+            
+            <div className="flex space-x-4 mb-4">
+              <Button 
+                variant={isManual ? "default" : "outline"} 
+                onClick={() => setIsManual(true)}
+                className="flex-1"
+              >
+                Manual Entry
+              </Button>
+              <Button 
+                variant={!isManual ? "default" : "outline"} 
+                onClick={() => setIsManual(false)}
+                className="flex-1"
+              >
+                CSV Upload
+              </Button>
             </div>
 
-            {csvDomains.length > 0 && (
-              <>
-                {exceedsAvailableSlots && (
-                  <Alert className="bg-yellow-900/30 border-yellow-400/30 text-yellow-400">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>
-                      You're trying to import {validCsvDomains.length} domains but only have {availableDomainSlots} slots available.
-                      Please remove {validCsvDomains.length - availableDomainSlots} domains or upgrade your subscription.
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                <div className="border rounded-md overflow-hidden">
-                  <table className="w-full">
-                    <thead className="bg-muted/50">
-                      <tr>
-                        <th className="text-xs font-medium text-left p-2">Domain</th>
-                        <th className="text-xs font-medium text-left p-2">URL</th>
-                        <th className="text-xs font-medium text-center p-2">Status</th>
-                        <th className="text-xs font-medium text-right p-2">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {csvDomains.map((entry, index) => (
-                        <tr key={index} className={`border-t ${!entry.valid ? 'bg-destructive/10' : ''}`}>
-                          <td className="p-2 text-sm">{entry.domain}</td>
-                          <td className="p-2 text-sm">{entry.url}</td>
-                          <td className="p-2 text-center">
-                            {entry.valid ? (
-                              <span className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-400">Valid</span>
-                            ) : (
-                              <span className="px-2 py-1 rounded text-xs bg-red-900/30 text-red-400 flex items-center gap-1 justify-center">
-                                <AlertCircle className="h-3 w-3" />
-                                {entry.error}
-                              </span>
-                            )}
-                          </td>
-                          <td className="p-2 text-right">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              onClick={() => removeCsvDomain(index)}
-                              className="h-7 w-7 p-0"
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+            {isManual ? (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="domain">Domain Name</Label>
+                  <Input
+                    id="domain"
+                    placeholder="example.com"
+                    value={domain}
+                    onChange={(e) => setDomain(e.target.value)}
+                  />
                 </div>
-              </>
+                <div className="space-y-2">
+                  <Label htmlFor="url">Forwarding URL (must include https://)</Label>
+                  <Input
+                    id="url"
+                    placeholder="https://example.com"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="border-2 border-dashed rounded-md p-6 text-center cursor-pointer bg-background hover:bg-accent/50 transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-10 w-10 mx-auto mb-2 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground mb-1">
+                    Click to upload or drag and drop
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    CSV file with domain and forwarding URL columns
+                  </p>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileUpload}
+                    accept=".csv"
+                    className="hidden"
+                  />
+                </div>
+
+                {csvDomains.length > 0 && (
+                  <>
+                    {exceedsAvailableSlots && (
+                      <Alert className="bg-yellow-900/30 border-yellow-400/30 text-yellow-400">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription>
+                          You're trying to import {validCsvDomains.length} domains but only have {availableDomainSlots} slots available.
+                          Please remove {validCsvDomains.length - availableDomainSlots} domains or upgrade your subscription.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
+                    <div className="border rounded-md overflow-hidden">
+                      <table className="w-full">
+                        <thead className="bg-muted/50">
+                          <tr>
+                            <th className="text-xs font-medium text-left p-2">Domain</th>
+                            <th className="text-xs font-medium text-left p-2">URL</th>
+                            <th className="text-xs font-medium text-center p-2">Status</th>
+                            <th className="text-xs font-medium text-right p-2">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {csvDomains.map((entry, index) => (
+                            <tr key={index} className={`border-t ${!entry.valid ? 'bg-destructive/10' : ''}`}>
+                              <td className="p-2 text-sm">{entry.domain}</td>
+                              <td className="p-2 text-sm">{entry.url}</td>
+                              <td className="p-2 text-center">
+                                {entry.valid ? (
+                                  <span className="px-2 py-1 rounded text-xs bg-green-900/30 text-green-400">Valid</span>
+                                ) : (
+                                  <span className="px-2 py-1 rounded text-xs bg-red-900/30 text-red-400 flex items-center gap-1 justify-center">
+                                    <AlertCircle className="h-3 w-3" />
+                                    {entry.error}
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-2 text-right">
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => removeCsvDomain(index)}
+                                  className="h-7 w-7 p-0"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
 
         <DialogFooter className="flex justify-between items-center">
-          <div className="text-sm text-muted-foreground">
-            {isManual 
-              ? "1 domain will be imported"
-              : <>
-                  <span className={`${exceedsAvailableSlots ? 'text-yellow-400' : ''}`}>
-                    {validCsvDomains.length} valid domains out of {csvDomains.length} total
-                    {exceedsAvailableSlots && ` (exceeds ${availableDomainSlots} available slots)`}
-                  </span>
-                </>
-            }
-          </div>
-          <div className="flex gap-2">
+          {step === 'provider' ? (
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button 
-              onClick={isManual ? handleManualSubmit : handleCsvSubmit}
-              disabled={!isManual && (validCsvDomains.length === 0 || exceedsAvailableSlots)}
-              className={exceedsAvailableSlots ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
-            >
-              Import Domains
-            </Button>
-          </div>
+          ) : (
+            <>
+              <div className="text-sm text-muted-foreground">
+                {isManual 
+                  ? "1 domain will be imported"
+                  : <>
+                      <span className={`${exceedsAvailableSlots ? 'text-yellow-400' : ''}`}>
+                        {validCsvDomains.length} valid domains out of {csvDomains.length} total
+                        {exceedsAvailableSlots && ` (exceeds ${availableDomainSlots} available slots)`}
+                      </span>
+                    </>
+                }
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => onOpenChange(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={isManual ? handleManualSubmit : handleCsvSubmit}
+                  disabled={!isManual && (validCsvDomains.length === 0 || exceedsAvailableSlots)}
+                  className={exceedsAvailableSlots ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                >
+                  Import Domains
+                </Button>
+              </div>
+            </>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

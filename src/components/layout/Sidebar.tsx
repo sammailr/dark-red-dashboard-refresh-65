@@ -26,6 +26,11 @@ const Sidebar = () => {
       icon: <Bell className="h-5 w-5" /> 
     },
     { 
+      name: 'Order Google Inboxes', 
+      path: '/order-google-inboxes', 
+      icon: <Globe className="h-5 w-5" /> 
+    },
+    { 
       name: 'Master Inbox', 
       path: '/master-inbox', 
       icon: <Inbox className="h-5 w-5" /> 

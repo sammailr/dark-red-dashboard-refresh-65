@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useCallback } from 'react';
-import { Upload, X, AlertCircle, AlertTriangle, Google, Microsoft } from 'lucide-react';
+import { Upload, X, AlertCircle, AlertTriangle, Mail, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -227,7 +226,7 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
                 className="flex flex-col items-center justify-center h-28 px-2 py-6"
                 onClick={() => handleProviderSelect('google')}
               >
-                <Google className="h-10 w-10 mb-2" />
+                <Globe className="h-10 w-10 mb-2" />
                 <span>Google Domains</span>
               </Button>
               <Button
@@ -235,7 +234,7 @@ const ImportDomainModal = ({ open, onOpenChange, onImport }: ImportDomainModalPr
                 className="flex flex-col items-center justify-center h-28 px-2 py-6"
                 onClick={() => handleProviderSelect('microsoft')}
               >
-                <Microsoft className="h-10 w-10 mb-2" />
+                <Mail className="h-10 w-10 mb-2" />
                 <span>Microsoft Domains</span>
               </Button>
             </div>

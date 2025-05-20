@@ -35,7 +35,7 @@ This project is built with modern web technologies:
 
 ```sh
 # Clone the repository
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/lovable-23/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b.git
 
 # Navigate to the project directory
 cd mailr

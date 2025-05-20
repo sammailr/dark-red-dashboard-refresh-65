@@ -1,69 +1,74 @@
-# Welcome to your Lovable project
 
-## Project info
+# Mailr - Email Inbox Management Platform
 
-**URL**: https://lovable.dev/projects/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b
+## Project Overview
 
-## How can I edit this code?
+Mailr is a web application for managing and ordering email inboxes, particularly Google inboxes. The platform provides tools for domain management, ordering new inboxes, and configuring display names with automatically generated email prefixes.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Order Google Inboxes**: Create and manage Google inboxes with custom display names
+- **Multiple Email Prefixes**: Automatically generate email variations (firstname.lastname@, firstname@, lastname@)
+- **Sending Platform Integration**: Select from existing sending platforms or add new ones
+- **Bulk Management**: Tools for adding domains and display names in bulk
+- **Customizable Display Names**: Configure multiple display names per domain
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+This project is built with modern web technologies:
 
-**Use your preferred IDE**
+- **Vite**: Next generation frontend tooling
+- **TypeScript**: Type-safe JavaScript
+- **React**: UI component library
+- **Shadcn UI**: Beautiful, accessible UI components
+- **Tailwind CSS**: Utility-first CSS framework
+- **React Router**: Declarative routing for React
+- **React Query**: Data fetching library for React
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Getting Started
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js & npm - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+### Local Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Clone the repository
+git clone <YOUR_REPOSITORY_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to the project directory
+cd mailr
 
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- `/src/components`: Reusable UI components
+- `/src/pages`: Individual pages of the application
+- `/src/hooks`: Custom React hooks
+- `/src/contexts`: React context providers
+- `/src/lib`: Utility functions and helpers
 
-**Use GitHub Codespaces**
+## Deployment
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The project can be deployed using Lovable's built-in deployment tools. Visit the [Lovable Project](https://lovable.dev/projects/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b) and click on Share -> Publish.
 
-## What technologies are used for this project?
+For custom domain deployment, we recommend using Netlify. See our [docs](https://docs.lovable.dev/tips-tricks/custom-domain/) for more details.
 
-This project is built with .
+## Contributing
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is licensed under the MIT License.

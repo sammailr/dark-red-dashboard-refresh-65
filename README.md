@@ -57,7 +57,7 @@ npm run dev
 
 ## Deployment
 
-The project can be deployed using Lovable's built-in deployment tools. Visit the [Lovable Project](https://lovable.dev/projects/af1bb6b9-ca34-40bd-8b5c-3e9a8ccb2e8b) and click on Share -> Publish.
+The project can be deployed using Lovable's built-in deployment tools. Visit the [Lovable Project](https://lovable.dev/projects/399c0db2-54bb-4581-8443-3587115d3cdb) and click on Share -> Publish.
 
 For custom domain deployment, we recommend using Netlify. See our [docs](https://docs.lovable.dev/tips-tricks/custom-domain/) for more details.
 

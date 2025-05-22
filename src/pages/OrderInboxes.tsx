@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -26,6 +25,7 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import SendingPlatformSelect, { SendingPlatform, Sequencer } from '@/components/order/SendingPlatformSelect';
 
 interface Domain {
   id: number;
@@ -35,14 +35,20 @@ interface Domain {
 }
 
 const OrderInboxesPage = () => {
-  // State management
+  // State management for domains
   const [domains, setDomains] = useState<Domain[]>([]);
   const [newDomain, setNewDomain] = useState('');
-  const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<string | null>(null);
+  const [newDisplayNameInputs, setNewDisplayNameInputs] = useState<{[key: number]: string}>({});
+  
+  // State management for sending platform
+  const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<SendingPlatform | null>(null);
+  const [selectedSequencer, setSelectedSequencer] = useState<Sequencer | null>(null);
   const [customSendingPlatform, setCustomSendingPlatform] = useState('');
   const [sendingPlatformLogin, setSendingPlatformLogin] = useState('');
   const [sendingPlatformPassword, setSendingPlatformPassword] = useState('');
-  const [newDisplayNameInputs, setNewDisplayNameInputs] = useState<{[key: number]: string}>({});
+  const [apiKey, setApiKey] = useState('');
+  const [oauthUrl, setOauthUrl] = useState('');
+  const [inviteLink, setInviteLink] = useState('');
   
   // Handle adding a new domain
   const handleAddDomain = () => {
@@ -153,7 +159,7 @@ const OrderInboxesPage = () => {
 
   // Handle form submission
   const handleSubmit = () => {
-    // Validate form
+    // Validate domains
     if (domains.length === 0) {
       toast.error('Please add at least one domain');
       return;
@@ -170,18 +176,68 @@ const OrderInboxesPage = () => {
       }
     }
 
-    if (!selectedSendingPlatform && !customSendingPlatform) {
-      toast.error('Please select or enter a sending platform');
+    // Validate sending platform
+    if (!selectedSendingPlatform) {
+      toast.error('Please select a sending platform');
       return;
     }
 
-    if (customSendingPlatform && (!sendingPlatformLogin || !sendingPlatformPassword)) {
-      toast.error('Please provide login credentials for the custom sending platform');
-      return;
+    // Validate custom platform inputs based on selected sequencer
+    if (selectedSendingPlatform === 'custom') {
+      if (!selectedSequencer) {
+        toast.error('Please select a sequencer');
+        return;
+      }
+
+      if (!customSendingPlatform) {
+        toast.error('Please provide a custom platform name');
+        return;
+      }
+
+      // Validate specific sequencer requirements
+      switch (selectedSequencer) {
+        case 'smartlead':
+          if (!apiKey || !oauthUrl) {
+            toast.error('Please provide API Key and OAuth URL for Smartlead');
+            return;
+          }
+          break;
+        case 'instantly':
+          if (!apiKey || !sendingPlatformLogin || !sendingPlatformPassword) {
+            toast.error('Please provide API Key, login email and password for Instantly');
+            return;
+          }
+          break;
+        case 'emailbison':
+          if (!apiKey || !inviteLink) {
+            toast.error('Please provide API Key and invite link for EmailBison');
+            return;
+          }
+          break;
+        case 'piplai':
+          // Only custom name is required for pipl.ai
+          break;
+        case 'other':
+          if (!sendingPlatformLogin || !sendingPlatformPassword) {
+            toast.error('Please provide login and password for the custom platform');
+            return;
+          }
+          break;
+      }
     }
 
     // Submit form
     toast.success('Order submitted successfully');
+  };
+
+  // Reset sequencer fields when sequencer changes
+  const handleSequencerChange = (value: Sequencer) => {
+    setSelectedSequencer(value);
+    setApiKey('');
+    setOauthUrl('');
+    setSendingPlatformLogin('');
+    setSendingPlatformPassword('');
+    setInviteLink('');
   };
 
   return (
@@ -326,57 +382,186 @@ const OrderInboxesPage = () => {
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
           <h2 className="text-xl font-semibold mb-4">Sending Platform</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             <div>
               <Label htmlFor="sendingPlatform" className="block text-sm mb-2">Sending Platform:</Label>
-              <Select onValueChange={setSelectedSendingPlatform}>
-                <SelectTrigger className="w-full bg-mailr-darkgray border-mailr-lightgray">
-                  <SelectValue placeholder="Choose Sending Platform" />
-                </SelectTrigger>
-                <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
-                  <SelectItem value="platform1">Platform 1</SelectItem>
-                  <SelectItem value="platform2">Platform 2</SelectItem>
-                  <SelectItem value="platform3">Platform 3</SelectItem>
-                  <SelectItem value="custom">Custom Platform</SelectItem>
-                </SelectContent>
-              </Select>
+              <SendingPlatformSelect 
+                onSelect={(value) => {
+                  setSelectedSendingPlatform(value as SendingPlatform);
+                  if (value !== 'custom') {
+                    setSelectedSequencer(null);
+                  }
+                }}
+                onAddNew={() => {
+                  setSelectedSendingPlatform('custom');
+                }}
+              />
             </div>
             
             {selectedSendingPlatform === 'custom' && (
               <>
                 <div>
-                  <Label htmlFor="customPlatform" className="block text-sm mb-2">Custom Platform Name:</Label>
-                  <Input 
-                    id="customPlatform"
-                    type="text" 
-                    className="bg-mailr-darkgray border-mailr-lightgray"
-                    value={customSendingPlatform}
-                    onChange={(e) => setCustomSendingPlatform(e.target.value)}
-                    placeholder="Enter platform name" 
-                  />
+                  <Label htmlFor="sequencer" className="block text-sm mb-2">Select Sequencer:</Label>
+                  <Select onValueChange={(value) => handleSequencerChange(value as Sequencer)}>
+                    <SelectTrigger className="w-full bg-mailr-darkgray border-mailr-lightgray">
+                      <SelectValue placeholder="Choose Sequencer" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                      <SelectItem value="smartlead">Smartlead</SelectItem>
+                      <SelectItem value="instantly">Instantly</SelectItem>
+                      <SelectItem value="piplai">pipl.ai</SelectItem>
+                      <SelectItem value="emailbison">EmailBison</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div>
-                  <Label htmlFor="platformLogin" className="block text-sm mb-2">Sending Platform Login:</Label>
-                  <Input 
-                    id="platformLogin"
-                    type="text" 
-                    className="bg-mailr-darkgray border-mailr-lightgray"
-                    value={sendingPlatformLogin}
-                    onChange={(e) => setSendingPlatformLogin(e.target.value)}
-                    placeholder="Enter login" 
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="platformPassword" className="block text-sm mb-2">Sending Platform Password:</Label>
-                  <Input 
-                    id="platformPassword"
-                    type="password" 
-                    className="bg-mailr-darkgray border-mailr-lightgray"
-                    value={sendingPlatformPassword}
-                    onChange={(e) => setSendingPlatformPassword(e.target.value)}
-                    placeholder="Enter password" 
-                  />
-                </div>
+                
+                {selectedSequencer && (
+                  <div>
+                    <Label htmlFor="customPlatform" className="block text-sm mb-2">Custom Platform Name:</Label>
+                    <Input 
+                      id="customPlatform"
+                      type="text" 
+                      className="bg-mailr-darkgray border-mailr-lightgray"
+                      value={customSendingPlatform}
+                      onChange={(e) => setCustomSendingPlatform(e.target.value)}
+                      placeholder="Enter platform name" 
+                    />
+                  </div>
+                )}
+                
+                {/* Smartlead specific inputs */}
+                {selectedSequencer === 'smartlead' && (
+                  <>
+                    <div>
+                      <Label htmlFor="apiKey" className="block text-sm mb-2">API Key:</Label>
+                      <Input 
+                        id="apiKey"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={apiKey}
+                        onChange={(e) => setApiKey(e.target.value)}
+                        placeholder="Enter API Key" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="oauthUrl" className="block text-sm mb-2">OAuth URL:</Label>
+                      <Input 
+                        id="oauthUrl"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={oauthUrl}
+                        onChange={(e) => setOauthUrl(e.target.value)}
+                        placeholder="Enter OAuth URL" 
+                      />
+                    </div>
+                  </>
+                )}
+                
+                {/* Instantly specific inputs */}
+                {selectedSequencer === 'instantly' && (
+                  <>
+                    <div>
+                      <Label htmlFor="apiKey" className="block text-sm mb-2">API Key:</Label>
+                      <Input 
+                        id="apiKey"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={apiKey}
+                        onChange={(e) => setApiKey(e.target.value)}
+                        placeholder="Enter API Key" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="loginEmail" className="block text-sm mb-2">Login Email:</Label>
+                      <Input 
+                        id="loginEmail"
+                        type="email" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={sendingPlatformLogin}
+                        onChange={(e) => setSendingPlatformLogin(e.target.value)}
+                        placeholder="Enter login email" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="password" className="block text-sm mb-2">Password:</Label>
+                      <Input 
+                        id="password"
+                        type="password" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={sendingPlatformPassword}
+                        onChange={(e) => setSendingPlatformPassword(e.target.value)}
+                        placeholder="Enter password" 
+                      />
+                    </div>
+                  </>
+                )}
+                
+                {/* EmailBison specific inputs */}
+                {selectedSequencer === 'emailbison' && (
+                  <>
+                    <div>
+                      <Label htmlFor="apiKey" className="block text-sm mb-2">API Key:</Label>
+                      <Input 
+                        id="apiKey"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={apiKey}
+                        onChange={(e) => setApiKey(e.target.value)}
+                        placeholder="Enter API Key" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="inviteLink" className="block text-sm mb-2">Invite Link:</Label>
+                      <Input 
+                        id="inviteLink"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={inviteLink}
+                        onChange={(e) => setInviteLink(e.target.value)}
+                        placeholder="Enter invite link" 
+                      />
+                    </div>
+                    <div className="p-4 bg-mailr-lightgray/10 rounded-md border border-mailr-lightgray">
+                      <p className="text-sm">Please add <span className="font-medium">operations@mailr.io</span> to the workspace.</p>
+                    </div>
+                  </>
+                )}
+                
+                {/* pipl.ai specific notice */}
+                {selectedSequencer === 'piplai' && (
+                  <div className="p-4 bg-mailr-lightgray/10 rounded-md border border-mailr-lightgray">
+                    <p className="text-sm">We will provide more information via Slack.</p>
+                  </div>
+                )}
+                
+                {/* Other platform inputs */}
+                {selectedSequencer === 'other' && (
+                  <>
+                    <div>
+                      <Label htmlFor="platformLogin" className="block text-sm mb-2">Sending Platform Login:</Label>
+                      <Input 
+                        id="platformLogin"
+                        type="text" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={sendingPlatformLogin}
+                        onChange={(e) => setSendingPlatformLogin(e.target.value)}
+                        placeholder="Enter login" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="platformPassword" className="block text-sm mb-2">Sending Platform Password:</Label>
+                      <Input 
+                        id="platformPassword"
+                        type="password" 
+                        className="bg-mailr-darkgray border-mailr-lightgray"
+                        value={sendingPlatformPassword}
+                        onChange={(e) => setSendingPlatformPassword(e.target.value)}
+                        placeholder="Enter password" 
+                      />
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>

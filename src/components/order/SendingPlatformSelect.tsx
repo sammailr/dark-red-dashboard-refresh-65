@@ -10,20 +10,24 @@ import {
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+export type SendingPlatform = 'platform1' | 'platform2' | 'custom';
+export type Sequencer = 'smartlead' | 'instantly' | 'piplai' | 'emailbison' | 'other';
+
 type SendingPlatformSelectProps = {
-  onSelect: (value: string) => void;
+  onSelect: (value: SendingPlatform) => void;
   onAddNew: () => void;
 };
 
 const SendingPlatformSelect = ({ onSelect, onAddNew }: SendingPlatformSelectProps) => {
   return (
     <Select onValueChange={onSelect}>
-      <SelectTrigger className="w-[250px] bg-mailr-darkgray border-mailr-lightgray">
+      <SelectTrigger className="w-full bg-mailr-darkgray border-mailr-lightgray">
         <SelectValue placeholder="Choose Sending Platform for Order" />
       </SelectTrigger>
       <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
         <SelectItem value="platform1">Platform 1</SelectItem>
         <SelectItem value="platform2">Platform 2</SelectItem>
+        <SelectItem value="custom">Custom Platform</SelectItem>
         <Button 
           variant="ghost" 
           className="w-full justify-start px-2 py-1.5 h-8 hover:bg-mailr-lightgray/10"

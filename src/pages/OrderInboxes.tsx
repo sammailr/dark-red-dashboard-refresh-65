@@ -312,7 +312,7 @@ const OrderInboxesPage = () => {
       }
 
       if (!customSendingPlatform) {
-        toast.error('Please provide a custom platform name');
+        toast.error('Please provide a workspace name');
         return;
       }
 
@@ -661,7 +661,7 @@ const OrderInboxesPage = () => {
                 
                 {selectedSequencer && (
                   <div>
-                    <Label htmlFor="customPlatform" className="block text-sm mb-2">Custom Platform Name:</Label>
+                    <Label htmlFor="customPlatform" className="block text-sm mb-2">Workspace Name:</Label>
                     <Input 
                       id="customPlatform"
                       type="text" 

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -109,17 +110,29 @@ const OrderInboxesPage = () => {
       const lines = text.split('\n');
       
       const newDomains: Domain[] = [];
-      lines.forEach(line => {
-        const domain = line.trim();
+      
+      // Skip header row if it exists (check if first row contains header-like strings)
+      const startRow = lines[0].toLowerCase().includes('domain') || 
+                       lines[0].toLowerCase().includes('forwarding') ||
+                       lines[0].toLowerCase().includes('url') ? 1 : 0;
+      
+      for (let i = startRow; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const parts = line.split(',');
+        const domain = parts[0]?.trim();
+        const forwardingUrl = parts[1]?.trim() || '';
+        
         if (domain) {
           newDomains.push({
             id: Date.now() + newDomains.length,
             domain,
-            forwardingUrl: '',
+            forwardingUrl,
             displayNames: []
           });
         }
-      });
+      }
 
       if (newDomains.length > 0) {
         setDomains([...domains, ...newDomains]);

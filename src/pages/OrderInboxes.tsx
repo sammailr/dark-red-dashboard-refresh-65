@@ -668,7 +668,7 @@ const OrderInboxesPage = () => {
                       className="bg-mailr-darkgray border-mailr-lightgray"
                       value={customSendingPlatform}
                       onChange={(e) => setCustomSendingPlatform(e.target.value)}
-                      placeholder="Enter platform name" 
+                      placeholder="Enter workspace name" 
                     />
                   </div>
                 )}

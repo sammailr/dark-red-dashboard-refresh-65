@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
-import { Plus, Upload, X } from 'lucide-react';
+import { Plus, Upload, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -27,12 +27,27 @@ import {
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import SendingPlatformSelect, { SendingPlatform, Sequencer } from '@/components/order/SendingPlatformSelect';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Domain {
   id: number;
   domain: string;
   forwardingUrl: string;
   displayNames: string[];
+  selected?: boolean;
 }
 
 const OrderInboxesPage = () => {
@@ -40,6 +55,9 @@ const OrderInboxesPage = () => {
   const [domains, setDomains] = useState<Domain[]>([]);
   const [newDomain, setNewDomain] = useState('');
   const [newDisplayNameInputs, setNewDisplayNameInputs] = useState<{[key: number]: string}>({});
+  const [bulkDisplayName, setBulkDisplayName] = useState('');
+  const [bulkDisplayNames, setBulkDisplayNames] = useState<string[]>([]);
+  const [expandedDropdowns, setExpandedDropdowns] = useState<{[key: number]: boolean}>({});
   
   // State management for sending platform
   const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<SendingPlatform | null>(null);
@@ -170,6 +188,79 @@ const OrderInboxesPage = () => {
     toast.success(`Removed display name: ${displayName}`);
   };
 
+  // Toggle dropdown for display names
+  const toggleDropdown = (domainId: number) => {
+    setExpandedDropdowns(prev => ({
+      ...prev,
+      [domainId]: !prev[domainId]
+    }));
+  };
+
+  // Add bulk display name to list
+  const handleAddBulkDisplayName = () => {
+    if (!bulkDisplayName.trim()) {
+      toast.error('Please enter a display name');
+      return;
+    }
+    setBulkDisplayNames([...bulkDisplayNames, bulkDisplayName]);
+    setBulkDisplayName('');
+  };
+
+  // Remove bulk display name from list
+  const handleRemoveBulkDisplayName = (name: string) => {
+    setBulkDisplayNames(bulkDisplayNames.filter(n => n !== name));
+  };
+
+  // Apply bulk display names to selected domains
+  const applyBulkDisplayNames = () => {
+    if (bulkDisplayNames.length === 0) {
+      toast.error('Please add at least one display name');
+      return;
+    }
+
+    const selectedDomains = domains.filter(domain => domain.selected);
+    if (selectedDomains.length === 0) {
+      toast.error('Please select at least one domain');
+      return;
+    }
+
+    setDomains(prevDomains => 
+      prevDomains.map(domain => 
+        domain.selected ? {
+          ...domain,
+          displayNames: [...new Set([...domain.displayNames, ...bulkDisplayNames])]
+        } : domain
+      )
+    );
+
+    toast.success(`Added display names to ${selectedDomains.length} domains`);
+  };
+
+  // Toggle domain selection
+  const toggleDomainSelection = (domainId: number) => {
+    setDomains(prevDomains => 
+      prevDomains.map(domain => 
+        domain.id === domainId ? {
+          ...domain,
+          selected: !domain.selected
+        } : domain
+      )
+    );
+  };
+
+  // Toggle all domain selections
+  const toggleAllDomains = (selected: boolean) => {
+    setDomains(prevDomains => 
+      prevDomains.map(domain => ({
+        ...domain,
+        selected
+      }))
+    );
+  };
+
+  // Count selected domains
+  const selectedCount = domains.filter(domain => domain.selected).length;
+
   // Handle form submission
   const handleSubmit = () => {
     // Validate domains
@@ -255,10 +346,99 @@ const OrderInboxesPage = () => {
 
   return (
     <MainLayout title="Order Inboxes">
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Domains Section */}
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
-          <h2 className="text-xl font-semibold mb-4">Domains</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Domains</h2>
+            
+            {selectedCount > 0 && (
+              <div className="flex gap-2 items-center">
+                <span className="text-sm">{selectedCount} Selected</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10"
+                    >
+                      Bulk add names
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-mailr-darkgray border-mailr-lightgray">
+                    <DialogHeader>
+                      <DialogTitle>Enter individually, the display names you want to use:</DialogTitle>
+                      <DialogDescription className="text-gray-400">Eg. John Smith</DialogDescription>
+                    </DialogHeader>
+                    
+                    <div className="space-y-4 mt-4">
+                      <div className="flex gap-2">
+                        <Input 
+                          type="text"
+                          className="bg-mailr-darkgray border-mailr-lightgray flex-1"
+                          placeholder="John Smith"
+                          value={bulkDisplayName}
+                          onChange={(e) => setBulkDisplayName(e.target.value)}
+                        />
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={handleAddBulkDisplayName}
+                          className="bg-mailr-lightgray/20"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                      {bulkDisplayNames.length > 0 && (
+                        <>
+                          <div className="mt-4">
+                            <h3 className="text-sm font-medium mb-2">Display names to be added:</h3>
+                            <div className="border rounded-md border-mailr-lightgray p-2 max-h-48 overflow-y-auto">
+                              {bulkDisplayNames.map((name, index) => (
+                                <div key={index} className="flex justify-between items-center py-2 border-b border-mailr-lightgray last:border-0">
+                                  <span>{name}</span>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    onClick={() => handleRemoveBulkDisplayName(name)}
+                                    className="text-mailr-red hover:text-red-400 hover:bg-transparent p-0"
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <Button 
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            onClick={() => {
+                              applyBulkDisplayNames();
+                              document.querySelector('[data-radix-dialog-close]')?.dispatchEvent(
+                                new MouseEvent('click', { bubbles: true })
+                              );
+                            }}
+                          >
+                            Add names
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10"
+                  onClick={() => toggleAllDomains(false)}
+                >
+                  Reset names
+                </Button>
+              </div>
+            )}
+          </div>
           
           {/* Add Domain Row */}
           <div className="flex items-center gap-4 mb-6">
@@ -312,20 +492,26 @@ const OrderInboxesPage = () => {
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
                     <TableHead className="w-12">
-                      <Checkbox />
+                      <Checkbox 
+                        checked={domains.length > 0 && domains.every(d => d.selected)}
+                        onCheckedChange={(checked) => toggleAllDomains(!!checked)}
+                      />
                     </TableHead>
                     <TableHead>Domain</TableHead>
                     <TableHead>Forwarding URL</TableHead>
-                    <TableHead>Add Display Names</TableHead>
+                    <TableHead className="w-1/4">Add Display Names</TableHead>
                     <TableHead>Display Names</TableHead>
-                    <TableHead>Delete</TableHead>
+                    <TableHead className="w-20">Delete</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {domains.map((domain) => (
                     <TableRow key={domain.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
                       <TableCell>
-                        <Checkbox />
+                        <Checkbox 
+                          checked={domain.selected} 
+                          onCheckedChange={() => toggleDomainSelection(domain.id)}
+                        />
                       </TableCell>
                       <TableCell>{domain.domain}</TableCell>
                       <TableCell>
@@ -341,7 +527,7 @@ const OrderInboxesPage = () => {
                         <div className="flex">
                           <Input 
                             type="text" 
-                            className="bg-mailr-darkgray border border-mailr-lightgray rounded px-3 py-1 mr-2"
+                            className="bg-mailr-darkgray border border-mailr-lightgray rounded w-3/4 mr-2"
                             placeholder="John Smith" 
                             value={newDisplayNameInputs[domain.id] || ''}
                             onChange={(e) => setNewDisplayNameInputs({...newDisplayNameInputs, [domain.id]: e.target.value})}
@@ -357,20 +543,47 @@ const OrderInboxesPage = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="space-y-2">
-                          {domain.displayNames.map((name, idx) => (
-                            <div key={idx} className="flex justify-between items-center">
-                              <div>{name}</div>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                onClick={() => handleDeleteDisplayName(domain.id, name)}
-                                className="text-mailr-red hover:text-red-400 hover:bg-transparent p-0"
+                        <div className="relative">
+                          {domain.displayNames.length > 0 ? (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <div className="border border-mailr-lightgray rounded p-2 min-h-[40px] cursor-pointer flex justify-between items-center">
+                                  <div className="truncate max-w-[200px]">
+                                    {domain.displayNames.join(', ')}
+                                  </div>
+                                  <Button variant="ghost" size="sm" className="p-0">
+                                    <ChevronDown className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent 
+                                className="bg-mailr-darkgray border-mailr-lightgray min-w-[200px]"
+                                align="start"
                               >
-                                <X className="h-4 w-4" />
-                              </Button>
+                                <ScrollArea className="h-[200px] w-full p-2">
+                                  <div className="space-y-2">
+                                    {domain.displayNames.map((name, idx) => (
+                                      <div key={idx} className="flex justify-between items-center">
+                                        <div className="truncate max-w-[150px]">{name}</div>
+                                        <Button 
+                                          variant="ghost" 
+                                          size="sm" 
+                                          onClick={() => handleDeleteDisplayName(domain.id, name)}
+                                          className="text-mailr-red hover:text-red-400 hover:bg-transparent p-0"
+                                        >
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </ScrollArea>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          ) : (
+                            <div className="border border-mailr-lightgray rounded p-2 min-h-[40px] text-gray-500">
+                              No display names
                             </div>
-                          ))}
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>

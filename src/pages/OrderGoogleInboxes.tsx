@@ -303,20 +303,14 @@ const OrderGoogleInboxesPage = () => {
     <MainLayout title="Order Google Inboxes">
       <div className="space-y-6">
         {/* Total Monthly Cost Section */}
-        <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">Total Monthly Cost</h2>
-              <p className="text-sm text-gray-400">
-                {domains.length} domains × {numberOfInboxes || 0} inboxes × $1.50/month
-              </p>
-            </div>
-            <div className="text-right">
-              <div className="text-3xl font-bold text-mailr-red">
-                ${calculateTotalCost().toFixed(2)}/month
-              </div>
-            </div>
-          </div>
+        <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-4">
+          <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
+          <p className="text-lg">
+            Total Monthly Cost: <span className="font-bold text-slate-50">${calculateTotalCost().toLocaleString()}/month</span>
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × {numberOfInboxes || 0} {numberOfInboxes === '1' ? 'inbox' : 'inboxes'} × $1.50/month each
+          </p>
         </div>
 
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">

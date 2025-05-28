@@ -28,28 +28,42 @@ const Index = () => {
   const ordersPerPage = 3;
 
   // Example data - would typically come from an API
-  const totalDomains = 15;
-  const totalInboxes = 1247;
   const sendingVolume = 412800;
   
   const dashboardStats = [
-    {
-      title: 'Active Domains',
-      value: totalDomains.toString(),
-      icon: Globe,
-      color: 'text-mailr-red'
-    },
-    {
-      title: 'Total Inboxes',
-      value: totalInboxes.toString(),
-      icon: Inbox,
-      color: 'text-blue-500'
-    },
     {
       title: 'Sending Volume per Month',
       value: sendingVolume.toLocaleString(),
       icon: TrendingUp,
       color: 'text-green-500'
+    }
+  ];
+
+  const providerStats = [
+    {
+      provider: 'Microsoft',
+      domains: 8,
+      mailboxes: 624,
+      logo: (
+        <div className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded">
+          <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
+            <div className="bg-white w-1.5 h-1.5"></div>
+            <div className="bg-white w-1.5 h-1.5"></div>
+            <div className="bg-white w-1.5 h-1.5"></div>
+            <div className="bg-white w-1.5 h-1.5"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      provider: 'Google',
+      domains: 7,
+      mailboxes: 623,
+      logo: (
+        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border">
+          <div className="text-lg font-bold text-blue-500">G</div>
+        </div>
+      )
     }
   ];
 
@@ -134,6 +148,28 @@ const Index = () => {
   return (
     <MainLayout title="Dashboard">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {providerStats.map((provider) => (
+          <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3">
+                {provider.logo}
+                <CardTitle className="text-lg font-semibold">{provider.provider}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-400">Domains</span>
+                  <span className="text-xl font-bold">{provider.domains}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-400">Mailboxes</span>
+                  <span className="text-xl font-bold">{provider.mailboxes}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
         {dashboardStats.map((stat) => (
           <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-2">

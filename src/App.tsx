@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import OrderInboxesPage from "./pages/OrderInboxes";
 import OrderGoogleInboxesPage from "./pages/OrderGoogleInboxes";
+import OrderMicrosoftInboxesPage from "./pages/OrderMicrosoftInboxes";
 import SendingPlatformPage from "./pages/SendingPlatform";
 import DomainsPage from "./pages/Domains";
 import MasterInboxPage from "./pages/MasterInbox";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/order-inboxes" element={<OrderInboxesPage />} />
               <Route path="/order-google-inboxes" element={<OrderGoogleInboxesPage />} />
+              <Route path="/order-microsoft-inboxes" element={<OrderMicrosoftInboxesPage />} />
               <Route path="/sending-platform" element={<SendingPlatformPage />} />
               <Route path="/domains" element={<DomainsPage />} />
               <Route path="/master-inbox" element={<MasterInboxPage />} />

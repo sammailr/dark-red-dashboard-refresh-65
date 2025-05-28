@@ -62,6 +62,15 @@ const Index = () => {
     .filter(sub => sub.status === 'active')
     .reduce((total, sub) => total + (sub.price * sub.quantity), 0);
 
+  // Get the earliest next billing date from active subscriptions
+  const getNextBillingDate = () => {
+    const activeSubscriptions = subscriptions.filter(sub => sub.status === 'active');
+    if (activeSubscriptions.length === 0) return 'N/A';
+    
+    // For this example, using a fixed date - in real app, would calculate from subscription data
+    return 'Oct 15, 2023';
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'cancelled':
@@ -148,22 +157,24 @@ const Index = () => {
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-gray-400">Monthly Total</CardTitle>
+                <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
               </div>
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="py-4">
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <p className="text-sm text-gray-400">Total</p>
-                  <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/ month</span></p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-400">Next Billing Amount</p>
-                  <p className="font-medium">${nextBillingAmount.toLocaleString()}</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Total</p>
+                <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/month</span></p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Next Billing</p>
+                <p className="text-2xl font-bold">${nextBillingAmount.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-400 mb-1">Next Billing Date</p>
+                <p className="text-2xl font-bold">{getNextBillingDate()}</p>
               </div>
             </div>
           </CardContent>

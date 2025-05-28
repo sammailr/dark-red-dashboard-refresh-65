@@ -61,6 +61,9 @@ const OrderGoogleInboxesPage = () => {
   const [domainRegistrarLogin, setDomainRegistrarLogin] = useState('');
   const [domainRegistrarPassword, setDomainRegistrarPassword] = useState('');
   const [customDomainRegistrar, setCustomDomainRegistrar] = useState('');
+  const [numberOfInboxes, setNumberOfInboxes] = useState('');
+  const [userFullName, setUserFullName] = useState('');
+  const [preferredPassword, setPreferredPassword] = useState('');
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -268,6 +271,21 @@ const OrderGoogleInboxesPage = () => {
 
     if (!selectedSendingPlatform) {
       toast.error('Please select a sending platform');
+      return;
+    }
+
+    if (!numberOfInboxes) {
+      toast.error('Please select number of inboxes per domain');
+      return;
+    }
+
+    if (!userFullName.trim()) {
+      toast.error('Please enter user full name');
+      return;
+    }
+
+    if (!preferredPassword.trim()) {
+      toast.error('Please enter preferred inboxes password');
       return;
     }
 
@@ -596,6 +614,53 @@ const OrderGoogleInboxesPage = () => {
               </Table>
             </div>
           )}
+        </div>
+        
+        <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
+          <h2 className="text-xl font-semibold mb-4">Inboxes</h2>
+          
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="numberOfInboxes" className="block text-sm mb-2">Number of Inboxes per Domain:</Label>
+              <Select value={numberOfInboxes} onValueChange={setNumberOfInboxes}>
+                <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray">
+                  <SelectValue placeholder="Select number of inboxes" />
+                </SelectTrigger>
+                <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="userFullName" className="block text-sm mb-2">User Full Name:</Label>
+                <p className="text-sm text-gray-400 mb-2">E.g. John Smith</p>
+                <Input 
+                  id="userFullName"
+                  type="text" 
+                  className="bg-mailr-darkgray border-mailr-lightgray"
+                  value={userFullName}
+                  onChange={(e) => setUserFullName(e.target.value)}
+                  placeholder="John Smith" 
+                />
+              </div>
+              <div>
+                <Label htmlFor="preferredPassword" className="block text-sm mb-2">Preferred Inboxes Password:</Label>
+                <p className="text-sm text-gray-400 mb-2">One Password to use on all mailboxes</p>
+                <Input 
+                  id="preferredPassword"
+                  type="password" 
+                  className="bg-mailr-darkgray border-mailr-lightgray"
+                  value={preferredPassword}
+                  onChange={(e) => setPreferredPassword(e.target.value)}
+                  placeholder="••••••••" 
+                />
+              </div>
+            </div>
+          </div>
         </div>
         
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">

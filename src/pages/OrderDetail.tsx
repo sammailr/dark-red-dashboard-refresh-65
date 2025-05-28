@@ -130,23 +130,28 @@ const OrderDetail = () => {
                 <h1 className="text-3xl font-bold">Order Placed on {format(new Date(order.date), 'MMMM dd, yyyy')}</h1>
                 {orderStatusBadge()}
               </div>
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <p>Monthly Cost: ${monthlyCost.toLocaleString()}/mo</p>
-                <p>Next Billing: {format(nextBillingDate, 'MMM dd, yyyy')}</p>
-              </div>
+              <p className="text-muted-foreground">
+                Monthly Cost: ${monthlyCost.toLocaleString()}/mo
+              </p>
             </div>
           </div>
           
-          {order.status !== 'cancelled' && (
-            <Button 
-              variant="outline"
-              className="text-destructive border-destructive hover:bg-destructive/10"
-              onClick={handleOpenOrderCancelDialog}
-            >
-              <X className="w-4 h-4 mr-2" />
-              Cancel Order
-            </Button>
-          )}
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-muted-foreground">Next Billing: {format(nextBillingDate, 'MMM dd, yyyy')}</p>
+            </div>
+            
+            {order.status !== 'cancelled' && (
+              <Button 
+                variant="outline"
+                className="text-destructive border-destructive hover:bg-destructive/10"
+                onClick={handleOpenOrderCancelDialog}
+              >
+                <X className="w-4 h-4 mr-2" />
+                Cancel Order
+              </Button>
+            )}
+          </div>
         </div>
 
         <Tabs defaultValue="domains" className="w-full">
@@ -160,9 +165,6 @@ const OrderDetail = () => {
               <Table>
                 <TableHeader className="bg-black/30">
                   <TableRow className="hover:bg-transparent border-mailr-lightgray">
-                    <TableHead className="w-12">
-                      <Checkbox />
-                    </TableHead>
                     <TableHead>Domain</TableHead>
                     <TableHead>Forwarding URL</TableHead>
                     <TableHead>Status</TableHead>
@@ -173,9 +175,6 @@ const OrderDetail = () => {
                 <TableBody>
                   {order.domains.map((domain) => (
                     <TableRow key={domain.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
-                      <TableCell>
-                        <Checkbox />
-                      </TableCell>
                       <TableCell>{domain.name}</TableCell>
                       <TableCell>{domain.url}</TableCell>
                       <TableCell>

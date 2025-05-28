@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -42,9 +41,9 @@ const Index = () => {
   const ordersPerPage = 3;
 
   // Example data - would typically come from an API
-  const totalDomains = 8;
-  const totalInboxes = 792;
-  const sendingVolume = 237600;
+  const totalDomains = 15;
+  const totalInboxes = 1247;
+  const sendingVolume = 412800;
   
   const dashboardStats = [
     {
@@ -70,12 +69,14 @@ const Index = () => {
   const orderHistory: Order[] = [
     {
       id: 'ordlgcLwveoDwOOBOWqNnEi',
-      totalDomains: 1,
+      totalDomains: 3,
       date: 'Apr 15, 2025',
       status: 'canceled',
       provider: 'google',
       domains: [
-        { id: '1', name: 'example1.com', status: 'cancelled' as const }
+        { id: '1', name: 'marketpro.com', status: 'cancelled' as const },
+        { id: '2', name: 'bizflow.net', status: 'cancelled' as const },
+        { id: '3', name: 'salesedge.org', status: 'cancelled' as const }
       ]
     },
     {
@@ -85,40 +86,54 @@ const Index = () => {
       status: 'canceled',
       provider: 'microsoft',
       domains: [
-        { id: '2', name: 'example2.com', status: 'cancelled' as const },
-        { id: '3', name: 'example3.com', status: 'cancelled' as const }
+        { id: '4', name: 'growthtech.io', status: 'cancelled' as const },
+        { id: '5', name: 'innovateplus.com', status: 'cancelled' as const }
       ]
     },
     {
       id: 'ordAgVdFyRiSEsg9VpmaTOM',
-      totalDomains: 2,
+      totalDomains: 4,
       date: 'Apr 18, 2025',
       status: 'canceled',
       provider: 'google',
       domains: [
-        { id: '4', name: 'example4.com', status: 'cancelled' as const },
-        { id: '5', name: 'example5.com', status: 'cancelled' as const }
+        { id: '6', name: 'digitalhub.net', status: 'cancelled' as const },
+        { id: '7', name: 'cloudboost.co', status: 'cancelled' as const },
+        { id: '8', name: 'webstream.org', status: 'cancelled' as const },
+        { id: '9', name: 'techsuite.io', status: 'cancelled' as const }
       ]
     },
     {
       id: 'ordZZzHA1pWq9Cauiz7CA0o',
-      totalDomains: 2,
-      date: 'Apr 18, 2025',
+      totalDomains: 3,
+      date: 'Apr 20, 2025',
       status: 'in progress',
       provider: 'microsoft',
       domains: [
-        { id: '6', name: 'example6.com', status: 'pending' as const },
-        { id: '7', name: 'example7.com', status: 'active' as const }
+        { id: '10', name: 'automateflow.com', status: 'pending' as const },
+        { id: '11', name: 'scalevault.net', status: 'active' as const },
+        { id: '12', name: 'databridge.org', status: 'pending' as const }
       ]
     },
     {
       id: 'ordlZ0LHSDi87RSIWBjmLqw',
-      totalDomains: 1,
+      totalDomains: 2,
       date: 'Apr 22, 2025',
       status: 'in progress',
       provider: 'google',
       domains: [
-        { id: '8', name: 'example8.com', status: 'pending' as const }
+        { id: '13', name: 'smartlead.io', status: 'active' as const },
+        { id: '14', name: 'convertmax.com', status: 'pending' as const }
+      ]
+    },
+    {
+      id: 'ordKL9mNx2PqRs4TuvWxYz',
+      totalDomains: 1,
+      date: 'Apr 24, 2025',
+      status: 'completed',
+      provider: 'microsoft',
+      domains: [
+        { id: '15', name: 'reachpeak.net', status: 'active' as const }
       ]
     }
   ];
@@ -137,6 +152,8 @@ const Index = () => {
         return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Canceled</Badge>;
       case 'in progress':
         return <Badge className="bg-amber-600 text-white px-2 py-1 text-xs">In Progress</Badge>;
+      case 'completed':
+        return <Badge className="bg-green-600 text-white px-2 py-1 text-xs">Completed</Badge>;
       default:
         return <Badge className="bg-gray-600 text-white px-2 py-1 text-xs">Unknown</Badge>;
     }
@@ -244,15 +261,15 @@ const Index = () => {
                 <th className="text-left py-3 text-gray-400 font-medium">Total Domains</th>
                 <th className="text-left py-3 text-gray-400 font-medium">Provider</th>
                 <th className="text-left py-3 text-gray-400 font-medium">Tag</th>
-                <th className="text-right py-3 text-gray-400 font-medium">Status</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Status</th>
+                <th className="text-right py-3 text-gray-400 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedOrders.map((order) => (
                 <tr 
                   key={order.id} 
-                  className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10 cursor-pointer"
-                  onClick={() => handleOrderClick(order.id)}
+                  className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10"
                 >
                   <td className="py-4">{order.date}</td>
                   <td className="py-4">{order.totalDomains}</td>
@@ -269,8 +286,19 @@ const Index = () => {
                       className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1"
                     />
                   </td>
-                  <td className="py-4 text-right">
+                  <td className="py-4">
                     {getStatusBadge(order.status)}
+                  </td>
+                  <td className="py-4 text-right">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleOrderClick(order.id)}
+                      className="text-xs text-gray-400 hover:text-white"
+                    >
+                      <Eye className="w-3 h-3 mr-1" />
+                      View Details
+                    </Button>
                   </td>
                 </tr>
               ))}

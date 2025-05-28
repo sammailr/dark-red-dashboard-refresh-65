@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight, Eye } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+
 const Index = () => {
   const {
     isFreeTrial,
@@ -197,30 +198,31 @@ const Index = () => {
           <table className="w-full">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-left py-2 text-gray-400 font-medium">Created</th>
-                <th className="text-left py-2 text-gray-400 font-medium">Total Domains</th>
+                <th className="text-left py-2 text-gray-400 font-medium text-sm">Created</th>
+                <th className="text-left py-2 text-gray-400 font-medium text-sm">Total Domains</th>
                 <th className="text-left py-2 text-gray-400 font-medium">Provider</th>
                 <th className="text-left py-2 text-gray-400 font-medium">Tag</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Cost</th>
                 <th className="text-left py-2 text-gray-400 font-medium">Status</th>
                 <th className="text-right py-2 text-gray-400 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
-                  <td className="py-3">{formatDate(order.date)}</td>
-                  <td className="py-3">{order.domains.length}</td>
+                  <td className="py-3 text-sm">{formatDate(order.date)}</td>
+                  <td className="py-3 text-sm">{order.domains.length}</td>
                   <td className="py-3">
                     {getProviderLogo(index)}
                   </td>
                   <td className="py-3">
                     <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1" />
                   </td>
+                  <td className="py-3 text-sm">${(order.domains.length * 25).toLocaleString()}/mo</td>
                   <td className="py-3">
                     {getStatusBadge(order.status)}
                   </td>
                   <td className="py-3 text-right">
                     <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
-                      <Eye className="w-3 h-3 mr-1" />
                       View Details
                     </Button>
                   </td>
@@ -251,4 +253,5 @@ const Index = () => {
       </div>
     </MainLayout>;
 };
+
 export default Index;

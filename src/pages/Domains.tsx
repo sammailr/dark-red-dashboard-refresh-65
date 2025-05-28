@@ -61,16 +61,16 @@ const DomainsPage = () => {
   };
 
   const handleSwapDomain = (domainData: { domain: string; provider: 'google' | 'microsoft' }) => {
-    // Update the selected domain with new provider
+    // Update the selected domain with new domain name (keeping the same provider)
     setDomains(prev => prev.map(domain => 
       domain.id === selectedDomainForSwap?.id 
-        ? { ...domain, provider: domainData.provider === 'google' ? 'Google' : 'Microsoft' }
+        ? { ...domain, domain: domainData.domain }
         : domain
     ));
     
     toast({
-      title: "Domain Swapped",
-      description: `Successfully swapped ${domainData.domain} to ${domainData.provider === 'google' ? 'Google' : 'Microsoft'}.`,
+      title: "Domain Updated",
+      description: `Successfully updated domain to ${domainData.domain}.`,
     });
   };
 

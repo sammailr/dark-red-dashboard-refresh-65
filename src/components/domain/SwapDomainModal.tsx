@@ -1,6 +1,4 @@
-
-import React, { useState } from 'react';
-import { Mail, Globe } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -22,9 +20,14 @@ interface SwapDomainModalProps {
 }
 
 const SwapDomainModal = ({ open, onOpenChange, onSwap, selectedDomain }: SwapDomainModalProps) => {
-  const [provider, setProvider] = useState<'google' | 'microsoft' | null>(null);
   const [domain, setDomain] = useState('');
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (selectedDomain && open) {
+      setDomain(selectedDomain.domain || '');
+    }
+  }, [selectedDomain, open]);
 
   const validateDomain = (domain: string): boolean => {
     const domainRegex = /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
@@ -32,15 +35,6 @@ const SwapDomainModal = ({ open, onOpenChange, onSwap, selectedDomain }: SwapDom
   };
 
   const handleSubmit = () => {
-    if (!provider) {
-      toast({
-        title: "Provider Required",
-        description: "Please select a provider.",
-        variant: "destructive"
-      });
-      return;
-    }
-
     if (!validateDomain(domain)) {
       toast({
         title: "Invalid Domain",
@@ -50,18 +44,15 @@ const SwapDomainModal = ({ open, onOpenChange, onSwap, selectedDomain }: SwapDom
       return;
     }
 
-    onSwap({ domain, provider });
+    // Keep the existing provider when swapping domain name
+    const currentProvider = selectedDomain?.provider?.toLowerCase() === 'google' ? 'google' : 'microsoft';
+    onSwap({ domain, provider: currentProvider });
     onOpenChange(false);
     resetForm();
   };
 
   const resetForm = () => {
-    setProvider(null);
     setDomain('');
-  };
-
-  const handleProviderSelect = (selectedProvider: 'google' | 'microsoft') => {
-    setProvider(selectedProvider);
   };
 
   return (
@@ -71,39 +62,15 @@ const SwapDomainModal = ({ open, onOpenChange, onSwap, selectedDomain }: SwapDom
     }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Swap Domain Provider</DialogTitle>
+          <DialogTitle>Change Domain Name</DialogTitle>
           <DialogDescription>
-            Change the provider for domain: {selectedDomain?.domain}
+            Update the domain name for: {selectedDomain?.domain}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="text-center mb-2">
-            <h3 className="text-lg font-medium">Select New Provider</h3>
-            <p className="text-sm text-muted-foreground">Choose your new domain provider</p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4 py-4">
-            <Button
-              variant={provider === 'google' ? "default" : "outline"}
-              className="flex flex-col items-center justify-center h-28 px-2 py-6"
-              onClick={() => handleProviderSelect('google')}
-            >
-              <Globe className="h-10 w-10 mb-2" />
-              <span>Google Domains</span>
-            </Button>
-            <Button
-              variant={provider === 'microsoft' ? "default" : "outline"}
-              className="flex flex-col items-center justify-center h-28 px-2 py-6"
-              onClick={() => handleProviderSelect('microsoft')}
-            >
-              <Mail className="h-10 w-10 mb-2" />
-              <span>Microsoft Domains</span>
-            </Button>
-          </div>
-
           <div className="space-y-2">
-            <Label htmlFor="domain">Domain Name</Label>
+            <Label htmlFor="domain">New Domain Name</Label>
             <Input
               id="domain"
               placeholder="example.com"
@@ -119,9 +86,9 @@ const SwapDomainModal = ({ open, onOpenChange, onSwap, selectedDomain }: SwapDom
           </Button>
           <Button 
             onClick={handleSubmit}
-            disabled={!provider || !domain}
+            disabled={!domain || domain === selectedDomain?.domain}
           >
-            Swap Provider
+            Update Domain
           </Button>
         </DialogFooter>
       </DialogContent>

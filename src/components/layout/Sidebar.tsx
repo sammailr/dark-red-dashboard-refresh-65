@@ -3,15 +3,10 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   Bell,
-  Inbox,
-  SendHorizontal,
   Globe,
   Book,
-  Wrench,
-  Users,
   Settings,
-  FileText,
-  Package
+  FileText
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -31,39 +26,14 @@ const Sidebar = () => {
       icon: <Globe className="h-5 w-5" /> 
     },
     { 
-      name: 'Master Inbox', 
-      path: '/master-inbox', 
-      icon: <Inbox className="h-5 w-5" /> 
-    },
-    { 
-      name: 'Sending Platform', 
-      path: '/sending-platform', 
-      icon: <SendHorizontal className="h-5 w-5" /> 
-    },
-    { 
       name: 'Domains', 
       path: '/domains', 
       icon: <Globe className="h-5 w-5" /> 
     },
     { 
-      name: 'Orders', 
-      path: '/orders', 
-      icon: <Package className="h-5 w-5" /> 
-    },
-    { 
       name: 'Guide', 
       path: '/guide', 
       icon: <Book className="h-5 w-5" /> 
-    },
-    { 
-      name: 'Tools', 
-      path: '/tools', 
-      icon: <Wrench className="h-5 w-5" />
-    },
-    { 
-      name: 'Affiliate', 
-      path: '/affiliate', 
-      icon: <Users className="h-5 w-5" /> 
     },
     { 
       name: 'Subscriptions', 

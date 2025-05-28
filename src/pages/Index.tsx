@@ -15,26 +15,26 @@ const Index = () => {
   const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
 
   // Example data - would typically come from an API
-  const totalDomains = 28;
-  const pricePerDomain = 60;
-  const emailsPerDomain = 990;
+  const totalDomains = 8;
+  const totalInboxes = 792;
+  const sendingVolume = 237600;
   
   const dashboardStats = [
     {
-      title: 'Total Domains',
+      title: 'Active Domains',
       value: totalDomains.toString(),
       icon: Globe,
       color: 'text-mailr-red'
     },
     {
       title: 'Total Inboxes',
-      value: '154',
+      value: totalInboxes.toString(),
       icon: Inbox,
       color: 'text-blue-500'
     },
     {
       title: 'Sending Volume per Month',
-      value: `${(totalDomains * emailsPerDomain).toLocaleString()}`,
+      value: sendingVolume.toLocaleString(),
       icon: TrendingUp,
       color: 'text-green-500'
     }
@@ -42,29 +42,51 @@ const Index = () => {
 
   const orderHistory = [
     {
-      id: 'ORD-1234',
-      domain: 'example.com',
-      date: '2023-09-01',
-      amount: '$60.00',
-      invoiceId: 'INV-5678'
+      id: 'ordlgcLwveoDwOOBOWqNnEi',
+      totalDomains: 1,
+      date: 'Apr 15, 2025',
+      status: 'canceled'
     },
     {
-      id: 'ORD-1235',
-      domain: 'testdomain.io',
-      date: '2023-08-15',
-      amount: '$60.00',
-      invoiceId: 'INV-5679'
+      id: 'ordDYfy4M5FkmloHlIyMls8',
+      totalDomains: 2,
+      date: 'Apr 18, 2025',
+      status: 'canceled'
     },
     {
-      id: 'ORD-1236',
-      domain: 'newsite.org',
-      date: '2023-07-22',
-      amount: '$60.00',
-      invoiceId: 'INV-5680'
+      id: 'ordAgVdFyRiSEsg9VpmaTOM',
+      totalDomains: 2,
+      date: 'Apr 18, 2025',
+      status: 'canceled'
+    },
+    {
+      id: 'ordZZzHA1pWq9Cauiz7CA0o',
+      totalDomains: 2,
+      date: 'Apr 18, 2025',
+      status: 'in progress'
+    },
+    {
+      id: 'ordlZ0LHSDi87RSIWBjmLqw',
+      totalDomains: 1,
+      date: 'Apr 22, 2025',
+      status: 'in progress'
     }
   ];
 
-  const totalSubscriptionCost = subscriptions.reduce((total, sub) => total + sub.price, 0);
+  const totalSubscriptionCost = subscriptions
+    .filter(sub => sub.status === 'active')
+    .reduce((total, sub) => total + (sub.price * sub.quantity), 0);
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'canceled':
+        return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Canceled</Badge>;
+      case 'in progress':
+        return <Badge className="bg-amber-600 text-white px-2 py-1 text-xs">In Progress</Badge>;
+      default:
+        return <Badge className="bg-gray-600 text-white px-2 py-1 text-xs">Unknown</Badge>;
+    }
+  };
 
   return (
     <MainLayout title="Dashboard">
@@ -91,95 +113,49 @@ const Index = () => {
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-gray-400">
-                  {isFreeTrial ? 'Free Trial' : 'Subscriptions'}
-                </CardTitle>
-                {isFreeTrial && (
-                  <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500">
-                    <AlertCircle className="h-3 w-3 mr-1" />
-                    {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining
-                  </Badge>
-                )}
+                <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
               </div>
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
           <CardContent>
-            {isFreeTrial && !hasPaymentMethod ? (
-              <div className="py-4">
-                <p className="text-gray-400 mb-4">Add a payment method to continue using the service after your trial ends.</p>
-                <Button className="bg-mailr-red hover:bg-red-600">
-                  <CreditCard className="h-4 w-4 mr-2" />
-                  Add Payment Method
-                </Button>
-              </div>
-            ) : (
-              <>
-                <div className="py-4">
-                  {!isFreeTrial && subscriptions.length > 0 && (
-                    <div className="space-y-4">
-                      {subscriptions.map((subscription) => (
-                        <div key={subscription.id} className="flex justify-between items-center p-3 bg-mailr-lightgray/10 rounded-md">
-                          <div>
-                            <p className="font-medium">${subscription.price} subscription</p>
-                            <p className="text-sm text-gray-400">Next billing: {subscription.billingDate}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-bold">${subscription.price}</p>
-                            <Badge variant={subscription.status === 'active' ? 'default' : 'outline'} 
-                              className={subscription.status === 'active' ? 'bg-green-500/20 text-green-300 border-green-500' : 'bg-amber-500/20 text-amber-300 border-amber-500'}>
-                              {subscription.status === 'active' ? 'Active' : 'Canceled'}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                      <div className="flex justify-between pt-2 border-t border-mailr-lightgray">
-                        <p className="text-gray-400 text-sm">Total Monthly Cost</p>
-                        <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="mt-4">
-                    <Link to="/subscriptions">
-                      <Button variant="outline" className="w-full">
-                        Manage Subscriptions
-                      </Button>
-                    </Link>
-                  </div>
+            <div className="py-4">
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <p className="text-sm text-gray-400">Total</p>
+                  <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/ month</span></p>
                 </div>
-              </>
-            )}
-            
-            {isFreeTrial && (
-              <div className="mt-2 bg-mailr-lightgray/20 p-3 rounded-md border border-amber-600/30 flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
-                <p className="text-sm text-amber-200">
-                  Your free trial will expire in {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}. 
-                  <Link to="/subscriptions" className="text-mailr-red hover:underline ml-1">
-                    Upgrade now
-                  </Link>
-                </p>
+                <div className="text-right">
+                  <p className="text-sm text-gray-400">Next Billing Date</p>
+                  <p className="font-medium">Jun 25, 2025</p>
+                </div>
               </div>
-            )}
+              
+              <div className="mt-4">
+                <Link to="/subscriptions">
+                  <Button variant="outline" className="w-full">
+                    View All
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Orders History</h2>
+          <h2 className="text-xl font-bold">Orders</h2>
           <FileText className="h-5 w-5 text-gray-400" />
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-left py-3 text-gray-400 font-medium">Order ID</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Domain</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Date</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Amount</th>
-                <th className="text-right py-3 text-gray-400 font-medium">Invoice</th>
+                <th className="text-left py-3 text-gray-400 font-medium">ID</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Created</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Total Domains</th>
+                <th className="text-right py-3 text-gray-400 font-medium">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -188,19 +164,23 @@ const Index = () => {
                   key={order.id} 
                   className="border-b border-mailr-lightgray last:border-b-0"
                 >
-                  <td className="py-4">{order.id}</td>
-                  <td className="py-4">{order.domain}</td>
+                  <td className="py-4 font-mono text-sm">{order.id}</td>
                   <td className="py-4">{order.date}</td>
-                  <td className="py-4">{order.amount}</td>
+                  <td className="py-4">{order.totalDomains}</td>
                   <td className="py-4 text-right">
-                    <Link to={`/invoices/${order.invoiceId}`} className="text-mailr-red hover:underline">
-                      View Invoice
-                    </Link>
+                    {getStatusBadge(order.status)}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        <div className="mt-4">
+          <Link to="/orders">
+            <Button variant="outline" className="w-full">
+              View All
+            </Button>
+          </Link>
         </div>
       </div>
     </MainLayout>

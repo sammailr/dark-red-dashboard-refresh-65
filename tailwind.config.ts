@@ -64,7 +64,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				mailr: {
-					red: '#ea384c',
+					red: '#9b1313',
 					dark: '#121212',
 					darkgray: '#1e1e1e',
 					lightgray: '#333333'

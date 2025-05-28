@@ -4,15 +4,18 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle } from 'lucide-react';
+import { Settings, AlertTriangle, Swap } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
+import SwapDomainModal from '@/components/domain/SwapDomainModal';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const DomainsPage = () => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
+  const [selectedDomainForSwap, setSelectedDomainForSwap] = useState<any>(null);
   const { subscriptions } = useSubscription();
   const { orders } = useOrders();
   const { toast } = useToast();
@@ -24,14 +27,14 @@ const DomainsPage = () => {
       domain: 'example.com',
       url: 'https://example.com',
       status: 'Active',
-      nameservers: 'ns1.example.com, ns2.example.com'
+      provider: 'Google'
     },
     {
       id: 2,
       domain: 'test.org',
       url: 'https://test.org',
       status: 'Pending',
-      nameservers: 'ns1.test.org, ns2.test.org'
+      provider: 'Microsoft'
     }
   ]);
 
@@ -47,7 +50,7 @@ const DomainsPage = () => {
       domain: domainData.domain,
       url: domainData.url,
       status: 'Pending',
-      nameservers: 'Awaiting configuration'
+      provider: 'Google' // Default provider for imported domains
     }));
 
     setDomains(prev => [...prev, ...domainsToAdd]);
@@ -56,6 +59,38 @@ const DomainsPage = () => {
       title: "Domains Imported",
       description: `Successfully imported ${newDomains.length} domain${newDomains.length > 1 ? 's' : ''}.`,
     });
+  };
+
+  const handleSwapDomain = (domainData: { domain: string; provider: 'google' | 'microsoft' }) => {
+    // Update the selected domain with new provider
+    setDomains(prev => prev.map(domain => 
+      domain.id === selectedDomainForSwap?.id 
+        ? { ...domain, provider: domainData.provider === 'google' ? 'Google' : 'Microsoft' }
+        : domain
+    ));
+    
+    toast({
+      title: "Domain Swapped",
+      description: `Successfully swapped ${domainData.domain} to ${domainData.provider === 'google' ? 'Google' : 'Microsoft'}.`,
+    });
+  };
+
+  const openSwapModal = (domain: any) => {
+    setSelectedDomainForSwap(domain);
+    setIsSwapModalOpen(true);
+  };
+
+  const getProviderBadge = (provider: string) => {
+    const isGoogle = provider === 'Google';
+    return (
+      <span className={`px-2 py-1 rounded text-xs font-medium ${
+        isGoogle 
+          ? 'bg-blue-900/30 text-blue-400 border border-blue-400/30' 
+          : 'bg-orange-900/30 text-orange-400 border border-orange-400/30'
+      }`}>
+        {provider}
+      </span>
+    );
   };
 
   return (
@@ -101,7 +136,8 @@ const DomainsPage = () => {
               <TableHead>Domain</TableHead>
               <TableHead>Forwarding URL</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Nameservers</TableHead>
+              <TableHead>Provider</TableHead>
+              <TableHead className="w-20">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -119,7 +155,17 @@ const DomainsPage = () => {
                     {domain.status}
                   </span>
                 </TableCell>
-                <TableCell>{domain.nameservers}</TableCell>
+                <TableCell>{getProviderBadge(domain.provider)}</TableCell>
+                <TableCell>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => openSwapModal(domain)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Swap className="h-4 w-4" />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -130,6 +176,13 @@ const DomainsPage = () => {
         open={isImportModalOpen} 
         onOpenChange={setIsImportModalOpen}
         onImport={handleImportDomains}
+      />
+
+      <SwapDomainModal 
+        open={isSwapModalOpen} 
+        onOpenChange={setIsSwapModalOpen}
+        onSwap={handleSwapDomain}
+        selectedDomain={selectedDomainForSwap}
       />
     </MainLayout>
   );

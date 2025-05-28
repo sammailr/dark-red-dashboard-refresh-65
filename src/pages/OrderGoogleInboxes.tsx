@@ -65,6 +65,13 @@ const OrderGoogleInboxesPage = () => {
   const [userFullName, setUserFullName] = useState('');
   const [preferredPassword, setPreferredPassword] = useState('');
 
+  // Calculate total monthly cost
+  const calculateTotalCost = () => {
+    const domainsCount = domains.length;
+    const inboxesCount = parseInt(numberOfInboxes) || 0;
+    return domainsCount * inboxesCount * 1.50;
+  };
+
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
       toast.error('Please enter a domain');
@@ -295,7 +302,26 @@ const OrderGoogleInboxesPage = () => {
   return (
     <MainLayout title="Order Google Inboxes">
       <div className="space-y-6">
+        {/* Total Monthly Cost Section */}
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold mb-2">Total Monthly Cost</h2>
+              <p className="text-sm text-gray-400">
+                {domains.length} domains × {numberOfInboxes || 0} inboxes × $1.50/month
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-bold text-mailr-red">
+                ${calculateTotalCost().toFixed(2)}/month
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
+          <h2 className="text-xl font-semibold mb-4">Domains</h2>
+          
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Domains</h2>
             

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -5,7 +6,6 @@ import {
   Globe,
   Book,
   Settings,
-  FileText,
   LayoutDashboard
 } from 'lucide-react';
 
@@ -34,11 +34,6 @@ const Sidebar = () => {
       name: 'Guide', 
       path: '/guide', 
       icon: <Book className="h-5 w-5" /> 
-    },
-    { 
-      name: 'Subscriptions', 
-      path: '/subscriptions', 
-      icon: <FileText className="h-5 w-5" /> 
     },
     { 
       name: 'Settings', 

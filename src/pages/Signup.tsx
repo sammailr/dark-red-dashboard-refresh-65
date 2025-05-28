@@ -15,7 +15,8 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    company: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -70,6 +71,20 @@ const Signup = () => {
                   required
                 />
               </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="company" className="text-gray-300">Company</Label>
+              <Input
+                id="company"
+                name="company"
+                type="text"
+                value={formData.company}
+                onChange={handleInputChange}
+                className="bg-mailr-darkgray border-mailr-lightgray text-white"
+                placeholder="Your Company Name"
+                required
+              />
             </div>
             
             <div className="space-y-2">

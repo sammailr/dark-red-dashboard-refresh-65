@@ -18,8 +18,6 @@ import GuidePage from "./pages/Guide";
 import ToolsPage from "./pages/Tools";
 import AffiliatePage from "./pages/Affiliate";
 import SettingsPage from "./pages/Settings";
-import Subscriptions from "./pages/Subscriptions";
-import SubscriptionDetail from "./pages/SubscriptionDetail";
 import OrderDetail from "./pages/OrderDetail";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -50,8 +48,6 @@ const App = () => (
               <Route path="/tools" element={<ToolsPage />} />
               <Route path="/affiliate" element={<AffiliatePage />} />
               <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/subscriptions" element={<Subscriptions />} />
-              <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
               <Route path="/orders/:id" element={<OrderDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

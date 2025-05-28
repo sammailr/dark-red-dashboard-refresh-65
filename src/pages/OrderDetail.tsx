@@ -7,6 +7,8 @@ import { useOrders, Domain } from '@/contexts/OrderContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import MainLayout from '@/components/layout/MainLayout';
 import {
   Dialog,
@@ -38,9 +40,9 @@ const OrderDetail = () => {
           <Button 
             variant="outline" 
             className="mt-4"
-            onClick={() => navigate('/orders')}
+            onClick={() => navigate('/')}
           >
-            Back to Orders
+            Back to Dashboard
           </Button>
         </div>
       </MainLayout>
@@ -50,13 +52,13 @@ const OrderDetail = () => {
   const getDomainStatusBadge = (domain: Domain) => {
     switch (domain.status) {
       case 'active': 
-        return <Badge variant="default">Complete</Badge>;
+        return <Badge className="bg-green-600 text-white px-2 py-1 text-xs">Active</Badge>;
       case 'pending': 
-        return <Badge variant="secondary">In Progress</Badge>;
+        return <Badge className="bg-yellow-600 text-white px-2 py-1 text-xs">Pending</Badge>;
       case 'failed': 
-        return <Badge variant="destructive">Failed</Badge>;
+        return <Badge className="bg-red-600 text-white px-2 py-1 text-xs">Failed</Badge>;
       case 'cancelled': 
-        return <Badge variant="outline" className="text-muted-foreground">Cancelled</Badge>;
+        return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Cancelled</Badge>;
       default: 
         return null;
     }
@@ -93,11 +95,11 @@ const OrderDetail = () => {
   const orderStatusBadge = () => {
     switch (order.status) {
       case 'processing':
-        return <Badge variant="secondary">Processing</Badge>;
+        return <Badge className="bg-amber-600 text-white px-2 py-1 text-xs">In Progress</Badge>;
       case 'completed':
-        return <Badge variant="default">Completed</Badge>;
+        return <Badge className="bg-green-600 text-white px-2 py-1 text-xs">Completed</Badge>;
       case 'cancelled':
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Canceled</Badge>;
       default:
         return null;
     }
@@ -112,7 +114,7 @@ const OrderDetail = () => {
               variant="ghost" 
               size="sm" 
               className="gap-1"
-              onClick={() => navigate('/orders')}
+              onClick={() => navigate('/')}
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -144,18 +146,33 @@ const OrderDetail = () => {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Domains ({order.domains.length})</h2>
           
-          <Card>
-            <CardContent className="p-0">
-              <ul className="divide-y">
+          <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
+            <Table>
+              <TableHeader className="bg-black/30">
+                <TableRow className="hover:bg-transparent border-mailr-lightgray">
+                  <TableHead className="w-12">
+                    <Checkbox />
+                  </TableHead>
+                  <TableHead>Domain</TableHead>
+                  <TableHead>Forwarding URL</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Nameservers</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {order.domains.map((domain) => (
-                  <li key={domain.id} className="flex items-center justify-between p-3">
-                    <div className="flex flex-col">
-                      <span className="font-medium">{domain.name}</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
+                  <TableRow key={domain.id} className="hover:bg-mailr-lightgray/10 border-mailr-lightgray">
+                    <TableCell>
+                      <Checkbox />
+                    </TableCell>
+                    <TableCell>{domain.name}</TableCell>
+                    <TableCell>{domain.url}</TableCell>
+                    <TableCell>
                       {getDomainStatusBadge(domain)}
-                      
+                    </TableCell>
+                    <TableCell>{domain.nameservers}</TableCell>
+                    <TableCell className="text-right">
                       {domain.status !== 'cancelled' && (
                         <Button 
                           variant="ghost" 
@@ -167,12 +184,12 @@ const OrderDetail = () => {
                           Cancel
                         </Button>
                       )}
-                    </div>
-                  </li>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </ul>
-            </CardContent>
-          </Card>
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
 

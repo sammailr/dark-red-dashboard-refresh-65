@@ -19,7 +19,6 @@ import AffiliatePage from "./pages/Affiliate";
 import SettingsPage from "./pages/Settings";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionDetail from "./pages/SubscriptionDetail";
-import OrdersPage from "./pages/Orders";
 import OrderDetail from "./pages/OrderDetail";
 
 const queryClient = new QueryClient();
@@ -45,7 +44,6 @@ const App = () => (
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="/subscriptions/:id" element={<SubscriptionDetail />} />
-              <Route path="/orders" element={<OrdersPage />} />
               <Route path="/orders/:id" element={<OrderDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

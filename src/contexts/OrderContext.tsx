@@ -7,6 +7,8 @@ export type Domain = {
   name: string;
   status: 'pending' | 'active' | 'failed' | 'cancelled';
   progress: number;
+  url: string;
+  nameservers: string;
 };
 
 export type Order = {
@@ -32,9 +34,30 @@ const sampleOrders: Order[] = [
     date: "2025-04-15",
     status: "cancelled",
     domains: [
-      { id: "dom-001", name: "marketpro.com", status: "cancelled", progress: 0 },
-      { id: "dom-002", name: "bizflow.net", status: "cancelled", progress: 0 },
-      { id: "dom-003", name: "salesedge.org", status: "cancelled", progress: 0 }
+      { 
+        id: "dom-001", 
+        name: "marketpro.com", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://marketpro.com",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-002", 
+        name: "bizflow.net", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://bizflow.net",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-003", 
+        name: "salesedge.org", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://salesedge.org",
+        nameservers: "Awaiting configuration"
+      }
     ]
   },
   {
@@ -42,8 +65,22 @@ const sampleOrders: Order[] = [
     date: "2025-04-18",
     status: "cancelled",
     domains: [
-      { id: "dom-004", name: "growthtech.io", status: "cancelled", progress: 0 },
-      { id: "dom-005", name: "innovateplus.com", status: "cancelled", progress: 0 }
+      { 
+        id: "dom-004", 
+        name: "growthtech.io", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://growthtech.io",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-005", 
+        name: "innovateplus.com", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://innovateplus.com",
+        nameservers: "Awaiting configuration"
+      }
     ]
   },
   {
@@ -51,10 +88,38 @@ const sampleOrders: Order[] = [
     date: "2025-04-18",
     status: "cancelled",
     domains: [
-      { id: "dom-006", name: "digitalhub.net", status: "cancelled", progress: 0 },
-      { id: "dom-007", name: "cloudboost.co", status: "cancelled", progress: 0 },
-      { id: "dom-008", name: "webstream.org", status: "cancelled", progress: 0 },
-      { id: "dom-009", name: "techsuite.io", status: "cancelled", progress: 0 }
+      { 
+        id: "dom-006", 
+        name: "digitalhub.net", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://digitalhub.net",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-007", 
+        name: "cloudboost.co", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://cloudboost.co",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-008", 
+        name: "webstream.org", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://webstream.org",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-009", 
+        name: "techsuite.io", 
+        status: "cancelled", 
+        progress: 0,
+        url: "https://techsuite.io",
+        nameservers: "Awaiting configuration"
+      }
     ]
   },
   {
@@ -62,9 +127,30 @@ const sampleOrders: Order[] = [
     date: "2025-04-20",
     status: "processing",
     domains: [
-      { id: "dom-010", name: "automateflow.com", status: "pending", progress: 45 },
-      { id: "dom-011", name: "scalevault.net", status: "active", progress: 100 },
-      { id: "dom-012", name: "databridge.org", status: "pending", progress: 30 }
+      { 
+        id: "dom-010", 
+        name: "automateflow.com", 
+        status: "pending", 
+        progress: 45,
+        url: "https://automateflow.com",
+        nameservers: "Awaiting configuration"
+      },
+      { 
+        id: "dom-011", 
+        name: "scalevault.net", 
+        status: "active", 
+        progress: 100,
+        url: "https://scalevault.net",
+        nameservers: "ns1.scalevault.net, ns2.scalevault.net"
+      },
+      { 
+        id: "dom-012", 
+        name: "databridge.org", 
+        status: "pending", 
+        progress: 30,
+        url: "https://databridge.org",
+        nameservers: "Awaiting configuration"
+      }
     ]
   },
   {
@@ -72,8 +158,22 @@ const sampleOrders: Order[] = [
     date: "2025-04-22",
     status: "processing",
     domains: [
-      { id: "dom-013", name: "smartlead.io", status: "active", progress: 100 },
-      { id: "dom-014", name: "convertmax.com", status: "pending", progress: 65 }
+      { 
+        id: "dom-013", 
+        name: "smartlead.io", 
+        status: "active", 
+        progress: 100,
+        url: "https://smartlead.io",
+        nameservers: "ns1.smartlead.io, ns2.smartlead.io"
+      },
+      { 
+        id: "dom-014", 
+        name: "convertmax.com", 
+        status: "pending", 
+        progress: 65,
+        url: "https://convertmax.com",
+        nameservers: "Awaiting configuration"
+      }
     ]
   },
   {
@@ -81,7 +181,14 @@ const sampleOrders: Order[] = [
     date: "2025-04-24",
     status: "completed",
     domains: [
-      { id: "dom-015", name: "reachpeak.net", status: "active", progress: 100 }
+      { 
+        id: "dom-015", 
+        name: "reachpeak.net", 
+        status: "active", 
+        progress: 100,
+        url: "https://reachpeak.net",
+        nameservers: "ns1.reachpeak.net, ns2.reachpeak.net"
+      }
     ]
   }
 ];
@@ -98,7 +205,12 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       prevOrders.map(order => {
         if (order.id === orderId) {
           const updatedDomains = order.domains.map(domain => 
-            domain.id === domainId ? { ...domain, status: 'cancelled' as const, progress: 0 } : domain
+            domain.id === domainId ? { 
+              ...domain, 
+              status: 'cancelled' as const, 
+              progress: 0,
+              nameservers: "Awaiting configuration"
+            } : domain
           );
           
           // Check if all domains are cancelled
@@ -125,7 +237,8 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               domains: order.domains.map(domain => ({ 
                 ...domain, 
                 status: 'cancelled' as const,
-                progress: 0
+                progress: 0,
+                nameservers: "Awaiting configuration"
               }))
             }
           : order

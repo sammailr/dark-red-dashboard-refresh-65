@@ -37,12 +37,6 @@ const Index = () => {
       value: `${(totalDomains * emailsPerDomain).toLocaleString()}`,
       icon: TrendingUp,
       color: 'text-green-500'
-    },
-    {
-      title: 'Pending Domains',
-      value: '4',
-      icon: Clock,
-      color: 'text-amber-500'
     }
   ];
 
@@ -70,20 +64,11 @@ const Index = () => {
     }
   ];
 
-  const pendingDomains = [
-    { domain: 'newdomain.com', status: 'DNS Verification', progress: 65 },
-    { domain: 'awaiting.org', status: 'Payment Processing', progress: 30 },
-    { domain: 'verify-me.net', status: 'Email Verification', progress: 85 },
-    { domain: 'setup-pending.io', status: 'Setup Pending', progress: 15 },
-    { domain: 'extra-domain1.net', status: 'DNS Verification', progress: 45 },
-    { domain: 'extra-domain2.com', status: 'Email Verification', progress: 55 }
-  ];
-
   const totalSubscriptionCost = subscriptions.reduce((total, sub) => total + sub.price, 0);
 
   return (
     <MainLayout title="Dashboard">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {dashboardStats.map((stat) => (
           <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-2">
@@ -101,117 +86,84 @@ const Index = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2">
-          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-full">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-sm font-medium text-gray-400">
-                    {isFreeTrial ? 'Free Trial' : 'Subscriptions'}
-                  </CardTitle>
-                  {isFreeTrial && (
-                    <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500">
-                      <AlertCircle className="h-3 w-3 mr-1" />
-                      {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining
-                    </Badge>
-                  )}
-                </div>
-                <DollarSign className="h-5 w-5 text-yellow-500" />
+      <div className="grid grid-cols-1 gap-6 mb-6">
+        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium text-gray-400">
+                  {isFreeTrial ? 'Free Trial' : 'Subscriptions'}
+                </CardTitle>
+                {isFreeTrial && (
+                  <Badge variant="outline" className="bg-amber-500/20 text-amber-300 border-amber-500">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'} remaining
+                  </Badge>
+                )}
               </div>
-            </CardHeader>
-            <CardContent>
-              {isFreeTrial && !hasPaymentMethod ? (
+              <DollarSign className="h-5 w-5 text-yellow-500" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            {isFreeTrial && !hasPaymentMethod ? (
+              <div className="py-4">
+                <p className="text-gray-400 mb-4">Add a payment method to continue using the service after your trial ends.</p>
+                <Button className="bg-mailr-red hover:bg-red-600">
+                  <CreditCard className="h-4 w-4 mr-2" />
+                  Add Payment Method
+                </Button>
+              </div>
+            ) : (
+              <>
                 <div className="py-4">
-                  <p className="text-gray-400 mb-4">Add a payment method to continue using the service after your trial ends.</p>
-                  <Button className="bg-mailr-red hover:bg-red-600">
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    Add Payment Method
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <div className="py-4">
-                    {!isFreeTrial && subscriptions.length > 0 && (
-                      <div className="space-y-4">
-                        {subscriptions.map((subscription) => (
-                          <div key={subscription.id} className="flex justify-between items-center p-3 bg-mailr-lightgray/10 rounded-md">
-                            <div>
-                              <p className="font-medium">${subscription.price} subscription</p>
-                              <p className="text-sm text-gray-400">Next billing: {subscription.billingDate}</p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-bold">${subscription.price}</p>
-                              <Badge variant={subscription.status === 'active' ? 'default' : 'outline'} 
-                                className={subscription.status === 'active' ? 'bg-green-500/20 text-green-300 border-green-500' : 'bg-amber-500/20 text-amber-300 border-amber-500'}>
-                                {subscription.status === 'active' ? 'Active' : 'Canceled'}
-                              </Badge>
-                            </div>
+                  {!isFreeTrial && subscriptions.length > 0 && (
+                    <div className="space-y-4">
+                      {subscriptions.map((subscription) => (
+                        <div key={subscription.id} className="flex justify-between items-center p-3 bg-mailr-lightgray/10 rounded-md">
+                          <div>
+                            <p className="font-medium">${subscription.price} subscription</p>
+                            <p className="text-sm text-gray-400">Next billing: {subscription.billingDate}</p>
                           </div>
-                        ))}
-                        <div className="flex justify-between pt-2 border-t border-mailr-lightgray">
-                          <p className="text-gray-400 text-sm">Total Monthly Cost</p>
-                          <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}</p>
+                          <div className="text-right">
+                            <p className="font-bold">${subscription.price}</p>
+                            <Badge variant={subscription.status === 'active' ? 'default' : 'outline'} 
+                              className={subscription.status === 'active' ? 'bg-green-500/20 text-green-300 border-green-500' : 'bg-amber-500/20 text-amber-300 border-amber-500'}>
+                              {subscription.status === 'active' ? 'Active' : 'Canceled'}
+                            </Badge>
+                          </div>
                         </div>
+                      ))}
+                      <div className="flex justify-between pt-2 border-t border-mailr-lightgray">
+                        <p className="text-gray-400 text-sm">Total Monthly Cost</p>
+                        <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}</p>
                       </div>
-                    )}
-                    
-                    <div className="mt-4">
-                      <Link to="/subscriptions">
-                        <Button variant="outline" className="w-full">
-                          Manage Subscriptions
-                        </Button>
-                      </Link>
                     </div>
-                  </div>
-                </>
-              )}
-              
-              {isFreeTrial && (
-                <div className="mt-2 bg-mailr-lightgray/20 p-3 rounded-md border border-amber-600/30 flex items-center gap-2">
-                  <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
-                  <p className="text-sm text-amber-200">
-                    Your free trial will expire in {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}. 
-                    <Link to="/subscriptions" className="text-mailr-red hover:underline ml-1">
-                      Upgrade now
+                  )}
+                  
+                  <div className="mt-4">
+                    <Link to="/subscriptions">
+                      <Button variant="outline" className="w-full">
+                        Manage Subscriptions
+                      </Button>
                     </Link>
-                  </p>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="lg:col-span-1">
-          <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg h-[200px]">
-            <CardHeader className="pb-2">
-              <div className="flex justify-between items-start">
-                <CardTitle className="text-sm font-medium text-gray-400">Pending Domains</CardTitle>
-                <Clock className="h-5 w-5 text-amber-500" />
+              </>
+            )}
+            
+            {isFreeTrial && (
+              <div className="mt-2 bg-mailr-lightgray/20 p-3 rounded-md border border-amber-600/30 flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
+                <p className="text-sm text-amber-200">
+                  Your free trial will expire in {daysRemaining} {daysRemaining === 1 ? 'day' : 'days'}. 
+                  <Link to="/subscriptions" className="text-mailr-red hover:underline ml-1">
+                    Upgrade now
+                  </Link>
+                </p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[110px] pr-4">
-                <div className="space-y-3">
-                  {pendingDomains.map((domain) => (
-                    <div key={domain.domain} className="space-y-1">
-                      <div className="flex justify-between">
-                        <p className="text-sm font-medium">{domain.domain}</p>
-                        <p className="text-xs text-gray-400">{domain.status}</p>
-                      </div>
-                      <div className="w-full bg-mailr-lightgray rounded-full h-2">
-                        <div 
-                          className="bg-mailr-red h-2 rounded-full" 
-                          style={{ width: `${domain.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-        </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">

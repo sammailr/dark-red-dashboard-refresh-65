@@ -10,18 +10,17 @@ import { useOrders } from '@/contexts/OrderContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 const Index = () => {
-  const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
-  const { orders } = useOrders();
+  const {
+    isFreeTrial,
+    daysRemaining,
+    hasPaymentMethod,
+    subscriptions
+  } = useSubscription();
+  const {
+    orders
+  } = useOrders();
   const [currentPage, setCurrentPage] = useState(1);
   const [orderTags, setOrderTags] = useState<Record<string, string>>({});
   const navigate = useNavigate();
@@ -29,23 +28,17 @@ const Index = () => {
 
   // Example data - would typically come from an API
   const sendingVolume = 412800;
-  
-  const dashboardStats = [
-    {
-      title: 'Sending Volume per Month',
-      value: sendingVolume.toLocaleString(),
-      icon: TrendingUp,
-      color: 'text-green-500'
-    }
-  ];
-
-  const providerStats = [
-    {
-      provider: 'Microsoft',
-      domains: 8,
-      mailboxes: 624,
-      logo: (
-        <div className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded">
+  const dashboardStats = [{
+    title: 'Sending Volume per Month',
+    value: sendingVolume.toLocaleString(),
+    icon: TrendingUp,
+    color: 'text-green-500'
+  }];
+  const providerStats = [{
+    provider: 'Microsoft',
+    domains: 8,
+    mailboxes: 624,
+    logo: <div className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded">
           <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
             <div className="bg-white w-1.5 h-1.5"></div>
             <div className="bg-white w-1.5 h-1.5"></div>
@@ -53,37 +46,25 @@ const Index = () => {
             <div className="bg-white w-1.5 h-1.5"></div>
           </div>
         </div>
-      )
-    },
-    {
-      provider: 'Google',
-      domains: 7,
-      mailboxes: 623,
-      logo: (
-        <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border">
+  }, {
+    provider: 'Google',
+    domains: 7,
+    mailboxes: 623,
+    logo: <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border">
           <div className="text-lg font-bold text-blue-500">G</div>
         </div>
-      )
-    }
-  ];
-
-  const totalSubscriptionCost = subscriptions
-    .filter(sub => sub.status === 'active')
-    .reduce((total, sub) => total + (sub.price * sub.quantity), 0);
-
-  const nextBillingAmount = subscriptions
-    .filter(sub => sub.status === 'active')
-    .reduce((total, sub) => total + (sub.price * sub.quantity), 0);
+  }];
+  const totalSubscriptionCost = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
+  const nextBillingAmount = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
 
   // Get the earliest next billing date from active subscriptions
   const getNextBillingDate = () => {
     const activeSubscriptions = subscriptions.filter(sub => sub.status === 'active');
     if (activeSubscriptions.length === 0) return 'N/A';
-    
+
     // For this example, using a fixed date - in real app, would calculate from subscription data
     return 'Oct 15, 2023';
   };
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'cancelled':
@@ -96,47 +77,39 @@ const Index = () => {
         return <Badge className="bg-gray-600 text-white px-2 py-1 text-xs">Unknown</Badge>;
     }
   };
-
   const getProviderLogo = (index: number) => {
     // Alternate between google and microsoft based on index
     const provider = index % 2 === 0 ? 'google' : 'microsoft';
     if (provider === 'google') {
-      return (
-        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+      return <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
           <div className="text-xs font-bold text-blue-500">G</div>
-        </div>
-      );
+        </div>;
     } else {
-      return (
-        <div className="w-6 h-6 bg-blue-500 flex items-center justify-center">
+      return <div className="w-6 h-6 bg-blue-500 flex items-center justify-center">
           <div className="w-3 h-3 grid grid-cols-2 gap-0.5">
             <div className="bg-white w-1 h-1"></div>
             <div className="bg-white w-1 h-1"></div>
             <div className="bg-white w-1 h-1"></div>
             <div className="bg-white w-1 h-1"></div>
           </div>
-        </div>
-      );
+        </div>;
     }
   };
-
   const handleOrderClick = (orderId: string) => {
     navigate(`/orders/${orderId}`);
   };
-
   const handleTagUpdate = (orderId: string, tag: string) => {
     setOrderTags(prev => ({
       ...prev,
       [orderId]: tag
     }));
   };
-
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     });
   };
 
@@ -144,12 +117,9 @@ const Index = () => {
   const totalPages = Math.ceil(orders.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
   const paginatedOrders = orders.slice(startIndex, startIndex + ordersPerPage);
-
-  return (
-    <MainLayout title="Dashboard">
+  return <MainLayout title="Dashboard">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {providerStats.map((provider) => (
-          <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 {provider.logo}
@@ -168,10 +138,8 @@ const Index = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
-        ))}
-        {dashboardStats.map((stat) => (
-          <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+          </Card>)}
+        {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-2">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-sm font-medium text-gray-400">{stat.title}</CardTitle>
@@ -183,8 +151,7 @@ const Index = () => {
                 <p className="text-2xl font-bold">{stat.value}</p>
               </div>
             </CardContent>
-          </Card>
-        ))}
+          </Card>)}
       </div>
 
       <div className="grid grid-cols-1 gap-6 mb-6">
@@ -239,80 +206,49 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedOrders.map((order, index) => (
-                <tr 
-                  key={order.id} 
-                  className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10"
-                >
+              {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
                   <td className="py-4">{formatDate(order.date)}</td>
-                  <td className="py-4">{order.domains.length}</td>
+                  <td className="py-2">{order.domains.length}</td>
                   <td className="py-4">
                     {getProviderLogo(index)}
                   </td>
                   <td className="py-4">
-                    <input
-                      type="text"
-                      value={orderTags[order.id] || ''}
-                      onChange={(e) => handleTagUpdate(order.id, e.target.value)}
-                      onClick={(e) => e.stopPropagation()}
-                      placeholder="Add tag..."
-                      className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1"
-                    />
+                    <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1" />
                   </td>
                   <td className="py-4">
                     {getStatusBadge(order.status)}
                   </td>
                   <td className="py-4 text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleOrderClick(order.id)}
-                      className="text-xs text-gray-400 hover:text-white"
-                    >
+                    <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
                       <Eye className="w-3 h-3 mr-1" />
                       View Details
                     </Button>
                   </td>
-                </tr>
-              ))}
+                </tr>)}
             </tbody>
           </table>
         </div>
         
-        {totalPages > 1 && (
-          <div className="mt-4">
+        {totalPages > 1 && <div className="mt-4">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious 
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                  />
+                  <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                 </PaginationItem>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(page)}
-                      isActive={currentPage === page}
-                      className="cursor-pointer"
-                    >
+                {Array.from({
+              length: totalPages
+            }, (_, i) => i + 1).map(page => <PaginationItem key={page}>
+                    <PaginationLink onClick={() => setCurrentPage(page)} isActive={currentPage === page} className="cursor-pointer">
                       {page}
                     </PaginationLink>
-                  </PaginationItem>
-                ))}
+                  </PaginationItem>)}
                 <PaginationItem>
-                  <PaginationNext 
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                    className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                  />
+                  <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
                 </PaginationItem>
               </PaginationContent>
             </Pagination>
-          </div>
-        )}
+          </div>}
       </div>
-    </MainLayout>
-  );
+    </MainLayout>;
 };
-
 export default Index;

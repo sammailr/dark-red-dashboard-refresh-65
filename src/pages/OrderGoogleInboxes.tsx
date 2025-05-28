@@ -60,6 +60,7 @@ const OrderGoogleInboxesPage = () => {
   const [domainRegistrar, setDomainRegistrar] = useState('');
   const [domainRegistrarLogin, setDomainRegistrarLogin] = useState('');
   const [domainRegistrarPassword, setDomainRegistrarPassword] = useState('');
+  const [customDomainRegistrar, setCustomDomainRegistrar] = useState('');
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -366,8 +367,8 @@ const OrderGoogleInboxesPage = () => {
               </Button>
             </div>
           </div>
-
-          <div className="space-y-4 mb-6 p-4 bg-black/20 rounded-lg border border-mailr-lightgray">
+          
+          <div className="space-y-4 mb-6">
             <div>
               <Label htmlFor="mainForwardingUrl" className="block text-sm mb-2">Main ForwardingURL</Label>
               <p className="text-sm text-gray-400 mb-2">The primary website your domains will forward to</p>
@@ -384,18 +385,29 @@ const OrderGoogleInboxesPage = () => {
             <div>
               <Label htmlFor="domainRegistrar" className="block text-sm mb-2">Domain Registrar:</Label>
               <p className="text-sm text-gray-400 mb-2">E.g. GoDaddy</p>
-              <Select value={domainRegistrar} onValueChange={setDomainRegistrar}>
-                <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray">
-                  <SelectValue placeholder="Select registrar" />
-                </SelectTrigger>
-                <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
-                  <SelectItem value="godaddy">GoDaddy</SelectItem>
-                  <SelectItem value="namecheap">Namecheap</SelectItem>
-                  <SelectItem value="cloudflare">Cloudflare</SelectItem>
-                  <SelectItem value="google">Google Domains</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex gap-2">
+                <Select value={domainRegistrar} onValueChange={setDomainRegistrar}>
+                  <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray">
+                    <SelectValue placeholder="Select registrar" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                    <SelectItem value="godaddy">GoDaddy</SelectItem>
+                    <SelectItem value="namecheap">Namecheap</SelectItem>
+                    <SelectItem value="cloudflare">Cloudflare</SelectItem>
+                    <SelectItem value="google">Google Domains</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+                {domainRegistrar === 'other' && (
+                  <Input 
+                    type="text" 
+                    className="bg-mailr-darkgray border-mailr-lightgray"
+                    value={customDomainRegistrar}
+                    onChange={(e) => setCustomDomainRegistrar(e.target.value)}
+                    placeholder="Specify Domain Registrar" 
+                  />
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -422,48 +434,48 @@ const OrderGoogleInboxesPage = () => {
                 />
               </div>
             </div>
-          </div>
-          
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1">
-              <Label htmlFor="addDomain" className="block text-sm mb-2">Add Domain to list:</Label>
-              <div className="flex gap-2">
-                <Input 
-                  id="addDomain"
-                  type="text" 
-                  className="bg-mailr-darkgray border-mailr-lightgray"
-                  value={newDomain}
-                  onChange={(e) => setNewDomain(e.target.value)}
-                  placeholder="Enter domain" 
-                />
-                <Button 
-                  variant="outline" 
-                  className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray"
-                  onClick={handleAddDomain}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
             
-            <div className="flex-1">
-              <Label htmlFor="csvUpload" className="block text-sm mb-2">Upload CSV with Domains:</Label>
-              <div className="relative">
-                <Input
-                  id="csvUpload"
-                  type="file"
-                  accept=".csv"
-                  className="hidden"
-                  onChange={handleCSVUpload}
-                />
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-mailr-darkgray border-mailr-lightgray border-dashed hover:bg-mailr-lightgray/10"
-                  onClick={() => document.getElementById('csvUpload')?.click()}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Click to upload a CSV
-                </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <Label htmlFor="addDomain" className="block text-sm mb-2">Add Domain to list:</Label>
+                <div className="flex gap-2">
+                  <Input 
+                    id="addDomain"
+                    type="text" 
+                    className="bg-mailr-darkgray border-mailr-lightgray"
+                    value={newDomain}
+                    onChange={(e) => setNewDomain(e.target.value)}
+                    placeholder="Enter domain" 
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray"
+                    onClick={handleAddDomain}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="flex-1">
+                <Label htmlFor="csvUpload" className="block text-sm mb-2">Upload CSV with Domains:</Label>
+                <div className="relative">
+                  <Input
+                    id="csvUpload"
+                    type="file"
+                    accept=".csv"
+                    className="hidden"
+                    onChange={handleCSVUpload}
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="w-full bg-mailr-darkgray border-mailr-lightgray border-dashed hover:bg-mailr-lightgray/10"
+                    onClick={() => document.getElementById('csvUpload')?.click()}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Click to upload a CSV
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

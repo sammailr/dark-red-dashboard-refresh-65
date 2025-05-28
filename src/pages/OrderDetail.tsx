@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, X, AlertTriangle, Download } from 'lucide-react';
@@ -53,6 +52,7 @@ const OrderDetail = () => {
   }
 
   const monthlyCost = order.domains.length * 25;
+  const nextBillingDate = new Date(new Date(order.date).getTime() + 30 * 24 * 60 * 60 * 1000);
 
   const getDomainStatusBadge = (domain: Domain) => {
     switch (domain.status) {
@@ -130,9 +130,10 @@ const OrderDetail = () => {
                 <h1 className="text-3xl font-bold">Order Placed on {format(new Date(order.date), 'MMMM dd, yyyy')}</h1>
                 {orderStatusBadge()}
               </div>
-              <p className="text-muted-foreground">
-                Monthly Cost: ${monthlyCost.toLocaleString()}/mo
-              </p>
+              <div className="flex items-center gap-4 text-muted-foreground">
+                <p>Monthly Cost: ${monthlyCost.toLocaleString()}/mo</p>
+                <p>Next Billing: {format(nextBillingDate, 'MMM dd, yyyy')}</p>
+              </div>
             </div>
           </div>
           
@@ -202,30 +203,6 @@ const OrderDetail = () => {
           </TabsContent>
           
           <TabsContent value="billing" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Last Billing</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{format(new Date(order.date), 'MMM dd, yyyy')}</div>
-                  <p className="text-xs text-muted-foreground mt-1">${monthlyCost.toLocaleString()} charged</p>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Next Billing</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {format(new Date(new Date(order.date).getTime() + 30 * 24 * 60 * 60 * 1000), 'MMM dd, yyyy')}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">${monthlyCost.toLocaleString()} will be charged</p>
-                </CardContent>
-              </Card>
-            </div>
-            
             <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
               <Table>
                 <TableHeader className="bg-black/30">

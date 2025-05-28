@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, Swap } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -163,7 +162,7 @@ const DomainsPage = () => {
                     onClick={() => openSwapModal(domain)}
                     className="h-8 w-8 p-0"
                   >
-                    <Swap className="h-4 w-4" />
+                    <ArrowLeftRight className="h-4 w-4" />
                   </Button>
                 </TableCell>
               </TableRow>

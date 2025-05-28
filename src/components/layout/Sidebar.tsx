@@ -5,7 +5,8 @@ import {
   Globe,
   Book,
   Settings,
-  FileText
+  FileText,
+  LayoutDashboard
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -14,6 +15,11 @@ const Sidebar = () => {
   const isActive = (path: string) => location.pathname === path;
   
   const menuItems = [
+    { 
+      name: 'Dashboard', 
+      path: '/', 
+      icon: <LayoutDashboard className="h-5 w-5" /> 
+    },
     { 
       name: 'Order Inboxes', 
       path: '/order-inboxes', 

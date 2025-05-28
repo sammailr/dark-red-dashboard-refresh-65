@@ -21,6 +21,9 @@ import SettingsPage from "./pages/Settings";
 import Subscriptions from "./pages/Subscriptions";
 import SubscriptionDetail from "./pages/SubscriptionDetail";
 import OrderDetail from "./pages/OrderDetail";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +37,9 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/order-inboxes" element={<OrderInboxesPage />} />
               <Route path="/order-google-inboxes" element={<OrderGoogleInboxesPage />} />
               <Route path="/order-microsoft-inboxes" element={<OrderMicrosoftInboxesPage />} />

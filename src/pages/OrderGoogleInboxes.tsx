@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -57,6 +56,10 @@ const OrderGoogleInboxesPage = () => {
   const [bulkDisplayName, setBulkDisplayName] = useState('');
   const [bulkDisplayNames, setBulkDisplayNames] = useState<string[]>([]);
   const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<string | null>(null);
+  const [mainForwardingUrl, setMainForwardingUrl] = useState('');
+  const [domainRegistrar, setDomainRegistrar] = useState('');
+  const [domainRegistrarLogin, setDomainRegistrarLogin] = useState('');
+  const [domainRegistrarPassword, setDomainRegistrarPassword] = useState('');
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -361,6 +364,63 @@ const OrderGoogleInboxesPage = () => {
               >
                 Reset names
               </Button>
+            </div>
+          </div>
+
+          <div className="space-y-4 mb-6 p-4 bg-black/20 rounded-lg border border-mailr-lightgray">
+            <div>
+              <Label htmlFor="mainForwardingUrl" className="block text-sm mb-2">Main ForwardingURL</Label>
+              <p className="text-sm text-gray-400 mb-2">The primary website your domains will forward to</p>
+              <Input 
+                id="mainForwardingUrl"
+                type="text" 
+                className="bg-mailr-darkgray border-mailr-lightgray"
+                value={mainForwardingUrl}
+                onChange={(e) => setMainForwardingUrl(e.target.value)}
+                placeholder="https://example.com" 
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="domainRegistrar" className="block text-sm mb-2">Domain Registrar:</Label>
+              <p className="text-sm text-gray-400 mb-2">E.g. GoDaddy</p>
+              <Select value={domainRegistrar} onValueChange={setDomainRegistrar}>
+                <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray">
+                  <SelectValue placeholder="Select registrar" />
+                </SelectTrigger>
+                <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                  <SelectItem value="godaddy">GoDaddy</SelectItem>
+                  <SelectItem value="namecheap">Namecheap</SelectItem>
+                  <SelectItem value="cloudflare">Cloudflare</SelectItem>
+                  <SelectItem value="google">Google Domains</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="domainRegistrarLogin" className="block text-sm mb-2">Domain Registrar Login:</Label>
+                <Input 
+                  id="domainRegistrarLogin"
+                  type="text" 
+                  className="bg-mailr-darkgray border-mailr-lightgray"
+                  value={domainRegistrarLogin}
+                  onChange={(e) => setDomainRegistrarLogin(e.target.value)}
+                  placeholder="username@example.com" 
+                />
+              </div>
+              <div>
+                <Label htmlFor="domainRegistrarPassword" className="block text-sm mb-2">Domain Registrar Password:</Label>
+                <Input 
+                  id="domainRegistrarPassword"
+                  type="password" 
+                  className="bg-mailr-darkgray border-mailr-lightgray"
+                  value={domainRegistrarPassword}
+                  onChange={(e) => setDomainRegistrarPassword(e.target.value)}
+                  placeholder="••••••••" 
+                />
+              </div>
             </div>
           </div>
           

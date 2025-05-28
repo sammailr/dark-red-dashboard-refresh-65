@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -168,11 +167,11 @@ const Index = () => {
                 <p className="text-sm text-gray-400 mb-1">Total</p>
                 <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/month</span></p>
               </div>
-              <div>
+              <div className="text-center">
                 <p className="text-sm text-gray-400 mb-1">Next Billing</p>
                 <p className="text-2xl font-bold">${nextBillingAmount.toLocaleString()}</p>
               </div>
-              <div>
+              <div className="text-right">
                 <p className="text-sm text-gray-400 mb-1">Next Billing Date</p>
                 <p className="text-2xl font-bold">{getNextBillingDate()}</p>
               </div>

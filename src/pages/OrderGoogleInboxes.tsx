@@ -13,6 +13,7 @@ import SendingPlatformSelect from '@/components/order/SendingPlatformSelect';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 interface Domain {
   id: number;
   domain: string;
@@ -226,58 +227,6 @@ const OrderGoogleInboxesPage = () => {
           
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Domains</h2>
-            
-            <div className="flex gap-2 items-center">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" disabled={selectedCount === 0} className={`bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10 ${selectedCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                    Bulk add names
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="bg-mailr-darkgray border-mailr-lightgray">
-                  <DialogHeader>
-                    <DialogTitle>Enter individually, the display names you want to use:</DialogTitle>
-                    <DialogDescription className="text-gray-400">Eg. John Smith</DialogDescription>
-                  </DialogHeader>
-                  
-                  <div className="space-y-4 mt-4">
-                    <div className="flex gap-2">
-                      <Input type="text" className="bg-mailr-darkgray border-mailr-lightgray flex-1" placeholder="John Smith" value={bulkDisplayName} onChange={e => setBulkDisplayName(e.target.value)} />
-                      <Button variant="ghost" size="icon" onClick={handleAddBulkDisplayName} className="bg-mailr-lightgray/20">
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    {bulkDisplayNames.length > 0 && <>
-                        <div className="mt-4">
-                          <h3 className="text-sm font-medium mb-2">Display names to be added:</h3>
-                          <div className="border rounded-md border-mailr-lightgray p-2 max-h-48 overflow-y-auto">
-                            {bulkDisplayNames.map((name, index) => <div key={index} className="flex justify-between items-center py-2 border-b border-mailr-lightgray last:border-0">
-                                <span>{name}</span>
-                                <Button variant="ghost" size="sm" onClick={() => handleRemoveBulkDisplayName(name)} className="text-mailr-red hover:text-red-400 hover:bg-transparent p-0">
-                                  <X className="h-4 w-4" />
-                                </Button>
-                              </div>)}
-                          </div>
-                        </div>
-                        
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={() => {
-                      applyBulkDisplayNames();
-                      document.querySelector('[data-radix-dialog-close]')?.dispatchEvent(new MouseEvent('click', {
-                        bubbles: true
-                      }));
-                    }}>
-                          Add names
-                        </Button>
-                      </>}
-                  </div>
-                </DialogContent>
-              </Dialog>
-              
-              <Button variant="outline" size="sm" disabled={selectedCount === 0} className={`bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10 ${selectedCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={resetDisplayNames}>
-                Reset names
-              </Button>
-            </div>
           </div>
           
           <div className="space-y-4 mb-6">

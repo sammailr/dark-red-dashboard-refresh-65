@@ -510,9 +510,6 @@ const OrderGoogleInboxesPage = () => {
                       />
                     </TableHead>
                     <TableHead className="px-1">Domain</TableHead>
-                    <TableHead className="px-1">Forwarding URL</TableHead>
-                    <TableHead className="w-1/5 px-1">Add Display Names</TableHead>
-                    <TableHead className="w-1/4 px-1">Display Names</TableHead>
                     <TableHead className="w-16 px-1">Delete</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -526,78 +523,6 @@ const OrderGoogleInboxesPage = () => {
                         />
                       </TableCell>
                       <TableCell className="px-1">{domain.domain}</TableCell>
-                      <TableCell className="px-1">
-                        <Input 
-                          type="text" 
-                          className="bg-mailr-darkgray border-mailr-lightgray"
-                          value={domain.forwardingUrl}
-                          onChange={(e) => handleUpdateForwardingUrl(domain.id, e.target.value)}
-                          placeholder="https://example.com" 
-                        />
-                      </TableCell>
-                      <TableCell className="px-1">
-                        <div className="flex">
-                          <Input 
-                            type="text" 
-                            className="bg-mailr-darkgray border border-mailr-lightgray rounded w-1/2 mr-2"
-                            placeholder="John Smith" 
-                            value={newDisplayNameInputs[domain.id] || ''}
-                            onChange={(e) => setNewDisplayNameInputs({...newDisplayNameInputs, [domain.id]: e.target.value})}
-                          />
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => handleAddDisplayName(domain.id)}
-                            className="h-9 w-9 bg-mailr-lightgray/20"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="px-1">
-                        <div className="relative">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <div className="border border-mailr-lightgray rounded p-2 h-[40px] min-h-[40px] cursor-pointer flex justify-between items-center">
-                                <div className="truncate max-w-[200px]">
-                                  {domain.displayNames.length > 0 
-                                    ? domain.displayNames.join(', ') 
-                                    : <span className="text-gray-500">No display names</span>}
-                                </div>
-                                <Button variant="ghost" size="sm" className="p-0">
-                                  <ChevronDown className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent 
-                              className="bg-mailr-darkgray border-mailr-lightgray min-w-[220px]"
-                              align="start"
-                            >
-                              <ScrollArea className="h-[200px] w-full p-2">
-                                {domain.displayNames.length > 0 ? (
-                                  <div className="space-y-2">
-                                    {domain.displayNames.map((name, idx) => (
-                                      <div key={idx} className="flex justify-between items-center">
-                                        <div className="truncate max-w-[170px]">{name}</div>
-                                        <Button 
-                                          variant="ghost" 
-                                          size="sm" 
-                                          onClick={() => handleDeleteDisplayName(domain.id, name)}
-                                          className="text-mailr-red hover:text-red-400 hover:bg-transparent p-0"
-                                        >
-                                          <X className="h-4 w-4" />
-                                        </Button>
-                                      </div>
-                                    ))}
-                                  </div>
-                                ) : (
-                                  <div className="py-2 text-gray-500">No display names</div>
-                                )}
-                              </ScrollArea>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </TableCell>
                       <TableCell className="px-1">
                         <Button 
                           variant="ghost" 

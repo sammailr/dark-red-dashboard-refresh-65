@@ -11,7 +11,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
-
 const Index = () => {
   const {
     isFreeTrial,
@@ -160,12 +159,12 @@ const Index = () => {
           <CardHeader className="pb-2">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
-                <CardTitle className="text-sm font-medium text-gray-400">Subscription</CardTitle>
+                <CardTitle className="text-xl font-bold text-slate-50">Subscription</CardTitle>
               </div>
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="my-[6px]">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Total</p>
@@ -191,7 +190,7 @@ const Index = () => {
 
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">Orders</h2>
+          <h2 className="text-xl font-bold text-slate-50">Orders</h2>
           <FileText className="h-5 w-5 text-gray-400" />
         </div>
         <div className="overflow-x-auto">
@@ -252,5 +251,4 @@ const Index = () => {
       </div>
     </MainLayout>;
 };
-
 export default Index;

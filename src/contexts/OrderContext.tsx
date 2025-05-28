@@ -25,32 +25,63 @@ type OrderContextType = {
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
-// Sample data
+// Sample data that matches the homepage order IDs
 const sampleOrders: Order[] = [
   {
-    id: "ord-001",
-    date: "2025-03-28",
-    status: "processing",
+    id: "ordlgcLwveoDwOOBOWqNnEi",
+    date: "2025-04-15",
+    status: "cancelled",
     domains: [
-      { id: "dom-001", name: "example1.com", status: "pending", progress: 30 },
-      { id: "dom-002", name: "mydomain.net", status: "active", progress: 70 },
+      { id: "dom-001", name: "marketpro.com", status: "cancelled", progress: 0 },
+      { id: "dom-002", name: "bizflow.net", status: "cancelled", progress: 0 },
+      { id: "dom-003", name: "salesedge.org", status: "cancelled", progress: 0 }
     ]
   },
   {
-    id: "ord-002",
-    date: "2025-04-01",
+    id: "ordDYfy4M5FkmloHlIyMls8",
+    date: "2025-04-18",
+    status: "cancelled",
+    domains: [
+      { id: "dom-004", name: "growthtech.io", status: "cancelled", progress: 0 },
+      { id: "dom-005", name: "innovateplus.com", status: "cancelled", progress: 0 }
+    ]
+  },
+  {
+    id: "ordAgVdFyRiSEsg9VpmaTOM",
+    date: "2025-04-18",
+    status: "cancelled",
+    domains: [
+      { id: "dom-006", name: "digitalhub.net", status: "cancelled", progress: 0 },
+      { id: "dom-007", name: "cloudboost.co", status: "cancelled", progress: 0 },
+      { id: "dom-008", name: "webstream.org", status: "cancelled", progress: 0 },
+      { id: "dom-009", name: "techsuite.io", status: "cancelled", progress: 0 }
+    ]
+  },
+  {
+    id: "ordZZzHA1pWq9Cauiz7CA0o",
+    date: "2025-04-20",
+    status: "processing",
+    domains: [
+      { id: "dom-010", name: "automateflow.com", status: "pending", progress: 45 },
+      { id: "dom-011", name: "scalevault.net", status: "active", progress: 100 },
+      { id: "dom-012", name: "databridge.org", status: "pending", progress: 30 }
+    ]
+  },
+  {
+    id: "ordlZ0LHSDi87RSIWBjmLqw",
+    date: "2025-04-22",
+    status: "processing",
+    domains: [
+      { id: "dom-013", name: "smartlead.io", status: "active", progress: 100 },
+      { id: "dom-014", name: "convertmax.com", status: "pending", progress: 65 }
+    ]
+  },
+  {
+    id: "ordKL9mNx2PqRs4TuvWxYz",
+    date: "2025-04-24",
     status: "completed",
     domains: [
-      { id: "dom-003", name: "mybusiness.org", status: "active", progress: 100 },
-      { id: "dom-004", name: "newproject.io", status: "active", progress: 100 },
-    ]
-  },
-  {
-    id: "ord-003",
-    date: "2025-04-03",
-    status: "processing",
-    domains: [
-      { id: "dom-005", name: "startup.co", status: "pending", progress: 50 },
+      { id: "dom-015", name: "reachpeak.net", status: "active", progress: 100 }
     ]
   }
 ];

@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -17,7 +18,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import OrderModal from '@/components/order/OrderModal';
 
 type Domain = {
   id: string;
@@ -30,14 +30,15 @@ type Order = {
   totalDomains: number;
   date: string;
   status: string;
+  provider: 'google' | 'microsoft';
   domains: Domain[];
 };
 
 const Index = () => {
   const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [orderTags, setOrderTags] = useState<Record<string, string>>({});
+  const navigate = useNavigate();
   const ordersPerPage = 3;
 
   // Example data - would typically come from an API
@@ -72,6 +73,7 @@ const Index = () => {
       totalDomains: 1,
       date: 'Apr 15, 2025',
       status: 'canceled',
+      provider: 'google',
       domains: [
         { id: '1', name: 'example1.com', status: 'cancelled' as const }
       ]
@@ -81,6 +83,7 @@ const Index = () => {
       totalDomains: 2,
       date: 'Apr 18, 2025',
       status: 'canceled',
+      provider: 'microsoft',
       domains: [
         { id: '2', name: 'example2.com', status: 'cancelled' as const },
         { id: '3', name: 'example3.com', status: 'cancelled' as const }
@@ -91,6 +94,7 @@ const Index = () => {
       totalDomains: 2,
       date: 'Apr 18, 2025',
       status: 'canceled',
+      provider: 'google',
       domains: [
         { id: '4', name: 'example4.com', status: 'cancelled' as const },
         { id: '5', name: 'example5.com', status: 'cancelled' as const }
@@ -101,6 +105,7 @@ const Index = () => {
       totalDomains: 2,
       date: 'Apr 18, 2025',
       status: 'in progress',
+      provider: 'microsoft',
       domains: [
         { id: '6', name: 'example6.com', status: 'pending' as const },
         { id: '7', name: 'example7.com', status: 'active' as const }
@@ -111,6 +116,7 @@ const Index = () => {
       totalDomains: 1,
       date: 'Apr 22, 2025',
       status: 'in progress',
+      provider: 'google',
       domains: [
         { id: '8', name: 'example8.com', status: 'pending' as const }
       ]
@@ -136,8 +142,29 @@ const Index = () => {
     }
   };
 
+  const getProviderLogo = (provider: 'google' | 'microsoft') => {
+    if (provider === 'google') {
+      return (
+        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+          <div className="text-xs font-bold text-blue-500">G</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="w-6 h-6 bg-blue-500 flex items-center justify-center">
+          <div className="w-3 h-3 grid grid-cols-2 gap-0.5">
+            <div className="bg-white w-1 h-1"></div>
+            <div className="bg-white w-1 h-1"></div>
+            <div className="bg-white w-1 h-1"></div>
+            <div className="bg-white w-1 h-1"></div>
+          </div>
+        </div>
+      );
+    }
+  };
+
   const handleOrderClick = (orderId: string) => {
-    setSelectedOrderId(orderId);
+    navigate(`/orders/${orderId}`);
   };
 
   const handleTagUpdate = (orderId: string, tag: string) => {
@@ -151,8 +178,6 @@ const Index = () => {
   const totalPages = Math.ceil(orderHistory.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
   const paginatedOrders = orderHistory.slice(startIndex, startIndex + ordersPerPage);
-
-  const selectedOrder = orderHistory.find(order => order.id === selectedOrderId);
 
   return (
     <MainLayout title="Dashboard">
@@ -217,6 +242,7 @@ const Index = () => {
               <tr>
                 <th className="text-left py-3 text-gray-400 font-medium">Created</th>
                 <th className="text-left py-3 text-gray-400 font-medium">Total Domains</th>
+                <th className="text-left py-3 text-gray-400 font-medium">Provider</th>
                 <th className="text-left py-3 text-gray-400 font-medium">Tag</th>
                 <th className="text-right py-3 text-gray-400 font-medium">Status</th>
               </tr>
@@ -230,6 +256,9 @@ const Index = () => {
                 >
                   <td className="py-4">{order.date}</td>
                   <td className="py-4">{order.totalDomains}</td>
+                  <td className="py-4">
+                    {getProviderLogo(order.provider)}
+                  </td>
                   <td className="py-4">
                     <input
                       type="text"
@@ -281,12 +310,6 @@ const Index = () => {
           </div>
         )}
       </div>
-
-      <OrderModal 
-        order={selectedOrder || null}
-        isOpen={!!selectedOrderId}
-        onClose={() => setSelectedOrderId(null)}
-      />
     </MainLayout>
   );
 };

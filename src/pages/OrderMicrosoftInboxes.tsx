@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -57,6 +56,9 @@ const OrderMicrosoftInboxesPage = () => {
   const [bulkDisplayName, setBulkDisplayName] = useState('');
   const [bulkDisplayNames, setBulkDisplayNames] = useState<string[]>([]);
   const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<string | null>(null);
+
+  // Calculate total monthly cost
+  const totalMonthlyCost = domains.length * 60;
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -273,6 +275,17 @@ const OrderMicrosoftInboxesPage = () => {
   return (
     <MainLayout title="Order Microsoft Inboxes">
       <div className="space-y-6">
+        {/* Total Monthly Cost Display */}
+        <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-4">
+          <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
+          <p className="text-lg">
+            Total Monthly Cost: <span className="font-bold text-green-400">${totalMonthlyCost.toLocaleString()}/month</span>
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × $60/month each
+          </p>
+        </div>
+
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Domains</h2>

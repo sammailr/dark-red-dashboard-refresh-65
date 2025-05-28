@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+
 const Index = () => {
   const {
     isFreeTrial,
@@ -24,7 +25,7 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [orderTags, setOrderTags] = useState<Record<string, string>>({});
   const navigate = useNavigate();
-  const ordersPerPage = 3;
+  const ordersPerPage = 10;
 
   // Example data - would typically come from an API
   const sendingVolume = 412800;
@@ -197,28 +198,28 @@ const Index = () => {
           <table className="w-full">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-left py-3 text-gray-400 font-medium">Created</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Total Domains</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Provider</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Tag</th>
-                <th className="text-left py-3 text-gray-400 font-medium">Status</th>
-                <th className="text-right py-3 text-gray-400 font-medium">Actions</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Created</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Total Domains</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Provider</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Tag</th>
+                <th className="text-left py-2 text-gray-400 font-medium">Status</th>
+                <th className="text-right py-2 text-gray-400 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
-                  <td className="py-4">{formatDate(order.date)}</td>
-                  <td className="py-2">{order.domains.length}</td>
-                  <td className="py-4">
+                  <td className="py-3">{formatDate(order.date)}</td>
+                  <td className="py-3">{order.domains.length}</td>
+                  <td className="py-3">
                     {getProviderLogo(index)}
                   </td>
-                  <td className="py-4">
+                  <td className="py-3">
                     <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1" />
                   </td>
-                  <td className="py-4">
+                  <td className="py-3">
                     {getStatusBadge(order.status)}
                   </td>
-                  <td className="py-4 text-right">
+                  <td className="py-3 text-right">
                     <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
                       <Eye className="w-3 h-3 mr-1" />
                       View Details
@@ -229,7 +230,7 @@ const Index = () => {
           </table>
         </div>
         
-        {totalPages > 1 && <div className="mt-4">
+        {totalPages > 1 && <div className="flex justify-end mt-2">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
@@ -251,4 +252,5 @@ const Index = () => {
       </div>
     </MainLayout>;
 };
+
 export default Index;

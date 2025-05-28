@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +18,20 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import OrderModal from '@/components/order/OrderModal';
+
+type Domain = {
+  id: string;
+  name: string;
+  status: 'active' | 'pending' | 'cancelled';
+};
+
+type Order = {
+  id: string;
+  totalDomains: number;
+  date: string;
+  status: string;
+  domains: Domain[];
+};
 
 const Index = () => {
   const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
@@ -53,14 +66,14 @@ const Index = () => {
     }
   ];
 
-  const orderHistory = [
+  const orderHistory: Order[] = [
     {
       id: 'ordlgcLwveoDwOOBOWqNnEi',
       totalDomains: 1,
       date: 'Apr 15, 2025',
       status: 'canceled',
       domains: [
-        { id: '1', name: 'example1.com', status: 'cancelled' }
+        { id: '1', name: 'example1.com', status: 'cancelled' as const }
       ]
     },
     {
@@ -69,8 +82,8 @@ const Index = () => {
       date: 'Apr 18, 2025',
       status: 'canceled',
       domains: [
-        { id: '2', name: 'example2.com', status: 'cancelled' },
-        { id: '3', name: 'example3.com', status: 'cancelled' }
+        { id: '2', name: 'example2.com', status: 'cancelled' as const },
+        { id: '3', name: 'example3.com', status: 'cancelled' as const }
       ]
     },
     {
@@ -79,8 +92,8 @@ const Index = () => {
       date: 'Apr 18, 2025',
       status: 'canceled',
       domains: [
-        { id: '4', name: 'example4.com', status: 'cancelled' },
-        { id: '5', name: 'example5.com', status: 'cancelled' }
+        { id: '4', name: 'example4.com', status: 'cancelled' as const },
+        { id: '5', name: 'example5.com', status: 'cancelled' as const }
       ]
     },
     {
@@ -89,8 +102,8 @@ const Index = () => {
       date: 'Apr 18, 2025',
       status: 'in progress',
       domains: [
-        { id: '6', name: 'example6.com', status: 'pending' },
-        { id: '7', name: 'example7.com', status: 'active' }
+        { id: '6', name: 'example6.com', status: 'pending' as const },
+        { id: '7', name: 'example7.com', status: 'active' as const }
       ]
     },
     {
@@ -99,7 +112,7 @@ const Index = () => {
       date: 'Apr 22, 2025',
       status: 'in progress',
       domains: [
-        { id: '8', name: 'example8.com', status: 'pending' }
+        { id: '8', name: 'example8.com', status: 'pending' as const }
       ]
     }
   ];

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -19,11 +18,6 @@ const Sidebar = () => {
       name: 'Order Inboxes', 
       path: '/order-inboxes', 
       icon: <Bell className="h-5 w-5" /> 
-    },
-    { 
-      name: 'Order Google Inboxes', 
-      path: '/order-google-inboxes', 
-      icon: <Globe className="h-5 w-5" /> 
     },
     { 
       name: 'Domains', 

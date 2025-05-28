@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useSubscription } from '@/contexts/SubscriptionContext';
+import { useOrders } from '@/contexts/OrderContext';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -18,23 +20,9 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-type Domain = {
-  id: string;
-  name: string;
-  status: 'active' | 'pending' | 'cancelled';
-};
-
-type Order = {
-  id: string;
-  totalDomains: number;
-  date: string;
-  status: string;
-  provider: 'google' | 'microsoft';
-  domains: Domain[];
-};
-
 const Index = () => {
   const { isFreeTrial, daysRemaining, hasPaymentMethod, subscriptions } = useSubscription();
+  const { orders } = useOrders();
   const [currentPage, setCurrentPage] = useState(1);
   const [orderTags, setOrderTags] = useState<Record<string, string>>({});
   const navigate = useNavigate();
@@ -66,78 +54,6 @@ const Index = () => {
     }
   ];
 
-  const orderHistory: Order[] = [
-    {
-      id: 'ordlgcLwveoDwOOBOWqNnEi',
-      totalDomains: 3,
-      date: 'Apr 15, 2025',
-      status: 'canceled',
-      provider: 'google',
-      domains: [
-        { id: '1', name: 'marketpro.com', status: 'cancelled' as const },
-        { id: '2', name: 'bizflow.net', status: 'cancelled' as const },
-        { id: '3', name: 'salesedge.org', status: 'cancelled' as const }
-      ]
-    },
-    {
-      id: 'ordDYfy4M5FkmloHlIyMls8',
-      totalDomains: 2,
-      date: 'Apr 18, 2025',
-      status: 'canceled',
-      provider: 'microsoft',
-      domains: [
-        { id: '4', name: 'growthtech.io', status: 'cancelled' as const },
-        { id: '5', name: 'innovateplus.com', status: 'cancelled' as const }
-      ]
-    },
-    {
-      id: 'ordAgVdFyRiSEsg9VpmaTOM',
-      totalDomains: 4,
-      date: 'Apr 18, 2025',
-      status: 'canceled',
-      provider: 'google',
-      domains: [
-        { id: '6', name: 'digitalhub.net', status: 'cancelled' as const },
-        { id: '7', name: 'cloudboost.co', status: 'cancelled' as const },
-        { id: '8', name: 'webstream.org', status: 'cancelled' as const },
-        { id: '9', name: 'techsuite.io', status: 'cancelled' as const }
-      ]
-    },
-    {
-      id: 'ordZZzHA1pWq9Cauiz7CA0o',
-      totalDomains: 3,
-      date: 'Apr 20, 2025',
-      status: 'in progress',
-      provider: 'microsoft',
-      domains: [
-        { id: '10', name: 'automateflow.com', status: 'pending' as const },
-        { id: '11', name: 'scalevault.net', status: 'active' as const },
-        { id: '12', name: 'databridge.org', status: 'pending' as const }
-      ]
-    },
-    {
-      id: 'ordlZ0LHSDi87RSIWBjmLqw',
-      totalDomains: 2,
-      date: 'Apr 22, 2025',
-      status: 'in progress',
-      provider: 'google',
-      domains: [
-        { id: '13', name: 'smartlead.io', status: 'active' as const },
-        { id: '14', name: 'convertmax.com', status: 'pending' as const }
-      ]
-    },
-    {
-      id: 'ordKL9mNx2PqRs4TuvWxYz',
-      totalDomains: 1,
-      date: 'Apr 24, 2025',
-      status: 'completed',
-      provider: 'microsoft',
-      domains: [
-        { id: '15', name: 'reachpeak.net', status: 'active' as const }
-      ]
-    }
-  ];
-
   const totalSubscriptionCost = subscriptions
     .filter(sub => sub.status === 'active')
     .reduce((total, sub) => total + (sub.price * sub.quantity), 0);
@@ -148,9 +64,9 @@ const Index = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'canceled':
+      case 'cancelled':
         return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Canceled</Badge>;
-      case 'in progress':
+      case 'processing':
         return <Badge className="bg-amber-600 text-white px-2 py-1 text-xs">In Progress</Badge>;
       case 'completed':
         return <Badge className="bg-green-600 text-white px-2 py-1 text-xs">Completed</Badge>;
@@ -159,7 +75,9 @@ const Index = () => {
     }
   };
 
-  const getProviderLogo = (provider: 'google' | 'microsoft') => {
+  const getProviderLogo = (index: number) => {
+    // Alternate between google and microsoft based on index
+    const provider = index % 2 === 0 ? 'google' : 'microsoft';
     if (provider === 'google') {
       return (
         <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
@@ -191,10 +109,19 @@ const Index = () => {
     }));
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  };
+
   // Pagination logic
-  const totalPages = Math.ceil(orderHistory.length / ordersPerPage);
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
-  const paginatedOrders = orderHistory.slice(startIndex, startIndex + ordersPerPage);
+  const paginatedOrders = orders.slice(startIndex, startIndex + ordersPerPage);
 
   return (
     <MainLayout title="Dashboard">
@@ -266,15 +193,15 @@ const Index = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedOrders.map((order) => (
+              {paginatedOrders.map((order, index) => (
                 <tr 
                   key={order.id} 
                   className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10"
                 >
-                  <td className="py-4">{order.date}</td>
-                  <td className="py-4">{order.totalDomains}</td>
+                  <td className="py-4">{formatDate(order.date)}</td>
+                  <td className="py-4">{order.domains.length}</td>
                   <td className="py-4">
-                    {getProviderLogo(order.provider)}
+                    {getProviderLogo(index)}
                   </td>
                   <td className="py-4">
                     <input

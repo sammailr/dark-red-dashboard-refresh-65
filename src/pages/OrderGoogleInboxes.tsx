@@ -217,9 +217,6 @@ const OrderGoogleInboxesPage = () => {
           <p className="text-lg">
             Total Monthly Cost: <span className="font-bold text-slate-50">${calculateTotalCost().toLocaleString()}/month</span>
           </p>
-          <p className="text-sm text-muted-foreground mb-4">
-            {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × {numberOfInboxes || 0} {numberOfInboxes === '1' ? 'inbox' : 'inboxes'} × $1.50/month each
-          </p>
           
           {/* Pricing Breakdown */}
           <div className="mt-4 pt-4 border-t border-mailr-lightgray">

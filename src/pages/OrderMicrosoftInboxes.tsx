@@ -32,8 +32,24 @@ const OrderMicrosoftInboxesPage = () => {
   const [bulkDisplayNames, setBulkDisplayNames] = useState<string[]>([]);
   const [selectedSendingPlatform, setSelectedSendingPlatform] = useState<string | null>(null);
 
-  // Calculate total monthly cost
-  const totalMonthlyCost = domains.length * 60;
+  // Calculate total monthly cost with tiered pricing
+  const calculateTotalCost = (domainCount: number) => {
+    let totalCost = 0;
+    
+    if (domainCount <= 19) {
+      totalCost = domainCount * 60;
+    } else if (domainCount <= 49) {
+      totalCost = domainCount * 50;
+    } else if (domainCount <= 99) {
+      totalCost = domainCount * 40;
+    } else {
+      totalCost = domainCount * 25;
+    }
+    
+    return totalCost;
+  };
+
+  const totalMonthlyCost = calculateTotalCost(domains.length);
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -210,9 +226,6 @@ const OrderMicrosoftInboxesPage = () => {
           <p className="text-lg font-medium text-white">
             Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
           </p>
-          <p className="text-sm text-[#B0B0B0] mt-1 mb-4">
-            {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × $60/month each
-          </p>
           
           {/* Pricing Breakdown Section */}
           <div className="mt-4 pt-4 border-t border-[#2D2D2D]">
@@ -325,14 +338,14 @@ const OrderMicrosoftInboxesPage = () => {
                 <Input 
                   id="addDomain" 
                   type="text" 
-                  className="bg-[#101010] border-[#D93737] text-white placeholder:text-[#777] rounded-md focus:border-[#D93737] focus:ring-1 focus:ring-[#D93737]" 
+                  className="bg-[#101010] border-[#B85450] text-white placeholder:text-[#777] rounded-md focus:border-[#C66B67] focus:ring-1 focus:ring-[#C66B67]/30" 
                   value={newDomain} 
                   onChange={e => setNewDomain(e.target.value)} 
                   placeholder="Enter domain" 
                 />
                 <Button 
                   variant="outline" 
-                  className="bg-[#E00000] border-[#E00000] text-white hover:bg-white hover:text-[#E00000] hover:border-[#E00000] rounded-md px-4 transition-colors" 
+                  className="bg-[#C85A56] border-[#C85A56] text-white hover:bg-[#D16862] hover:border-[#D16862] rounded-md px-4 transition-colors" 
                   onClick={handleAddDomain}
                 >
                   <Plus className="h-4 w-4" />

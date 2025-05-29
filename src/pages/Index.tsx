@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -265,9 +264,12 @@ const Index = () => {
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
               <div className="space-y-3">
-                <div>
-                  <div className="text-3xl font-bold text-white mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 leading-none" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
-                    {stat.value}
+                <div className="flex items-center gap-6">
+                  <div>
+                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
+                      {stat.value}
+                    </div>
+                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Monthly Volume</div>
                   </div>
                 </div>
               </div>

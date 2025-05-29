@@ -232,7 +232,13 @@ const OrderGoogleInboxesPage = () => {
     // Check minimum order requirement
     const totalInboxes = getTotalInboxes();
     if (totalInboxes < 30) {
-      toast.error('The minimum order is 30 inboxes');
+      toast.error('The minimum order is 30 inboxes', {
+        style: {
+          background: '#dc2626',
+          color: 'white',
+          border: '1px solid #b91c1c'
+        }
+      });
       return;
     }
     
@@ -273,7 +279,7 @@ const OrderGoogleInboxesPage = () => {
           <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
           <div className="border-b border-[#2D2D2D] pb-4 mb-4">
             <p className="text-lg font-medium text-white">
-              Total Monthly Cost: <span className="font-bold text-white">${calculateTotalCost().toLocaleString()}/month</span>
+              Total Monthly Cost: <span className="font-bold text-white">${calculateTotalCost().toFixed(2)}/month</span>
             </p>
             <div className="mt-2 space-y-1">
               <p className="text-sm text-[#B0B0B0]">

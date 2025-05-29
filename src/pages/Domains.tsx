@@ -692,11 +692,11 @@ const DomainsPage = () => {
                     />
                   </div>
                 </TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[28%]">Domain</TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[32%]">Forwarding URL</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[25%]">Domain</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[25%]">Forwarding URL</TableHead>
                 <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[15%]">Status</TableHead>
                 <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[10%]">Provider</TableHead>
-                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[12%] whitespace-nowrap">Swap Domain</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[15%] whitespace-nowrap">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -720,8 +720,8 @@ const DomainsPage = () => {
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-3 font-medium text-white text-left w-[28%]">{domain.domain}</TableCell>
-                  <TableCell className="px-4 py-3 text-gray-300 text-left w-[32%]">{domain.url}</TableCell>
+                  <TableCell className="px-4 py-3 font-medium text-white text-left w-[25%]">{domain.domain}</TableCell>
+                  <TableCell className="px-4 py-3 text-gray-300 text-left w-[25%]">{domain.url}</TableCell>
                   <TableCell className="px-4 py-3 text-left w-[15%]">
                     {getStatusBadge(domain.status)}
                   </TableCell>
@@ -730,23 +730,42 @@ const DomainsPage = () => {
                       {getProviderIcon(domain.provider)}
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-3 w-[12%]">
-                    <div className="flex justify-center">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button 
-                            variant="ghost"
-                            size="sm" 
-                            onClick={() => openSwapConfirmation(domain)}
-                            className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-[#2A2A2A] rounded-md"
-                          >
-                            <ArrowLeftRight className="h-4 w-4" />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
-                          Swap domain
-                        </TooltipContent>
-                      </Tooltip>
+                  <TableCell className="px-4 py-3 w-[15%]">
+                    <div className="flex justify-center gap-2">
+                      {domain.status === 'Update Nameservers' && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button 
+                              variant="ghost"
+                              size="sm" 
+                              onClick={() => handleNameserverClick(domain.id)}
+                              className="h-8 px-3 text-xs text-blue-400 hover:text-white hover:bg-[#2A2A2A] rounded-md"
+                            >
+                              Instructions
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
+                            View nameserver instructions
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                      {domain.provider === 'Microsoft' && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button 
+                              variant="ghost"
+                              size="sm" 
+                              onClick={() => openSwapConfirmation(domain)}
+                              className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-[#2A2A2A] rounded-md"
+                            >
+                              <ArrowLeftRight className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
+                            Swap domain
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

@@ -341,7 +341,7 @@ const Index = () => {
               </CardHeader>
               <CardContent className="pt-0 pb-7 px-7 relative z-10">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-6 mt-3">
+                  <div className="flex items-center gap-6 mt-2">
                     <div>
                       <div className="text-3xl font-bold text-white mb-1 leading-none">
                         {stat.value}

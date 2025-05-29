@@ -45,8 +45,11 @@ const Sidebar = () => {
   return (
     <div className="fixed top-0 left-0 w-64 h-full bg-mailr-darkgray border-r border-mailr-lightgray z-10">
       <div className="p-8 border-b border-mailr-lightgray">
-        <h1 className="text-2xl font-bold text-mailr-red mb-2">Mailr</h1>
-        <p className="text-gray-400 text-sm font-medium">Smart Email Solution</p>
+        <img 
+          src="https://mailr.io/logo.svg" 
+          alt="mailr.io" 
+          className="h-8"
+        />
       </div>
       
       <nav className="mt-8 px-4">

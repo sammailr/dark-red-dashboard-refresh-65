@@ -43,8 +43,8 @@ const Sidebar = () => {
   ];
   
   return (
-    <div className="fixed top-0 left-0 w-64 h-full bg-white border-r border-gray-200 z-10">
-      <div className="p-6 border-b border-gray-100">
+    <div className="fixed top-0 left-0 w-64 h-full bg-mailr-darkgray border-r border-mailr-lightgray z-10">
+      <div className="p-6 border-b border-mailr-lightgray">
         <img 
           src="/lovable-uploads/8f9bba41-ada3-4cc0-9a48-66e8eeb37fc0.png" 
           alt="Mailr" 
@@ -52,26 +52,20 @@ const Sidebar = () => {
         />
       </div>
       
-      <nav className="mt-2">
-        <ul className="space-y-1 px-3">
+      <nav className="mt-6">
+        <ul>
           {menuItems.map((item) => (
             <li key={item.name}>
               <Link
                 to={item.path}
-                className={`flex items-center py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors group ${
-                  isActive(item.path) 
-                    ? 'bg-red-50 text-red-600 font-medium' 
-                    : 'text-gray-700 hover:text-gray-900'
+                className={`flex items-center py-3 px-6 hover:bg-mailr-lightgray/10 transition-colors ${
+                  isActive(item.path) ? 'bg-mailr-lightgray/20 border-l-4 border-mailr-red' : ''
                 }`}
               >
-                <span className={`mr-3 ${
-                  isActive(item.path) 
-                    ? 'text-red-600' 
-                    : 'text-gray-400 group-hover:text-gray-600'
-                }`}>
+                <span className={`mr-3 ${isActive(item.path) ? 'text-mailr-red' : 'text-gray-400'}`}>
                   {item.icon}
                 </span>
-                <span className="text-sm">
+                <span className={isActive(item.path) ? 'text-white' : 'text-gray-400'}>
                   {item.name}
                 </span>
               </Link>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,7 @@ const OrderInboxesPage = () => {
   };
 
   return (
-    <MainLayout title="ORDER INBOXES">
+    <MainLayout title="Order Inboxes">
       <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-12">
         <div className="text-center space-y-3">
           <h2 className="text-2xl font-bold tracking-widest text-white uppercase">SELECT PROVIDER</h2>

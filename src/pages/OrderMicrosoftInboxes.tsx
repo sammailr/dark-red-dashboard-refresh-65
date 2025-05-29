@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -179,6 +178,16 @@ const OrderMicrosoftInboxesPage = () => {
       ...domain,
       selected
     })));
+  };
+
+  const deleteSelectedDomains = () => {
+    const selectedCount = domains.filter(domain => domain.selected).length;
+    if (selectedCount === 0) {
+      toast.error('Please select at least one domain to delete');
+      return;
+    }
+    setDomains(prevDomains => prevDomains.filter(domain => !domain.selected));
+    toast.success(`Deleted ${selectedCount} selected domains`);
   };
 
   const resetDisplayNames = () => {
@@ -394,7 +403,17 @@ const OrderMicrosoftInboxesPage = () => {
                     <TableHead className="px-1 text-[#B0B0B0] font-medium">Forwarding URL</TableHead>
                     <TableHead className="w-1/5 px-1 text-[#B0B0B0] font-medium">Add Display Names</TableHead>
                     <TableHead className="w-1/4 px-1 text-[#B0B0B0] font-medium">Display Names</TableHead>
-                    <TableHead className="w-16 px-1 text-[#B0B0B0] font-medium">Delete</TableHead>
+                    <TableHead className="w-16 px-1 text-[#B0B0B0] font-medium">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={deleteSelectedDomains}
+                        disabled={selectedCount === 0}
+                        className={`text-red-400 hover:text-red-300 hover:bg-transparent ${selectedCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        Delete
+                      </Button>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

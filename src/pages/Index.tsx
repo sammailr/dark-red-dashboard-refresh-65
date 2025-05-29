@@ -226,7 +226,7 @@ const Index = () => {
             </CardContent>
           </Card>)}
         
-        {/* Enhanced Sending Volume Card with matching height */}
+        {/* Enhanced Sending Volume Card with matching height and smaller font sizes */}
         {dashboardStats.map(stat => (
           <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
             {/* Enhanced background elements with hover state */}
@@ -253,10 +253,10 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              <div className="text-4xl font-bold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
+              <div className="text-3xl font-bold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
                 {stat.value}
               </div>
-              <div className="text-sm text-green-400/60 flex items-center font-medium transition-colors duration-300 group-hover:text-green-400/80">
+              <div className="text-xs text-green-400/60 flex items-center font-medium transition-colors duration-300 group-hover:text-green-400/80">
                 <TrendingUp className="h-3 w-3 mr-1 transition-transform duration-300 group-hover:scale-110" />
                 +12.5% from last month
               </div>

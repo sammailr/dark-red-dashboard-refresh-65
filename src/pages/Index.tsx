@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -182,7 +181,7 @@ const Index = () => {
       {/* Top row with provider cards and total card */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
         {/* Enhanced Provider Stats with improved height and metric layout */}
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
             {/* Enhanced background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
             
@@ -211,7 +210,7 @@ const Index = () => {
                 <div className="flex-shrink-0 relative group">
                   {/* Updated circle with exact gradients and glows to match order inboxes page */}
                   <div 
-                    className="absolute inset-0 w-12 h-12 rounded-full transition-all duration-300 group-hover:scale-110"
+                    className="absolute inset-0 w-12 h-12 rounded-full transition-all duration-300"
                     style={{
                       background: provider.provider === 'Microsoft' 
                         ? 'linear-gradient(to bottom, #3E78FA, #1F5BEA)' 
@@ -221,11 +220,11 @@ const Index = () => {
                         : '0 0 12px rgba(241, 65, 61, 0.35)'
                     }}
                   ></div>
-                  <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
+                  <div className="w-12 h-12 flex items-center justify-center relative z-10">
                     {provider.provider === 'Microsoft' ? (
-                      <i className="fa-brands fa-microsoft text-white text-2xl transition-all duration-300 group-hover:text-white"></i>
+                      <i className="fa-brands fa-microsoft text-white text-2xl"></i>
                     ) : (
-                      <i className="fa-brands fa-google text-white text-2xl transition-all duration-300 group-hover:text-white"></i>
+                      <i className="fa-brands fa-google text-white text-2xl"></i>
                     )}
                   </div>
                 </div>
@@ -236,11 +235,11 @@ const Index = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-6">
                   <div>
-                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{provider.domains}</div>
+                    <div className="text-3xl font-bold text-white mb-1 leading-none">{provider.domains}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{provider.mailboxes}</div>
+                    <div className="text-3xl font-bold text-white mb-1 leading-none">{provider.mailboxes}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Inboxes</div>
                   </div>
                 </div>
@@ -249,7 +248,7 @@ const Index = () => {
           </Card>)}
         
         {/* Total Card with matching design */}
-        <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
+        <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
           {/* Enhanced background texture */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
           
@@ -270,14 +269,14 @@ const Index = () => {
               <div className="flex-shrink-0 relative group">
                 {/* Purple circle with gradient and glow */}
                 <div 
-                  className="absolute inset-0 w-12 h-12 rounded-full transition-all duration-300 group-hover:scale-110"
+                  className="absolute inset-0 w-12 h-12 rounded-full transition-all duration-300"
                   style={{
                     background: 'linear-gradient(to bottom, #9333EA, #7C3AED)',
                     boxShadow: '0 0 12px rgba(147, 51, 234, 0.35)'
                   }}
                 ></div>
-                <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
-                  <Globe className="text-white text-2xl transition-all duration-300 group-hover:text-white" />
+                <div className="w-12 h-12 flex items-center justify-center relative z-10">
+                  <Globe className="text-white text-2xl" />
                 </div>
               </div>
             </div>
@@ -287,11 +286,11 @@ const Index = () => {
             <div className="space-y-3">
               <div className="flex items-center gap-6">
                 <div>
-                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{totalDomains}</div>
+                  <div className="text-3xl font-bold text-white mb-1 leading-none">{totalDomains}</div>
                   <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{totalMailboxes}</div>
+                  <div className="text-3xl font-bold text-white mb-1 leading-none">{totalMailboxes}</div>
                   <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Inboxes</div>
                 </div>
               </div>
@@ -304,7 +303,7 @@ const Index = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
         {/* Redesigned Subscription Card to match other top cards */}
         <div className="lg:col-span-2">
-          <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
+          <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
             {/* Enhanced background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
             
@@ -323,32 +322,32 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
                 </div>
                 <Link to="/subscriptions">
-                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-3 py-1.5 rounded-lg border border-transparent hover:border-white/15 font-medium hover:scale-105">
+                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-3 py-1.5 rounded-lg border border-transparent hover:border-white/15 font-medium">
                     View All
                   </Button>
                 </Link>
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {/* Main price display matching other cards */}
                 <div className="flex items-baseline gap-2">
-                  <div className="text-3xl font-bold text-white transition-all duration-300 group-hover:scale-105 leading-none">${totalSubscriptionCost.toLocaleString()}</div>
+                  <div className="text-3xl font-bold text-white leading-none">${totalSubscriptionCost.toLocaleString()}</div>
                   <div className="text-sm text-gray-500 font-medium">/month</div>
                 </div>
                 
-                {/* Supporting information stacked vertically */}
-                <div className="space-y-2">
+                {/* Supporting information stacked vertically with tight spacing */}
+                <div className="space-y-1">
                   <div>
-                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</div>
-                    <div className="text-lg font-medium text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</div>
+                    <div className="text-xs text-gray-400 font-medium">Next Billing</div>
+                    <div className="text-base font-medium text-white">${nextBillingAmount.toLocaleString()}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-400 font-medium flex items-center gap-1 transition-colors duration-300 group-hover:text-gray-300">
+                    <div className="text-xs text-gray-400 font-medium flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       Due Date
                     </div>
-                    <div className="text-sm font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</div>
+                    <div className="text-sm font-semibold text-red-400">{getNextBillingDate()}</div>
                   </div>
                 </div>
               </div>
@@ -359,7 +358,7 @@ const Index = () => {
         {/* Enhanced Sending Volume Card moved to right side */}
         <div className="lg:col-span-1">
           {dashboardStats.map(stat => (
-            <Card key={stat.title} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
+            <Card key={stat.title} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[160px]">
               {/* Enhanced background elements with hover state */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/10 to-transparent transition-all duration-300 group-hover:via-green-400/15"></div>
@@ -377,14 +376,14 @@ const Index = () => {
                   </div>
                   <div className="relative">
                     {/* Enhanced sparkline with hover animation */}
-                    <div className="flex items-end space-x-0.5 opacity-40 transition-all duration-300 group-hover:opacity-60 group-hover:scale-105">
-                      <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-3"></div>
-                      <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-4"></div>
-                      <div className="w-1 h-1 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-2"></div>
-                      <div className="w-1 h-4 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-5"></div>
-                      <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-3"></div>
-                      <div className="w-1 h-5 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-6"></div>
-                      <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm transition-all duration-300 group-hover:h-4"></div>
+                    <div className="flex items-end space-x-0.5 opacity-40 transition-all duration-300 group-hover:opacity-60">
+                      <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-1 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-4 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-5 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                      <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
                     </div>
                   </div>
                 </div>
@@ -393,7 +392,7 @@ const Index = () => {
                 <div className="space-y-3">
                   <div className="flex items-center gap-6 mt-4">
                     <div>
-                      <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">
+                      <div className="text-3xl font-bold text-white mb-1 leading-none">
                         {stat.value}
                       </div>
                     </div>

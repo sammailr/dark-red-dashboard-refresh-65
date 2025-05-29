@@ -175,40 +175,60 @@ const Index = () => {
   return <MainLayout title="Dashboard">
       {/* Enhanced Provider Stats and Premium Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-        {/* Enhanced Provider Stats with premium hover effects */}
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg">
+        {/* Enhanced Provider Stats with improved height and metric layout */}
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
             {/* Enhanced background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
+            
+            {/* Subtle background accent for consistency */}
+            <div className="absolute top-4 right-4 opacity-10 transition-all duration-300 group-hover:opacity-15">
+              <div className="flex items-end space-x-0.5">
+                <div className="w-1 h-3 bg-gradient-to-t from-gray-600/50 to-gray-400/50 rounded-sm"></div>
+                <div className="w-1 h-4 bg-gradient-to-t from-gray-600/50 to-gray-400/50 rounded-sm"></div>
+                <div className="w-1 h-2 bg-gradient-to-t from-gray-600/50 to-gray-400/50 rounded-sm"></div>
+                <div className="w-1 h-5 bg-gradient-to-t from-gray-600/50 to-gray-400/50 rounded-sm"></div>
+              </div>
+            </div>
             
             {/* Enhanced provider-specific accent border with glow effect */}
             <div className={`absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/20 to-transparent group-hover:via-blue-500/30' : 'bg-gradient-to-r from-transparent via-red-500/20 to-transparent group-hover:via-red-500/30'}`}></div>
             
-            <CardContent className="p-7 relative z-10 flex items-center gap-4 h-full">
-              <div className="flex-shrink-0 relative group">
-                {/* Enhanced circle with hover glow */}
-                <div className={`absolute inset-0 w-12 h-12 rounded-full opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:scale-110 ${provider.provider === 'Microsoft' ? 'bg-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-red-400 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]'}`}></div>
-                <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
-                  {provider.provider === 'Microsoft' ? (
-                    <i className="fa-brands fa-microsoft text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.4)]"></i>
-                  ) : (
-                    <i className="fa-brands fa-google text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"></i>
-                  )}
+            <CardHeader className="pb-3 pt-7 px-7 relative z-10">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">{provider.provider.toUpperCase()}</p>
+                </div>
+                <div className="flex-shrink-0 relative group">
+                  {/* Enhanced circle with hover glow */}
+                  <div className={`absolute inset-0 w-12 h-12 rounded-full opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:scale-110 ${provider.provider === 'Microsoft' ? 'bg-blue-400 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-red-400 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]'}`}></div>
+                  <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
+                    {provider.provider === 'Microsoft' ? (
+                      <i className="fa-brands fa-microsoft text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.4)]"></i>
+                    ) : (
+                      <i className="fa-brands fa-google text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"></i>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#B0B0B0] mb-2 leading-tight transition-colors duration-300 group-hover:text-[#C0C0C0]">
-                  {provider.provider.toUpperCase()}
-                </p>
-                <p className="text-[16px] font-medium text-[#F0F0F0] leading-tight tracking-[-0.01em] transition-colors duration-300 group-hover:text-white">
-                  {provider.domains} Domains • {provider.mailboxes} Mailboxes
-                </p>
+            </CardHeader>
+            <CardContent className="pt-0 pb-7 px-7 relative z-10">
+              {/* Split metrics into two distinct stacked lines */}
+              <div className="space-y-3">
+                <div>
+                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.domains}</div>
+                  <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.mailboxes}</div>
+                  <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Mailboxes</div>
+                </div>
               </div>
             </CardContent>
           </Card>)}
         
-        {/* Enhanced Sending Volume Card with premium animations */}
+        {/* Enhanced Sending Volume Card with matching height */}
         {dashboardStats.map(stat => (
-          <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group">
+          <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
             {/* Enhanced background elements with hover state */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/2 to-transparent transition-all duration-300 group-hover:via-green-500/3"></div>
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/10 to-transparent transition-all duration-300 group-hover:via-green-400/15"></div>
@@ -245,16 +265,16 @@ const Index = () => {
         ))}
       </div>
 
-      {/* Enhanced Subscription Section with premium styling */}
+      {/* Enhanced Subscription Section with tighter spacing and matching height */}
       <div className="mb-10">
-        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group">
+        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[160px]">
           {/* Enhanced background elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent transition-all duration-300 group-hover:via-red-500/3"></div>
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/12 to-transparent transition-all duration-300 group-hover:via-red-400/18"></div>
           
-          <CardHeader className="pb-6 pt-7 px-7 relative z-10">
+          <CardHeader className="pb-4 pt-7 px-7 relative z-10">
             <div className="flex justify-between items-start">
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
                 <CardTitle className="text-4xl font-bold text-white transition-all duration-300 group-hover:scale-105">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 font-normal ml-1">/month</span></CardTitle>
               </div>
@@ -265,8 +285,8 @@ const Index = () => {
               </Link>
             </div>
           </CardHeader>
-          <CardContent className="pt-0 pb-7 px-7 relative z-10">
-            <div className="flex items-center justify-between mb-6">
+          <CardContent className="pt-0 pb-6 px-7 relative z-10">
+            <div className="flex items-center justify-between mb-3">
               <div>
                 <p className="text-sm text-gray-400 mb-1 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</p>
                 <p className="text-xl font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</p>
@@ -279,8 +299,6 @@ const Index = () => {
                 <p className="text-lg font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</p>
               </div>
             </div>
-            {/* Enhanced divider line with gradient */}
-            <div className="h-[1px] bg-gradient-to-r from-transparent via-white/12 to-transparent mb-5 transition-all duration-300 group-hover:via-white/18"></div>
             <div className="flex items-center text-xs text-gray-500 transition-colors duration-300 group-hover:text-gray-400">
               <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/20 transition-all duration-300 group-hover:shadow-green-400/40 group-hover:scale-110"></div>
               Active subscription • Auto-renewal enabled

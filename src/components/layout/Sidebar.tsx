@@ -44,25 +44,35 @@ const Sidebar = () => {
   
   return (
     <div className="fixed top-0 left-0 w-64 h-full bg-mailr-darkgray border-r border-mailr-lightgray z-10">
-      <div className="p-6 border-b border-mailr-lightgray">
-        <h1 className="text-2xl font-bold text-mailr-red">Mailr</h1>
-        <p className="text-gray-400 text-sm">Smart Email Solution</p>
+      <div className="p-8 border-b border-mailr-lightgray">
+        <h1 className="text-2xl font-bold text-mailr-red mb-2">Mailr</h1>
+        <p className="text-gray-400 text-sm font-medium">Smart Email Solution</p>
       </div>
       
-      <nav className="mt-6">
-        <ul>
+      <nav className="mt-8 px-4">
+        <ul className="space-y-2">
           {menuItems.map((item) => (
             <li key={item.name}>
               <Link
                 to={item.path}
-                className={`flex items-center py-3 px-6 hover:bg-mailr-lightgray/10 transition-colors ${
-                  isActive(item.path) ? 'bg-mailr-lightgray/20 border-l-4 border-mailr-red' : ''
+                className={`flex items-center py-3 px-4 rounded-xl transition-all duration-200 group relative ${
+                  isActive(item.path) 
+                    ? 'bg-mailr-red/10 border-l-4 border-mailr-red shadow-lg shadow-mailr-red/20' 
+                    : 'hover:bg-mailr-lightgray/10'
                 }`}
               >
-                <span className={`mr-3 ${isActive(item.path) ? 'text-mailr-red' : 'text-gray-400'}`}>
+                <span className={`mr-3 transition-colors duration-200 ${
+                  isActive(item.path) 
+                    ? 'text-mailr-red' 
+                    : 'text-gray-400 group-hover:text-gray-300'
+                }`}>
                   {item.icon}
                 </span>
-                <span className={isActive(item.path) ? 'text-white' : 'text-gray-400'}>
+                <span className={`font-medium transition-colors duration-200 ${
+                  isActive(item.path) 
+                    ? 'text-mailr-red' 
+                    : 'text-gray-400 group-hover:text-gray-300'
+                }`}>
                   {item.name}
                 </span>
               </Link>

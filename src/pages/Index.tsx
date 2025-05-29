@@ -316,7 +316,7 @@ const Index = () => {
               style={{ boxShadow: 'inset 0 -1px 4px rgba(249, 115, 22, 0.25)' }}
             ></div>
             
-            <CardHeader className="pb-3 pt-7 px-7 relative z-10">
+            <CardHeader className="pb-3 pt-4 px-7 relative z-10">
               <div className="flex justify-between items-center">
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>

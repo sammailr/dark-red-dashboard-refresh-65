@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -225,6 +226,9 @@ const OrderMicrosoftInboxesPage = () => {
           <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
           <p className="text-lg font-medium text-white">
             Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
+          </p>
+          <p className="text-sm text-[#B0B0B0] mt-1 mb-4">
+            Domains Added: {domains.length}
           </p>
           
           {/* Pricing Breakdown Section */}

@@ -418,8 +418,8 @@ const OrderMicrosoftInboxesPage = () => {
                     </TableHead>
                     <TableHead className="px-1 text-[#B0B0B0] font-medium">Domain</TableHead>
                     <TableHead className="px-1 text-[#B0B0B0] font-medium">Forwarding URL</TableHead>
-                    <TableHead className="w-1/6 px-1 text-[#B0B0B0] font-medium">Add Display Names</TableHead>
-                    <TableHead className="w-1/5 px-1 text-[#B0B0B0] font-medium">Display Names</TableHead>
+                    <TableHead className="w-1/4 px-1 text-[#B0B0B0] font-medium">Add Display Names</TableHead>
+                    <TableHead className="w-1/6 px-1 text-[#B0B0B0] font-medium">Display Names</TableHead>
                     <TableHead className="w-16 px-1 text-[#B0B0B0] font-medium">
                       <Button 
                         variant="ghost" 

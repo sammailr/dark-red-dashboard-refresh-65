@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Copy, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Copy, CheckCircle, PlayCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const NameserverUpdatePage = () => {
@@ -33,6 +34,14 @@ const NameserverUpdatePage = () => {
     toast({
       title: "Copied!",
       description: "All nameservers copied to clipboard."
+    });
+  };
+
+  const handleTutorialClick = () => {
+    // This would typically open a tutorial modal or navigate to a tutorial page
+    toast({
+      title: "Tutorial",
+      description: "Nameserver tutorial would open here."
     });
   };
 
@@ -93,6 +102,17 @@ const NameserverUpdatePage = () => {
                   </Button>
                 </div>
               </div>
+            </div>
+
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={handleTutorialClick}
+                className="bg-transparent border-mailr-lightgray text-white hover:bg-mailr-lightgray/20"
+              >
+                <PlayCircle className="h-4 w-4 mr-2" />
+                Updating Nameservers Tutorial
+              </Button>
             </div>
 
             <div className="bg-blue-900/20 border border-blue-400/30 rounded-md p-4">

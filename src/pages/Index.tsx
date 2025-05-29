@@ -288,9 +288,6 @@ const Index = () => {
                     <DollarSign className="h-6 w-6 text-orange-500/60" />
                   </div>
                 </div>
-                <Link to="/subscriptions">
-                  
-                </Link>
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">

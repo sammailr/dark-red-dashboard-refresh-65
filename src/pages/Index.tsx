@@ -183,12 +183,18 @@ const Index = () => {
             {/* Enhanced provider-specific accent border with glow effect */}
             <div className={`absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/20 to-transparent group-hover:via-blue-500/30' : 'bg-gradient-to-r from-transparent via-red-500/20 to-transparent group-hover:via-red-500/30'}`}></div>
             
-            {/* Added bottom border glow for Microsoft card to match Google card */}
+            {/* Updated bottom glow for Microsoft and Google cards */}
             {provider.provider === 'Microsoft' && (
-              <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ boxShadow: 'inset 0 -2px 0 0 #3E78FA' }}></div>
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-[8px]" 
+                style={{ boxShadow: 'inset 0 -1px 4px rgba(62, 120, 250, 0.25)' }}
+              ></div>
             )}
             {provider.provider === 'Google' && (
-              <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ boxShadow: 'inset 0 -2px 0 0 #F1413D' }}></div>
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-[8px]" 
+                style={{ boxShadow: 'inset 0 -1px 4px rgba(241, 65, 61, 0.25)' }}
+              ></div>
             )}
             
             <CardHeader className="pb-3 pt-7 px-7 relative z-10">

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, Search, Filter, Upload } from 'lucide-react';
+import { AlertTriangle, Search, Filter, Download } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -554,7 +554,7 @@ const DomainsPage = () => {
     };
     
     return (
-      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusStyles[status as keyof typeof statusStyles] || statusStyles.Pending}`}>
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap ${statusStyles[status as keyof typeof statusStyles] || statusStyles.Pending}`}>
         {status}
       </span>
     );
@@ -562,10 +562,10 @@ const DomainsPage = () => {
 
   return (
     <MainLayout title="Manage Domains">
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Header Section */}
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-white tracking-wide">MANAGE DOMAINS</h1>
+          <h1 className="text-xl font-bold text-white">Manage Domains</h1>
           
           <div className="flex items-center gap-3">
             {/* Search Input */}
@@ -575,7 +575,7 @@ const DomainsPage = () => {
                 placeholder="Search domains or URLs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-80 h-10 bg-[#1a1a1a] border-[#333] text-white placeholder:text-gray-500 focus:border-gray-400 focus:ring-0 shadow-inner"
+                className="pl-10 w-80 h-10 bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 focus:border-[#E00000] focus:ring-0 shadow-[inset_0_0_0_1px_#333]"
               />
             </div>
             
@@ -585,9 +585,9 @@ const DomainsPage = () => {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="h-10 px-4 bg-[#1a1a1a] border-[#333] text-white hover:bg-[#262626] hover:border-gray-400 rounded-md"
+                  className="h-10 px-4 bg-[#1E1E1E] border-[#444] text-white hover:bg-[#2A2A2A] hover:border-[#555] rounded-md shadow-[inset_0_0_0_1px_#333]"
                 >
-                  <Upload className="h-4 w-4" />
+                  <Download className="h-4 w-4" />
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent className="bg-[#1a1a1a] border-[#333]">
@@ -603,7 +603,7 @@ const DomainsPage = () => {
                   </AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={handleExport}
-                    className="bg-[#9b1313] hover:bg-[#7a0f0f] text-white"
+                    className="bg-[#E00000] hover:bg-[#CC0000] text-white"
                   >
                     Export
                   </AlertDialogAction>
@@ -618,10 +618,10 @@ const DomainsPage = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className={`h-10 px-4 bg-[#1a1a1a] border-[#333] text-white rounded-md ${
+            className={`h-10 px-4 bg-[#1E1E1E] border-[#444] text-white rounded-md shadow-[inset_0_0_0_1px_#333] ${
               selectedDomainIds.length === 0 
-                ? 'opacity-50 cursor-not-allowed hover:bg-[#1a1a1a] hover:border-[#333]' 
-                : 'hover:bg-[#262626] hover:border-gray-400'
+                ? 'opacity-50 cursor-not-allowed hover:bg-[#1E1E1E] hover:border-[#444]' 
+                : 'hover:bg-[#2A2A2A] hover:border-[#555]'
             }`}
             disabled={selectedDomainIds.length === 0}
             onClick={() => setIsBulkUpdateOpen(true)}
@@ -631,7 +631,7 @@ const DomainsPage = () => {
           
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="h-10 px-4 bg-[#1a1a1a] border-[#333] text-white hover:bg-[#262626] hover:border-gray-400 rounded-md">
+              <Button variant="outline" size="sm" className="h-10 px-4 bg-[#1E1E1E] border-[#444] text-white hover:bg-[#2A2A2A] hover:border-[#555] rounded-md shadow-[inset_0_0_0_1px_#333]">
                 <Filter className="h-4 w-4" />
               </Button>
             </PopoverTrigger>
@@ -683,20 +683,20 @@ const DomainsPage = () => {
         {/* Table Section */}
         <div className="bg-[#1a1a1a] rounded-lg border border-[#333] shadow-lg overflow-hidden">
           <Table>
-            <TableHeader className="bg-[#0f0f0f] border-b border-[#2d2d2d]">
+            <TableHeader className="bg-[#1A1A1A] border-b border-[#2d2d2d]">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-12 py-4">
+                <TableHead className="w-12 py-3">
                   <Checkbox 
                     checked={isAllSelected}
                     onCheckedChange={handleSelectAll}
-                    className="border-gray-500 data-[state=checked]:bg-[#9b1313] data-[state=checked]:border-[#9b1313]"
+                    className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
                   />
                 </TableHead>
-                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Domain</TableHead>
-                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
-                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Status</TableHead>
-                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Provider</TableHead>
-                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
+                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Domain</TableHead>
+                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
+                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Status</TableHead>
+                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Provider</TableHead>
+                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -706,31 +706,31 @@ const DomainsPage = () => {
                   className={`
                     border-b border-[#2d2d2d] transition-colors
                     ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#1f1f1f]'}
-                    hover:bg-[#262626]
+                    hover:bg-[#252525]
                   `}
                 >
-                  <TableCell className="py-3">
+                  <TableCell className="py-2.5">
                     <Checkbox 
                       checked={selectedDomainIds.includes(domain.id)}
                       onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
-                      className="border-gray-500 data-[state=checked]:bg-[#9b1313] data-[state=checked]:border-[#9b1313]"
+                      className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
                     />
                   </TableCell>
-                  <TableCell className="py-3 font-medium text-white">{domain.domain}</TableCell>
-                  <TableCell className="py-3 text-gray-300">{domain.url}</TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="py-2.5 font-medium text-white">{domain.domain}</TableCell>
+                  <TableCell className="py-2.5 text-gray-300">{domain.url}</TableCell>
+                  <TableCell className="py-2.5">
                     {getStatusBadge(domain.status)}
                   </TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="py-2.5">
                     {getProviderIcon(domain.provider)}
                   </TableCell>
-                  <TableCell className="py-3">
+                  <TableCell className="py-2.5">
                     {domain.status === 'Update Nameservers' && (
                       <Button 
                         variant="ghost"
                         size="sm" 
                         onClick={() => handleNameserverClick(domain.id)}
-                        className="h-8 px-3 text-xs border border-gray-600 text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/10 transition-colors"
+                        className="h-8 px-3 text-xs border border-[#444] text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/5 transition-colors rounded-md"
                       >
                         View Instructions
                       </Button>

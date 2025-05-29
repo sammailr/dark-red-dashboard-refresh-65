@@ -175,20 +175,19 @@ const Index = () => {
   return <MainLayout title="Dashboard">
       {/* Provider Stats and Premium Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-        {/* Refined Provider Stats */}
+        {/* Fixed Provider Stats with properly centered circles */}
         {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-1px] relative overflow-hidden group">
             {/* Subtle background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.015)_0%,transparent_60%)]"></div>
-            
-            {/* Fixed circle positioning for logos - properly centered */}
-            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full opacity-20 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
             
             {/* Subdued provider-specific accent border */}
             <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/15 to-transparent' : 'bg-gradient-to-r from-transparent via-red-500/15 to-transparent'}`}></div>
             
             <CardContent className="p-6 relative z-10 flex items-center gap-4 h-full">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 flex items-center justify-center">
+              <div className="flex-shrink-0 relative">
+                {/* Properly positioned circle behind the logo */}
+                <div className={`absolute inset-0 w-10 h-10 rounded-full opacity-20 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+                <div className="w-10 h-10 flex items-center justify-center relative z-10">
                   {provider.provider === 'Microsoft' ? (
                     <i className="fa-brands fa-microsoft text-white/90 text-2xl"></i>
                   ) : (

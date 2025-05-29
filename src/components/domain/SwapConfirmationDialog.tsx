@@ -6,6 +6,9 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -54,6 +57,13 @@ const SwapConfirmationDialog = ({ open, onOpenChange, onConfirm, domain }: SwapC
     <>
       <AlertDialog open={open && !showFinalConfirm} onOpenChange={onOpenChange}>
         <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Swap Domain</AlertDialogTitle>
+            <AlertDialogDescription>
+              Your inboxes will be re-uploaded onto your new domain
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
           <div className="py-4">
             <Input
               type="text"

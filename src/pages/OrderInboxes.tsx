@@ -2,7 +2,6 @@
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
-import { Globe, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const OrderInboxesPage = () => {
@@ -30,7 +29,7 @@ const OrderInboxesPage = () => {
             className="flex flex-col items-center justify-center h-40 px-6 py-8 bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10 transition-colors"
             onClick={() => handleProviderSelect('google')}
           >
-            <Globe className="h-16 w-16 mb-4 text-blue-500" />
+            <i className="fa-brands fa-google text-red-500 text-6xl mb-4"></i>
             <span className="text-lg font-medium">Google Inboxes</span>
             <span className="text-sm text-gray-400 mt-2">Order Google workspace inboxes</span>
           </Button>
@@ -40,7 +39,7 @@ const OrderInboxesPage = () => {
             className="flex flex-col items-center justify-center h-40 px-6 py-8 bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray/10 transition-colors"
             onClick={() => handleProviderSelect('microsoft')}
           >
-            <Mail className="h-16 w-16 mb-4 text-blue-600" />
+            <i className="fa-brands fa-microsoft text-blue-500 text-6xl mb-4"></i>
             <span className="text-lg font-medium">Microsoft Inboxes</span>
             <span className="text-sm text-gray-400 mt-2">Order Microsoft 365 inboxes</span>
           </Button>

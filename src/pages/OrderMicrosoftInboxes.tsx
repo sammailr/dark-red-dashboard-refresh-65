@@ -50,6 +50,8 @@ const OrderMicrosoftInboxesPage = () => {
   };
 
   const totalMonthlyCost = calculateTotalCost(domains.length);
+  const totalInboxes = domains.length * 99;
+  const dailySendingVolume = domains.length * 500;
 
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
@@ -233,12 +235,22 @@ const OrderMicrosoftInboxesPage = () => {
         {/* Order Summary Section */}
         <div className="bg-[#1A1A1A] rounded-lg border border-[#2D2D2D] p-6">
           <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
-          <p className="text-lg font-medium text-white">
-            Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
-          </p>
-          <p className="text-sm text-[#B0B0B0] mt-1 mb-4">
-            Domains Added: {domains.length}
-          </p>
+          <div className="border-b border-[#2D2D2D] pb-4 mb-4">
+            <p className="text-lg font-medium text-white">
+              Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
+            </p>
+            <div className="mt-2 space-y-1">
+              <p className="text-sm text-[#B0B0B0]">
+                Domains Added: {domains.length}
+              </p>
+              <p className="text-sm text-[#B0B0B0]">
+                Total Inboxes: {totalInboxes.toLocaleString()}
+              </p>
+              <p className="text-sm text-[#B0B0B0]">
+                Daily Sending Volume: {dailySendingVolume.toLocaleString()}
+              </p>
+            </div>
+          </div>
           
           {/* Pricing Breakdown Section */}
           <div className="mt-4 pt-4 border-t border-[#2D2D2D]">

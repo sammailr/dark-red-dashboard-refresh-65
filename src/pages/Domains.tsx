@@ -563,9 +563,63 @@ const DomainsPage = () => {
   return (
     <MainLayout title="Manage Domains">
       <div className="space-y-6">
-        {/* Header Section */}
+        {/* Action Bar */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-white">Manage Domains</h1>
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className={`h-10 px-4 bg-[#1E1E1E] border-[#444] text-white rounded-md shadow-[inset_0_0_0_1px_#333] ${
+                selectedDomainIds.length === 0 
+                  ? 'opacity-50 cursor-not-allowed hover:bg-[#1E1E1E] hover:border-[#444]' 
+                  : 'hover:bg-[#2A2A2A] hover:border-[#555]'
+              }`}
+              disabled={selectedDomainIds.length === 0}
+              onClick={() => setIsBulkUpdateOpen(true)}
+            >
+              Bulk Update Forwarding URL
+            </Button>
+            
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className="h-10 px-4 bg-[#1E1E1E] border-[#444] text-white hover:bg-[#2A2A2A] hover:border-[#555] rounded-md shadow-[inset_0_0_0_1px_#333]">
+                  <Filter className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 bg-[#1a1a1a] border-[#333]">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-white mb-2 block">Status</label>
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#1a1a1a] border-[#333]">
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Pending">Pending</SelectItem>
+                        <SelectItem value="Update Nameservers">Update Nameservers</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm font-medium text-white mb-2 block">Provider</label>
+                    <Select value={providerFilter} onValueChange={setProviderFilter}>
+                      <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
+                        <SelectValue placeholder="Filter by provider" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#1a1a1a] border-[#333]">
+                        <SelectItem value="all">All Providers</SelectItem>
+                        <SelectItem value="Google">Google</SelectItem>
+                        <SelectItem value="Microsoft">Microsoft</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
           
           <div className="flex items-center gap-3">
             {/* Search Input */}
@@ -611,63 +665,6 @@ const DomainsPage = () => {
               </AlertDialogContent>
             </AlertDialog>
           </div>
-        </div>
-
-        {/* Action Bar */}
-        <div className="flex items-center gap-3">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className={`h-10 px-4 bg-[#1E1E1E] border-[#444] text-white rounded-md shadow-[inset_0_0_0_1px_#333] ${
-              selectedDomainIds.length === 0 
-                ? 'opacity-50 cursor-not-allowed hover:bg-[#1E1E1E] hover:border-[#444]' 
-                : 'hover:bg-[#2A2A2A] hover:border-[#555]'
-            }`}
-            disabled={selectedDomainIds.length === 0}
-            onClick={() => setIsBulkUpdateOpen(true)}
-          >
-            Bulk Update Forwarding URL
-          </Button>
-          
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="h-10 px-4 bg-[#1E1E1E] border-[#444] text-white hover:bg-[#2A2A2A] hover:border-[#555] rounded-md shadow-[inset_0_0_0_1px_#333]">
-                <Filter className="h-4 w-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-80 bg-[#1a1a1a] border-[#333]">
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Status</label>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
-                      <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#1a1a1a] border-[#333]">
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Update Nameservers">Update Nameservers</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-white mb-2 block">Provider</label>
-                  <Select value={providerFilter} onValueChange={setProviderFilter}>
-                    <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
-                      <SelectValue placeholder="Filter by provider" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#1a1a1a] border-[#333]">
-                      <SelectItem value="all">All Providers</SelectItem>
-                      <SelectItem value="Google">Google</SelectItem>
-                      <SelectItem value="Microsoft">Microsoft</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
         </div>
         
         {/* Alert for no domain slots */}

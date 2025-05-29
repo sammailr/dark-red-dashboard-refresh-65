@@ -18,6 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Index = () => {
@@ -395,30 +401,54 @@ const Index = () => {
               <FileText className="h-4 w-4 text-gray-500" />
             </div>
             
-            {/* Filter Dropdown - Updated to match domains page exactly */}
+            {/* Filter Dropdown - Matching domains page exactly */}
             <div className="flex items-center gap-3">
-              <Select value={providerFilter} onValueChange={setProviderFilter}>
-                <SelectTrigger className="w-[120px] h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
-                  <SelectValue placeholder="Provider" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
-                  <SelectItem value="all">All Providers</SelectItem>
-                  <SelectItem value="google">Google</SelectItem>
-                  <SelectItem value="microsoft">Microsoft</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[120px] h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
-                  <SelectItem value="all">All Statuses</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="processing">Processing</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30"
+                  >
+                    <Filter className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-56 bg-[#1A1A1A] border-[#2A2A2A] p-0 z-50"
+                >
+                  <div className="p-3 space-y-3">
+                    <div>
+                      <label className="text-white text-sm font-medium block mb-2">Status</label>
+                      <Select value={statusFilter} onValueChange={setStatusFilter}>
+                        <SelectTrigger className="w-full h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
+                          <SelectValue placeholder="All Statuses" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
+                          <SelectItem value="all">All Statuses</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                          <SelectItem value="processing">Processing</SelectItem>
+                          <SelectItem value="cancelled">Cancelled</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <label className="text-white text-sm font-medium block mb-2">Provider</label>
+                      <Select value={providerFilter} onValueChange={setProviderFilter}>
+                        <SelectTrigger className="w-full h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
+                          <SelectValue placeholder="All Providers" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
+                          <SelectItem value="all">All Providers</SelectItem>
+                          <SelectItem value="google">Google</SelectItem>
+                          <SelectItem value="microsoft">Microsoft</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
           {/* Enhanced divider line */}

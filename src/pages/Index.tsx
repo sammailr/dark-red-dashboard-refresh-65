@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+
 const Index = () => {
   const {
     isFreeTrial,
@@ -33,7 +34,7 @@ const Index = () => {
   // Example data - would typically come from an API
   const sendingVolume = 412800;
   const dashboardStats = [{
-    title: 'Monthly Email Volume',
+    title: 'Monthly Sending Volume',
     value: sendingVolume.toLocaleString(),
     icon: TrendingUp,
     color: 'text-green-500'
@@ -289,7 +290,7 @@ const Index = () => {
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
               {/* Display subscription info in three columns like other cards with matching bottom alignment */}
               <div className="space-y-3">
-                <div className="flex items-center gap-12 mt-6">
+                <div className="flex items-center gap-6 mt-1.5">
                   <div>
                     <div className="text-3xl font-bold text-white mb-1 leading-none">${totalSubscriptionCost}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Per Month</div>
@@ -315,7 +316,7 @@ const Index = () => {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/10 to-transparent transition-all duration-300 group-hover:via-green-400/15"></div>
               
-              {/* Added bottom glow for Monthly Email Volume card */}
+              {/* Added bottom glow for Monthly Sending Volume card */}
               <div className="absolute bottom-0 left-0 right-0 h-[8px]" style={{
             boxShadow: 'inset 0 -1px 4px rgba(34, 197, 94, 0.25)'
           }}></div>
@@ -346,7 +347,7 @@ const Index = () => {
                       <div className="text-3xl font-bold text-white mb-1 leading-none">
                         {stat.value}
                       </div>
-                      
+                      <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Emails</div>
                     </div>
                   </div>
                 </div>
@@ -471,4 +472,5 @@ const Index = () => {
       </Card>
     </MainLayout>;
 };
+
 export default Index;

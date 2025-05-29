@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight, Search, Filter } from 'lucide-react';
+import { AlertTriangle, ArrowLeftRight, Search, Filter } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -13,6 +13,7 @@ import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
 import SwapDomainModal from '@/components/domain/SwapDomainModal';
 import SwapConfirmationDialog from '@/components/domain/SwapConfirmationDialog';
+import BulkUpdateModal from '@/components/domain/BulkUpdateModal';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +22,9 @@ const DomainsPage = () => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isSwapConfirmOpen, setIsSwapConfirmOpen] = useState(false);
+  const [isBulkUpdateOpen, setIsBulkUpdateOpen] = useState(false);
   const [selectedDomainForSwap, setSelectedDomainForSwap] = useState<any>(null);
+  const [selectedDomainIds, setSelectedDomainIds] = useState<number[]>([]);
   const [hoveredRowId, setHoveredRowId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -416,6 +419,25 @@ const DomainsPage = () => {
     });
   }, [domains, searchTerm, statusFilter, providerFilter]);
 
+  // Check if all filtered domains are selected
+  const isAllSelected = filteredDomains.length > 0 && filteredDomains.every(domain => selectedDomainIds.includes(domain.id));
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedDomainIds(filteredDomains.map(domain => domain.id));
+    } else {
+      setSelectedDomainIds([]);
+    }
+  };
+
+  const handleSelectDomain = (domainId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedDomainIds(prev => [...prev, domainId]);
+    } else {
+      setSelectedDomainIds(prev => prev.filter(id => id !== domainId));
+    }
+  };
+
   const handleImportDomains = (newDomains: Array<{ domain: string; url: string; }>) => {
     // In a real application, you would send this data to your backend API
     const domainsToAdd = newDomains.map((domainData, index) => ({
@@ -423,7 +445,7 @@ const DomainsPage = () => {
       domain: domainData.domain,
       url: domainData.url,
       status: 'Pending',
-      provider: 'Google' // Default provider for imported domains
+      provider: 'Google'
     }));
     setDomains(prev => [...prev, ...domainsToAdd]);
     toast({
@@ -440,7 +462,6 @@ const DomainsPage = () => {
         : domain
     ));
     
-    // Navigate to nameserver update page
     navigate(`/nameserver-update/${selectedDomainForSwap?.id}`);
   };
 
@@ -458,13 +479,27 @@ const DomainsPage = () => {
     ));
     
     setIsSwapConfirmOpen(false);
-    
-    // Navigate to nameserver update page
     navigate(`/nameserver-update/${selectedDomainForSwap?.id}`);
   };
 
   const handleNameserverClick = (domainId: number) => {
     navigate(`/nameserver-update/${domainId}`);
+  };
+
+  const handleBulkUpdate = (newUrl: string) => {
+    setDomains(prev => prev.map(domain => 
+      selectedDomainIds.includes(domain.id) 
+        ? { ...domain, url: newUrl }
+        : domain
+    ));
+    
+    setSelectedDomainIds([]);
+    setIsBulkUpdateOpen(false);
+    
+    toast({
+      title: "Forwarding URLs Updated",
+      description: `Successfully updated ${selectedDomainIds.length} domain${selectedDomainIds.length > 1 ? 's' : ''}.`
+    });
   };
 
   const getProviderIcon = (provider: string) => {
@@ -494,8 +529,18 @@ const DomainsPage = () => {
     <MainLayout title="Manage Domains">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
-            <Settings className="h-4 w-4" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`bg-mailr-darkgray border-mailr-lightgray text-white ${
+              selectedDomainIds.length === 0 
+                ? 'opacity-50 cursor-not-allowed hover:bg-mailr-darkgray' 
+                : 'hover:bg-mailr-lightgray'
+            }`}
+            disabled={selectedDomainIds.length === 0}
+            onClick={() => setIsBulkUpdateOpen(true)}
+          >
+            Bulk Update Forwarding URL
           </Button>
           
           <Popover>
@@ -564,7 +609,10 @@ const DomainsPage = () => {
           <TableHeader className="bg-black/30">
             <TableRow className="hover:bg-transparent border-mailr-lightgray">
               <TableHead className="w-12">
-                <Checkbox />
+                <Checkbox 
+                  checked={isAllSelected}
+                  onCheckedChange={handleSelectAll}
+                />
               </TableHead>
               <TableHead>Domain</TableHead>
               <TableHead>Forwarding URL</TableHead>
@@ -582,7 +630,10 @@ const DomainsPage = () => {
                 onMouseLeave={() => setHoveredRowId(null)}
               >
                 <TableCell>
-                  <Checkbox />
+                  <Checkbox 
+                    checked={selectedDomainIds.includes(domain.id)}
+                    onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
+                  />
                 </TableCell>
                 <TableCell>{domain.domain}</TableCell>
                 <TableCell>{domain.url}</TableCell>
@@ -641,6 +692,13 @@ const DomainsPage = () => {
         onOpenChange={setIsSwapConfirmOpen}
         onConfirm={handleConfirmSwap}
         domain={selectedDomainForSwap}
+      />
+
+      <BulkUpdateModal
+        open={isBulkUpdateOpen}
+        onOpenChange={setIsBulkUpdateOpen}
+        onUpdate={handleBulkUpdate}
+        selectedCount={selectedDomainIds.length}
       />
     </MainLayout>
   );

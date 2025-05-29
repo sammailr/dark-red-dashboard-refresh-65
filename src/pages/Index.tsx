@@ -212,15 +212,17 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              {/* Split metrics into two distinct stacked lines */}
+              {/* Display domains and inboxes horizontally */}
               <div className="space-y-3">
-                <div>
-                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.domains}</div>
-                  <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.mailboxes}</div>
-                  <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Mailboxes</div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.domains}</div>
+                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.mailboxes}</div>
+                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Inboxes</div>
+                  </div>
                 </div>
               </div>
             </CardContent>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight, ArrowUp, ArrowDown } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -25,6 +25,9 @@ const Index = () => {
   } = useOrders();
   const [currentPage, setCurrentPage] = useState(1);
   const [orderTags, setOrderTags] = useState<Record<string, string>>({});
+  const [sortColumn, setSortColumn] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [hoveredColumn, setHoveredColumn] = useState<string>('');
   const navigate = useNavigate();
   const ordersPerPage = 10;
 
@@ -97,10 +100,80 @@ const Index = () => {
     });
   };
 
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else {
+        setSortColumn('');
+        setSortDirection('asc');
+      }
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+    setCurrentPage(1); // Reset to first page when sorting
+  };
+
+  const getSortedOrders = () => {
+    if (!sortColumn) return orders;
+
+    const sorted = [...orders].sort((a, b) => {
+      switch (sortColumn) {
+        case 'created':
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+        
+        case 'domains':
+          const domainsA = a.domains.length;
+          const domainsB = b.domains.length;
+          return sortDirection === 'asc' ? domainsA - domainsB : domainsB - domainsA;
+        
+        case 'provider':
+          // Alternating pattern: even index = google, odd = microsoft
+          const providerA = orders.indexOf(a) % 2 === 0 ? 'google' : 'microsoft';
+          const providerB = orders.indexOf(b) % 2 === 0 ? 'google' : 'microsoft';
+          return sortDirection === 'asc' 
+            ? providerA.localeCompare(providerB)
+            : providerB.localeCompare(providerA);
+        
+        case 'cost':
+          const costA = a.domains.length * 25;
+          const costB = b.domains.length * 25;
+          return sortDirection === 'asc' ? costA - costB : costB - costA;
+        
+        case 'status':
+          const statusOrder = ['completed', 'processing', 'cancelled'];
+          const statusA = statusOrder.indexOf(a.status);
+          const statusB = statusOrder.indexOf(b.status);
+          return sortDirection === 'asc' ? statusA - statusB : statusB - statusA;
+        
+        default:
+          return 0;
+      }
+    });
+
+    return sorted;
+  };
+
+  const renderSortIcon = (column: string) => {
+    if (hoveredColumn !== column && sortColumn !== column) return null;
+    
+    if (sortColumn === column) {
+      return sortDirection === 'asc' 
+        ? <ArrowUp className="h-3 w-3 ml-1 text-gray-300" />
+        : <ArrowDown className="h-3 w-3 ml-1 text-gray-300" />;
+    }
+    
+    return <ArrowUp className="h-3 w-3 ml-1 text-gray-400 opacity-50" />;
+  };
+
   // Pagination logic
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
+  const sortedOrders = getSortedOrders();
+  const totalPages = Math.ceil(sortedOrders.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
-  const paginatedOrders = orders.slice(startIndex, startIndex + ordersPerPage);
+  const paginatedOrders = sortedOrders.slice(startIndex, startIndex + ordersPerPage);
   return <MainLayout title="Dashboard">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {providerStats.map(provider => <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
@@ -181,12 +254,71 @@ const Index = () => {
           <table className="w-full table-fixed">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Created</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Total Domains</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Provider</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Cost</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[10%]">Tag</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Status</th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('created')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                  onClick={() => handleSort('created')}
+                >
+                  <div className="flex items-center justify-center">
+                    Created
+                    {renderSortIcon('created')}
+                  </div>
+                </th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('domains')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                  onClick={() => handleSort('domains')}
+                >
+                  <div className="flex items-center justify-center">
+                    Total Domains
+                    {renderSortIcon('domains')}
+                  </div>
+                </th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('provider')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                  onClick={() => handleSort('provider')}
+                >
+                  <div className="flex items-center justify-center">
+                    Provider
+                    {renderSortIcon('provider')}
+                  </div>
+                </th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[10%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('cost')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                  onClick={() => handleSort('cost')}
+                >
+                  <div className="flex items-center justify-center">
+                    Cost
+                    {renderSortIcon('cost')}
+                  </div>
+                </th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('tag')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                >
+                  <div className="flex items-center justify-center">
+                    Tag
+                    {renderSortIcon('tag')}
+                  </div>
+                </th>
+                <th 
+                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                  onMouseEnter={() => setHoveredColumn('status')}
+                  onMouseLeave={() => setHoveredColumn('')}
+                  onClick={() => handleSort('status')}
+                >
+                  <div className="flex items-center justify-center">
+                    Status
+                    {renderSortIcon('status')}
+                  </div>
+                </th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
               </tr>
             </thead>
@@ -195,7 +327,7 @@ const Index = () => {
                   <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
                   <td className="py-3 text-sm text-center">{order.domains.length}</td>
                   <td className="py-3 text-center">
-                    {getProviderLogo(index)}
+                    {getProviderLogo(startIndex + index)}
                   </td>
                   <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
                   <td className="py-3 text-center">

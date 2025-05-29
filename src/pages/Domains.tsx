@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, ArrowLeftRight, Search, Filter, FileDown } from 'lucide-react';
+import { AlertTriangle, Search, Filter, FileDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -649,7 +649,7 @@ const DomainsPage = () => {
               <TableHead>Forwarding URL</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Provider</TableHead>
-              <TableHead className="w-32">Swap Domain</TableHead>
+              <TableHead className="w-32">Instructions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -667,31 +667,17 @@ const DomainsPage = () => {
                 <TableCell>{domain.domain}</TableCell>
                 <TableCell>{domain.url}</TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div onClick={() => domain.status === 'Update Nameservers' ? handleNameserverClick(domain.id) : undefined}>
-                      {getStatusBadge(domain.status)}
-                    </div>
-                    {domain.status === 'Update Nameservers' && (
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleNameserverClick(domain.id)}
-                        className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1 h-6"
-                      >
-                        View Instructions
-                      </Button>
-                    )}
-                  </div>
+                  {getStatusBadge(domain.status)}
                 </TableCell>
                 <TableCell>{getProviderIcon(domain.provider)}</TableCell>
                 <TableCell>
-                  {domain.provider === 'Microsoft' && (
+                  {domain.status === 'Update Nameservers' && (
                     <Button 
-                      variant="ghost" 
                       size="sm" 
-                      onClick={() => openSwapConfirmation(domain)} 
-                      className="h-8 w-8 p-0"
+                      onClick={() => handleNameserverClick(domain.id)}
+                      className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1 h-6 w-full"
                     >
-                      <ArrowLeftRight className="h-4 w-4" />
+                      View Instructions
                     </Button>
                   )}
                 </TableCell>

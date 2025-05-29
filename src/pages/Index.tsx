@@ -12,13 +12,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Index = () => {
@@ -396,71 +395,31 @@ const Index = () => {
               <FileText className="h-4 w-4 text-gray-500" />
             </div>
             
-            {/* Filter Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 hover:bg-[#2A2A2A] hover:border-gray-600 h-8 px-3"
-                >
-                  <Filter className="h-3 w-3 mr-2" />
-                  Filter
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50 min-w-[200px]"
-              >
-                <DropdownMenuLabel className="text-gray-400">Filter by Provider</DropdownMenuLabel>
-                <DropdownMenuItem 
-                  onClick={() => setProviderFilter('all')}
-                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'all' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  All Providers
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setProviderFilter('google')}
-                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'google' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  Google
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setProviderFilter('microsoft')}
-                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'microsoft' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  Microsoft
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator className="bg-[#2A2A2A]" />
-                
-                <DropdownMenuLabel className="text-gray-400">Filter by Status</DropdownMenuLabel>
-                <DropdownMenuItem 
-                  onClick={() => setStatusFilter('all')}
-                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'all' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  All Statuses
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setStatusFilter('completed')}
-                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'completed' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  Completed
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setStatusFilter('processing')}
-                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'processing' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  Processing
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setStatusFilter('cancelled')}
-                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'cancelled' ? 'bg-[#2A2A2A]' : ''}`}
-                >
-                  Cancelled
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Filter Dropdown - Updated to match domains page exactly */}
+            <div className="flex items-center gap-3">
+              <Select value={providerFilter} onValueChange={setProviderFilter}>
+                <SelectTrigger className="w-[120px] h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
+                  <SelectValue placeholder="Provider" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
+                  <SelectItem value="all">All Providers</SelectItem>
+                  <SelectItem value="google">Google</SelectItem>
+                  <SelectItem value="microsoft">Microsoft</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-[120px] h-8 bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 text-xs hover:bg-[#2A2A2A] hover:border-gray-600 focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50">
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           {/* Enhanced divider line */}
           <div className="absolute bottom-0 left-7 right-7 h-[1px] bg-gradient-to-r from-transparent via-gray-700/50 to-transparent"></div>

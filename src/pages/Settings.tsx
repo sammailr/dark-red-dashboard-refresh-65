@@ -5,16 +5,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { User, CreditCard, Bell } from 'lucide-react';
+import { User, CreditCard } from 'lucide-react';
 
 const SettingsPage = () => {
+  const handleResetPassword = () => {
+    // Handle reset password logic here
+    console.log('Reset password requested');
+    // You could navigate to reset password page or trigger an email
+  };
+
   return (
     <MainLayout title="Account Settings">
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
         <Tabs defaultValue="account" className="p-4">
-          <TabsList className="grid grid-cols-3 bg-black/30">
+          <TabsList className="grid grid-cols-2 bg-black/30">
             <TabsTrigger value="account" className="data-[state=active]:bg-mailr-red">
               <User className="h-4 w-4 mr-2" />
               Account
@@ -22,10 +27,6 @@ const SettingsPage = () => {
             <TabsTrigger value="billing" className="data-[state=active]:bg-mailr-red">
               <CreditCard className="h-4 w-4 mr-2" />
               Billing
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="data-[state=active]:bg-mailr-red">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
             </TabsTrigger>
           </TabsList>
           
@@ -53,7 +54,16 @@ const SettingsPage = () => {
                     <Input id="phone" defaultValue="+1 (555) 123-4567" className="bg-black/30 border-mailr-lightgray" />
                   </div>
                 </div>
-                <Button className="bg-mailr-red hover:bg-red-600 mt-4">Save Changes</Button>
+                <div className="flex gap-4 mt-6">
+                  <Button className="bg-mailr-red hover:bg-red-600">Save Changes</Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleResetPassword}
+                    className="border-mailr-lightgray hover:bg-mailr-lightgray/10"
+                  >
+                    Reset Password
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -81,25 +91,6 @@ const SettingsPage = () => {
                     </div>
                   </div>
                   <Button className="bg-mailr-red hover:bg-red-600">Add Payment Method</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="notifications" className="mt-6">
-            <Card className="bg-transparent border-none shadow-none">
-              <CardHeader className="px-0">
-                <CardTitle>Notification Preferences</CardTitle>
-              </CardHeader>
-              <CardContent className="px-0">
-                <div className="space-y-4">
-                  {['Email Alerts', 'Order Updates', 'Account Activity', 'Marketing Communications'].map((item) => (
-                    <div key={item} className="flex items-center justify-between">
-                      <Label htmlFor={item.toLowerCase().replace(' ', '-')}>{item}</Label>
-                      <Switch id={item.toLowerCase().replace(' ', '-')} defaultChecked={item !== 'Marketing Communications'} />
-                    </div>
-                  ))}
-                  <Button className="bg-mailr-red hover:bg-red-600 mt-4">Save Preferences</Button>
                 </div>
               </CardContent>
             </Card>

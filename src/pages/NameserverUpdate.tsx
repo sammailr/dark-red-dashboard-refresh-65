@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layout/MainLayout';
@@ -55,10 +54,10 @@ const NameserverUpdatePage = () => {
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <CheckCircle className="h-5 w-5 text-green-400" />
-              Domain Swap Successful
+              Domain Swap Submitted
             </CardTitle>
             <CardDescription className="text-gray-400">
-              Your domain has been successfully swapped. Now you need to update your nameservers to complete the setup.
+              Your domain has been successfully submitted. Now you need to update your nameservers to complete the setup.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -99,8 +98,7 @@ const NameserverUpdatePage = () => {
             <div className="bg-blue-900/20 border border-blue-400/30 rounded-md p-4">
               <h4 className="text-blue-400 font-medium mb-2">Important Notes:</h4>
               <ul className="text-blue-300 text-sm space-y-1 list-disc list-inside">
-                <li>Nameserver changes can take up to 24-48 hours to propagate globally</li>
-                <li>During this time, your domain may not be accessible</li>
+                <li>Nameserver changes can take up to an hour to reflect on your dashboard</li>
                 <li>Make sure to update all nameserver entries in your registrar's control panel</li>
                 <li>Contact support if you need assistance with this process</li>
               </ul>

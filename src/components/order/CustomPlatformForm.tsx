@@ -28,16 +28,40 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
     if (!selectedSequencer) return null;
 
     const commonFields = (
-      <div>
-        <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Custom Name</Label>
-        <Input
-          id="customName"
-          type="text"
-          className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-          value={formData.customName || ''}
-          onChange={(e) => handleInputChange('customName', e.target.value)}
-          placeholder="Enter custom platform name"
-        />
+      <div className="space-y-4">
+        <div>
+          <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Workspace Name</Label>
+          <Input
+            id="customName"
+            type="text"
+            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+            value={formData.customName || ''}
+            onChange={(e) => handleInputChange('customName', e.target.value)}
+            placeholder="Enter workspace name"
+          />
+        </div>
+        <div>
+          <Label htmlFor="loginEmail" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
+          <Input
+            id="loginEmail"
+            type="email"
+            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+            value={formData.loginEmail || ''}
+            onChange={(e) => handleInputChange('loginEmail', e.target.value)}
+            placeholder="Enter login email"
+          />
+        </div>
+        <div>
+          <Label htmlFor="loginPassword" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Password</Label>
+          <Input
+            id="loginPassword"
+            type="password"
+            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+            value={formData.loginPassword || ''}
+            onChange={(e) => handleInputChange('loginPassword', e.target.value)}
+            placeholder="Enter login password"
+          />
+        </div>
       </div>
     );
 

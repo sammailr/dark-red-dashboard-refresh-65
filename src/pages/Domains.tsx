@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, Search, Filter, Download, HelpCircle } from 'lucide-react';
+import { AlertTriangle, Search, Filter, Download, ArrowLeftRight } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -683,7 +683,7 @@ const DomainsPage = () => {
           <Table>
             <TableHeader className="bg-[#1A1A1A] border-b border-[#2d2d2d]">
               <TableRow className="hover:bg-transparent border-b border-[#2A2A2A]">
-                <TableHead className="w-12 px-6 py-4 text-center">
+                <TableHead className="w-12 px-4 py-4 text-center">
                   <div className="flex justify-center">
                     <Checkbox 
                       checked={isAllSelected}
@@ -692,11 +692,11 @@ const DomainsPage = () => {
                     />
                   </div>
                 </TableHead>
-                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-1/4">Domain</TableHead>
-                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-2/5">Forwarding URL</TableHead>
-                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-40">Status</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Provider</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Swap Domains</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider min-w-[200px]">Domain</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider min-w-[280px]">Forwarding URL</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[140px]">Status</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[80px]">Provider</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[80px]">Swap</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -711,7 +711,7 @@ const DomainsPage = () => {
                   onMouseEnter={() => setHoveredRowId(domain.id)}
                   onMouseLeave={() => setHoveredRowId(null)}
                 >
-                  <TableCell className="w-12 px-6 py-3">
+                  <TableCell className="w-12 px-4 py-3">
                     <div className="flex justify-center">
                       <Checkbox 
                         checked={selectedDomainIds.includes(domain.id)}
@@ -720,26 +720,33 @@ const DomainsPage = () => {
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3 font-medium text-white text-left w-1/4">{domain.domain}</TableCell>
-                  <TableCell className="px-6 py-3 text-gray-300 text-left w-2/5">{domain.url}</TableCell>
-                  <TableCell className="px-6 py-3 text-left w-40">
+                  <TableCell className="px-4 py-3 font-medium text-white text-left min-w-[200px]">{domain.domain}</TableCell>
+                  <TableCell className="px-4 py-3 text-gray-300 text-left min-w-[280px]">{domain.url}</TableCell>
+                  <TableCell className="px-4 py-3 text-left w-[140px]">
                     {getStatusBadge(domain.status)}
                   </TableCell>
-                  <TableCell className="px-6 py-3 w-20">
+                  <TableCell className="px-4 py-3 w-[80px]">
                     <div className="flex justify-center items-center">
                       {getProviderIcon(domain.provider)}
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3 w-32">
+                  <TableCell className="px-4 py-3 w-[80px]">
                     <div className="flex justify-center">
-                      <Button 
-                        variant="outline"
-                        size="sm" 
-                        onClick={() => openSwapConfirmation(domain)}
-                        className="h-8 px-3 py-1 text-xs font-medium text-white bg-[#1E1E1E] border border-[#444] hover:bg-[#2A2A2A] hover:border-[#555] rounded-md"
-                      >
-                        Swap Domain
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button 
+                            variant="ghost"
+                            size="sm" 
+                            onClick={() => openSwapConfirmation(domain)}
+                            className="h-8 w-8 p-0 text-gray-400 hover:text-white hover:bg-[#2A2A2A] rounded-md"
+                          >
+                            <ArrowLeftRight className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
+                          Swap domain
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                   </TableCell>
                 </TableRow>

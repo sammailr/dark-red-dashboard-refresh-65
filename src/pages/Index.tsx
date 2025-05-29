@@ -308,13 +308,13 @@ const Index = () => {
             {/* Enhanced background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
             
-            {/* Red accent border with glow effect */}
-            <div className="absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 bg-gradient-to-r from-transparent via-red-500/20 to-transparent group-hover:via-red-500/30"></div>
+            {/* Orange accent border with glow effect */}
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent group-hover:via-orange-500/30"></div>
             
             {/* Bottom glow for Subscription card */}
             <div 
               className="absolute bottom-0 left-0 right-0 h-[8px]" 
-              style={{ boxShadow: 'inset 0 -1px 4px rgba(239, 68, 68, 0.25)' }}
+              style={{ boxShadow: 'inset 0 -1px 4px rgba(249, 115, 22, 0.25)' }}
             ></div>
             
             <CardHeader className="pb-3 pt-7 px-7 relative z-10">
@@ -334,17 +334,17 @@ const Index = () => {
                 {/* Main price display matching other cards */}
                 <div className="flex items-baseline gap-2">
                   <div className="text-3xl font-bold text-white transition-all duration-300 group-hover:scale-105 leading-none">${totalSubscriptionCost.toLocaleString()}</div>
-                  <div className="text-sm text-gray-400 font-medium">/month</div>
+                  <div className="text-sm text-gray-500 font-medium">/month</div>
                 </div>
                 
-                {/* Supporting information in two columns */}
-                <div className="flex items-start justify-between">
+                {/* Supporting information stacked vertically */}
+                <div className="space-y-2">
                   <div>
-                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300 mb-1">Next Billing</div>
-                    <div className="text-lg font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</div>
+                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</div>
+                    <div className="text-lg font-medium text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-xs text-gray-400 font-medium flex items-center justify-end gap-1 transition-colors duration-300 group-hover:text-gray-300 mb-1">
+                  <div>
+                    <div className="text-xs text-gray-400 font-medium flex items-center gap-1 transition-colors duration-300 group-hover:text-gray-300">
                       <Calendar className="h-3 w-3" />
                       Due Date
                     </div>

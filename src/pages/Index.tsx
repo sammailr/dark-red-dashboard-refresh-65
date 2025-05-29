@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Tag, Eye } from 'lucide-react';
+import { Calendar, DollarSign, Globe, Inbox, Mail, FileText, TrendingUp, Clock, AlertCircle, CreditCard, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Tag, Eye, Filter } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,7 +11,16 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+
 const Index = () => {
   const {
     isFreeTrial,
@@ -27,6 +36,8 @@ const Index = () => {
   const [sortColumn, setSortColumn] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [hoveredColumn, setHoveredColumn] = useState<string>('');
+  const [providerFilter, setProviderFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const navigate = useNavigate();
   const ordersPerPage = 10;
 
@@ -113,9 +124,24 @@ const Index = () => {
     }
     setCurrentPage(1); // Reset to first page when sorting
   };
+  const getFilteredOrders = () => {
+    let filtered = orders;
+
+    if (providerFilter !== 'all') {
+      filtered = filtered.filter(order => order.provider === providerFilter);
+    }
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(order => order.status === statusFilter);
+    }
+
+    return filtered;
+  };
   const getSortedOrders = () => {
-    if (!sortColumn) return orders;
-    const sorted = [...orders].sort((a, b) => {
+    const filteredOrders = getFilteredOrders();
+    if (!sortColumn) return filteredOrders;
+    
+    const sorted = [...filteredOrders].sort((a, b) => {
       switch (sortColumn) {
         case 'created':
           const dateA = new Date(a.date).getTime();
@@ -369,6 +395,72 @@ const Index = () => {
               <CardTitle className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-400">ORDERS</CardTitle>
               <FileText className="h-4 w-4 text-gray-500" />
             </div>
+            
+            {/* Filter Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 hover:bg-[#2A2A2A] hover:border-gray-600 h-8 px-3"
+                >
+                  <Filter className="h-3 w-3 mr-2" />
+                  Filter
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="bg-[#1A1A1A] border-[#2A2A2A] text-gray-300 z-50 min-w-[200px]"
+              >
+                <DropdownMenuLabel className="text-gray-400">Filter by Provider</DropdownMenuLabel>
+                <DropdownMenuItem 
+                  onClick={() => setProviderFilter('all')}
+                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'all' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  All Providers
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setProviderFilter('google')}
+                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'google' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  Google
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setProviderFilter('microsoft')}
+                  className={`hover:bg-[#2A2A2A] ${providerFilter === 'microsoft' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  Microsoft
+                </DropdownMenuItem>
+                
+                <DropdownMenuSeparator className="bg-[#2A2A2A]" />
+                
+                <DropdownMenuLabel className="text-gray-400">Filter by Status</DropdownMenuLabel>
+                <DropdownMenuItem 
+                  onClick={() => setStatusFilter('all')}
+                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'all' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  All Statuses
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setStatusFilter('completed')}
+                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'completed' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  Completed
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setStatusFilter('processing')}
+                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'processing' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  Processing
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => setStatusFilter('cancelled')}
+                  className={`hover:bg-[#2A2A2A] ${statusFilter === 'cancelled' ? 'bg-[#2A2A2A]' : ''}`}
+                >
+                  Cancelled
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {/* Enhanced divider line */}
           <div className="absolute bottom-0 left-7 right-7 h-[1px] bg-gradient-to-r from-transparent via-gray-700/50 to-transparent"></div>

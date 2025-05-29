@@ -282,9 +282,7 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
                 </div>
                 <Link to="/subscriptions">
-                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-3 py-0 rounded-lg border border-transparent hover:border-white/15 font-medium h-auto">
-                    View All
-                  </Button>
+                  
                 </Link>
               </div>
             </CardHeader>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight, Search, ArrowUpDown } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -19,6 +20,9 @@ const DomainsPage = () => {
   const [isSwapConfirmOpen, setIsSwapConfirmOpen] = useState(false);
   const [selectedDomainForSwap, setSelectedDomainForSwap] = useState<any>(null);
   const [hoveredRowId, setHoveredRowId] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortField, setSortField] = useState<'status' | 'provider' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   
   const navigate = useNavigate();
   const { subscriptions } = useSubscription();
@@ -215,11 +219,218 @@ const DomainsPage = () => {
       url: 'https://photography.pics',
       status: 'Pending',
       provider: 'Google'
+    },
+    {
+      id: 28,
+      domain: 'blog.writer',
+      url: 'https://blog.writer',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 29,
+      domain: 'social.network',
+      url: 'https://social.network',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 30,
+      domain: 'fitness.gym',
+      url: 'https://fitness.gym',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 31,
+      domain: 'beauty.salon',
+      url: 'https://beauty.salon',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 32,
+      domain: 'pet.care',
+      url: 'https://pet.care',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 33,
+      domain: 'home.garden',
+      url: 'https://home.garden',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 34,
+      domain: 'hobby.craft',
+      url: 'https://hobby.craft',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 35,
+      domain: 'science.lab',
+      url: 'https://science.lab',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 36,
+      domain: 'history.museum',
+      url: 'https://history.museum',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 37,
+      domain: 'nature.wildlife',
+      url: 'https://nature.wildlife',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 38,
+      domain: 'space.cosmos',
+      url: 'https://space.cosmos',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 39,
+      domain: 'ocean.marine',
+      url: 'https://ocean.marine',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 40,
+      domain: 'mountain.hiking',
+      url: 'https://mountain.hiking',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 41,
+      domain: 'city.urban',
+      url: 'https://city.urban',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 42,
+      domain: 'country.rural',
+      url: 'https://country.rural',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 43,
+      domain: 'weather.forecast',
+      url: 'https://weather.forecast',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 44,
+      domain: 'climate.change',
+      url: 'https://climate.change',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 45,
+      domain: 'energy.renewable',
+      url: 'https://energy.renewable',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 46,
+      domain: 'transport.mobility',
+      url: 'https://transport.mobility',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 47,
+      domain: 'communication.network',
+      url: 'https://communication.network',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 48,
+      domain: 'innovation.future',
+      url: 'https://innovation.future',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 49,
+      domain: 'tradition.heritage',
+      url: 'https://tradition.heritage',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 50,
+      domain: 'culture.arts',
+      url: 'https://culture.arts',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 51,
+      domain: 'language.linguistics',
+      url: 'https://language.linguistics',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 52,
+      domain: 'literature.books',
+      url: 'https://literature.books',
+      status: 'Pending',
+      provider: 'Microsoft'
     }
   ]);
 
   // Calculate available domain slots from all active subscriptions
   const availableDomainSlots = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + (sub.availableDomainSlots || 0), 0);
+
+  // Filter and sort domains
+  const filteredAndSortedDomains = useMemo(() => {
+    let filtered = domains.filter(domain => 
+      domain.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      domain.url.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (sortField) {
+      filtered = filtered.sort((a, b) => {
+        let aValue = a[sortField];
+        let bValue = b[sortField];
+        
+        if (sortDirection === 'asc') {
+          return aValue.localeCompare(bValue);
+        } else {
+          return bValue.localeCompare(aValue);
+        }
+      });
+    }
+
+    return filtered;
+  }, [domains, searchTerm, sortField, sortDirection]);
+
+  const handleSort = (field: 'status' | 'provider') => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
 
   const handleImportDomains = (newDomains: Array<{ domain: string; url: string; }>) => {
     // In a real application, you would send this data to your backend API
@@ -275,9 +486,9 @@ const DomainsPage = () => {
   const getProviderIcon = (provider: string) => {
     const isGoogle = provider === 'Google';
     return isGoogle ? (
-      <i className="fa-brands fa-google text-blue-400"></i>
+      <i className="fa-brands fa-google text-white"></i>
     ) : (
-      <i className="fa-brands fa-microsoft text-orange-400"></i>
+      <i className="fa-brands fa-microsoft text-white"></i>
     );
   };
 
@@ -301,6 +512,16 @@ const DomainsPage = () => {
         <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
           <Settings className="h-4 w-4" />
         </Button>
+        
+        <div className="relative w-80">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            placeholder="Search domains or URLs..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-mailr-darkgray border-mailr-lightgray text-white placeholder:text-gray-400"
+          />
+        </div>
       </div>
       
       {availableDomainSlots === 0 && (
@@ -321,13 +542,23 @@ const DomainsPage = () => {
               </TableHead>
               <TableHead>Domain</TableHead>
               <TableHead>Forwarding URL</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Provider</TableHead>
+              <TableHead className="cursor-pointer hover:bg-mailr-lightgray/10" onClick={() => handleSort('status')}>
+                <div className="flex items-center gap-2">
+                  Status
+                  <ArrowUpDown className="h-4 w-4" />
+                </div>
+              </TableHead>
+              <TableHead className="cursor-pointer hover:bg-mailr-lightgray/10" onClick={() => handleSort('provider')}>
+                <div className="flex items-center gap-2">
+                  Provider
+                  <ArrowUpDown className="h-4 w-4" />
+                </div>
+              </TableHead>
               <TableHead className="w-32">Swap Domain</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {domains.map(domain => (
+            {filteredAndSortedDomains.map(domain => (
               <TableRow 
                 key={domain.id} 
                 className="hover:bg-mailr-lightgray/10 border-mailr-lightgray relative"

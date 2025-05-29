@@ -64,13 +64,13 @@ const Index = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'cancelled':
-        return <Badge className="bg-[#9b1313] text-white px-2 py-1 text-xs">Canceled</Badge>;
+        return <Badge className="bg-red-600 text-white px-3 py-1 text-xs font-medium rounded-full">Canceled</Badge>;
       case 'processing':
-        return <Badge className="bg-amber-600 text-white px-2 py-1 text-xs">In Progress</Badge>;
+        return <Badge className="bg-amber-600 text-white px-3 py-1 text-xs font-medium rounded-full">In Progress</Badge>;
       case 'completed':
-        return <Badge className="bg-green-600 text-white px-2 py-1 text-xs">Completed</Badge>;
+        return <Badge className="bg-green-600 text-white px-3 py-1 text-xs font-medium rounded-full">Completed</Badge>;
       default:
-        return <Badge className="bg-gray-600 text-white px-2 py-1 text-xs">Unknown</Badge>;
+        return <Badge className="bg-gray-600 text-white px-3 py-1 text-xs font-medium rounded-full">Unknown</Badge>;
     }
   };
   const getProviderLogo = (provider: 'google' | 'microsoft') => {
@@ -167,8 +167,9 @@ const Index = () => {
   const startIndex = (currentPage - 1) * ordersPerPage;
   const paginatedOrders = sortedOrders.slice(startIndex, startIndex + ordersPerPage);
   return <MainLayout title="Dashboard">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+      {/* Provider Stats Section - Enhanced Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 {provider.logo}
@@ -188,7 +189,7 @@ const Index = () => {
               </div>
             </CardContent>
           </Card>)}
-        {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
+        {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start">
                 <CardTitle className="text-xl font-bold text-gray-400">{stat.title}</CardTitle>
@@ -201,8 +202,9 @@ const Index = () => {
           </Card>)}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 mb-6">
-        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg relative">
+      {/* Subscription Section - Enhanced Card */}
+      <div className="mb-8">
+        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200 relative">
           <CardHeader className="pb-4">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
@@ -235,7 +237,8 @@ const Index = () => {
         </Card>
       </div>
 
-      <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg mb-6">
+      {/* Orders Section - Enhanced Table */}
+      <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl font-bold text-slate-50">Orders</CardTitle>
@@ -248,7 +251,7 @@ const Index = () => {
               <thead className="border-b border-mailr-lightgray">
                 <tr>
                   <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('created')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('created')}
@@ -259,7 +262,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('domains')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('domains')}
@@ -270,7 +273,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('provider')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('provider')}
@@ -281,7 +284,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[10%] cursor-pointer hover:text-gray-200 transition-colors"
+                    className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[10%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('cost')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('cost')}
@@ -291,18 +294,13 @@ const Index = () => {
                       {renderSortIcon('cost')}
                     </div>
                   </th>
-                  <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                    onMouseEnter={() => setHoveredColumn('tag')}
-                    onMouseLeave={() => setHoveredColumn('')}
-                  >
+                  <th className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%]">
                     <div className="flex items-center justify-center">
                       Tag
-                      {renderSortIcon('tag')}
                     </div>
                   </th>
                   <th 
-                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('status')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('status')}
@@ -312,25 +310,44 @@ const Index = () => {
                       {renderSortIcon('status')}
                     </div>
                   </th>
-                  <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
+                  <th className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%]">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
-                    <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
-                    <td className="py-3 text-sm text-center">{order.domains.length}</td>
-                    <td className="py-3 text-center">
-                      {getProviderLogo(order.provider)}
+                {paginatedOrders.map((order, index) => <tr 
+                    key={order.id} 
+                    className={`border-b border-mailr-lightgray last:border-b-0 hover:bg-[#2A2A2A] transition-colors duration-150 ${
+                      index % 2 === 0 ? 'bg-mailr-darkgray' : 'bg-[#252525]'
+                    }`}
+                  >
+                    <td className="py-3 px-4 text-sm text-center text-gray-200">{formatDate(order.date)}</td>
+                    <td className="py-3 px-4 text-sm text-center text-gray-200">{order.domains.length}</td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex justify-center items-center">
+                        {getProviderLogo(order.provider)}
+                      </div>
                     </td>
-                    <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                    <td className="py-3 text-center">
-                      <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1 text-center w-full" />
+                    <td className="py-3 px-4 text-sm text-center text-gray-200">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                    <td className="py-3 px-4 text-center">
+                      <input 
+                        type="text" 
+                        value={orderTags[order.id] || ''} 
+                        onChange={e => handleTagUpdate(order.id, e.target.value)} 
+                        onClick={e => e.stopPropagation()} 
+                        placeholder="Add tag..." 
+                        className="bg-transparent border border-gray-600 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red focus:border-mailr-red rounded px-3 py-1 text-center w-full hover:border-gray-500 transition-colors" 
+                      />
                     </td>
-                    <td className="py-3 text-center">
+                    <td className="py-3 px-4 text-center">
                       {getStatusBadge(order.status)}
                     </td>
-                    <td className="py-3 text-center">
-                      <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
+                    <td className="py-3 px-4 text-center">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleOrderClick(order.id)} 
+                        className="text-xs text-gray-400 hover:text-white hover:bg-gray-700 transition-colors px-3 py-1"
+                      >
                         View Details
                       </Button>
                     </td>
@@ -339,21 +356,31 @@ const Index = () => {
             </table>
           </div>
           
-          {totalPages > 1 && <div className="flex justify-end mt-2">
+          {totalPages > 1 && <div className="flex justify-end mt-6 pt-4 border-t border-mailr-lightgray">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                    <PaginationPrevious 
+                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} 
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700'} 
+                    />
                   </PaginationItem>
                   {Array.from({
                 length: totalPages
               }, (_, i) => i + 1).map(page => <PaginationItem key={page}>
-                      <PaginationLink onClick={() => setCurrentPage(page)} isActive={currentPage === page} className="cursor-pointer">
+                      <PaginationLink 
+                        onClick={() => setCurrentPage(page)} 
+                        isActive={currentPage === page} 
+                        className="cursor-pointer hover:bg-gray-700"
+                      >
                         {page}
                       </PaginationLink>
                     </PaginationItem>)}
                   <PaginationItem>
-                    <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                    <PaginationNext 
+                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} 
+                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700'} 
+                    />
                   </PaginationItem>
                 </PaginationContent>
               </Pagination>

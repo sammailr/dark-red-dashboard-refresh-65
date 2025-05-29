@@ -282,6 +282,12 @@ const Index = () => {
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
                 </div>
+                <div className="relative">
+                  {/* Dollar sign icon matching the sparkline style */}
+                  <div className="flex items-center justify-center opacity-40 transition-all duration-300 group-hover:opacity-60">
+                    <DollarSign className="h-6 w-6 text-orange-500/60" />
+                  </div>
+                </div>
                 <Link to="/subscriptions">
                   
                 </Link>

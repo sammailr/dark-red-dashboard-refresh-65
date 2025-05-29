@@ -131,9 +131,11 @@ const Index = () => {
           return sortDirection === 'asc' ? domainsA - domainsB : domainsB - domainsA;
         
         case 'provider':
-          // Alternating pattern: even index = google, odd = microsoft
-          const providerA = orders.indexOf(a) % 2 === 0 ? 'google' : 'microsoft';
-          const providerB = orders.indexOf(b) % 2 === 0 ? 'google' : 'microsoft';
+          // Use the original order index to determine provider consistently
+          const originalIndexA = orders.findIndex(order => order.id === a.id);
+          const originalIndexB = orders.findIndex(order => order.id === b.id);
+          const providerA = originalIndexA % 2 === 0 ? 'google' : 'microsoft';
+          const providerB = originalIndexB % 2 === 0 ? 'google' : 'microsoft';
           return sortDirection === 'asc' 
             ? providerA.localeCompare(providerB)
             : providerB.localeCompare(providerA);

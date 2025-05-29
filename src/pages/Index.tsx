@@ -64,13 +64,13 @@ const Index = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'cancelled':
-        return <Badge className="bg-red-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Canceled</Badge>;
+        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Canceled</Badge>;
       case 'processing':
-        return <Badge className="bg-amber-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">In Progress</Badge>;
+        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">In Progress</Badge>;
       case 'completed':
-        return <Badge className="bg-green-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Completed</Badge>;
+        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Completed</Badge>;
       default:
-        return <Badge className="bg-gray-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Unknown</Badge>;
+        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Unknown</Badge>;
     }
   };
   const getProviderLogo = (provider: 'google' | 'microsoft') => {

@@ -66,9 +66,9 @@ const Index = () => {
       case 'cancelled':
         return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Canceled</Badge>;
       case 'processing':
-        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">In Progress</Badge>;
+        return <Badge variant="outline" className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap bg-yellow-500/20 text-yellow-400 border-yellow-500/30">In Progress</Badge>;
       case 'completed':
-        return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Completed</Badge>;
+        return <Badge variant="outline" className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border whitespace-nowrap bg-green-500/20 text-green-400 border-green-500/30">Completed</Badge>;
       default:
         return <Badge variant="outline" className="h-7 px-3 py-1 text-xs font-medium text-white bg-transparent border border-[#444] rounded-full hover:border-[#666] hover:bg-[#262626] transition-all duration-200 opacity-100">Unknown</Badge>;
     }

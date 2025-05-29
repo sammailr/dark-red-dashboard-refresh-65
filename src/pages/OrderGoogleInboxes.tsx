@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -40,11 +41,27 @@ const OrderGoogleInboxesPage = () => {
   const [userFullName, setUserFullName] = useState('');
   const [preferredPassword, setPreferredPassword] = useState('');
 
+  // Calculate price per inbox based on total inboxes
+  const calculatePricePerInbox = (totalInboxes: number) => {
+    if (totalInboxes >= 300) return 2.00;
+    if (totalInboxes >= 100) return 2.25;
+    return 2.50;
+  };
+
   // Calculate total monthly cost
   const calculateTotalCost = () => {
     const domainsCount = domains.length;
-    const inboxesCount = parseInt(numberOfInboxes) || 0;
-    return domainsCount * inboxesCount * 1.50;
+    const inboxesPerDomain = parseInt(numberOfInboxes) || 0;
+    const totalInboxes = domainsCount * inboxesPerDomain;
+    const pricePerInbox = calculatePricePerInbox(totalInboxes);
+    return totalInboxes * pricePerInbox;
+  };
+
+  // Calculate total inboxes
+  const getTotalInboxes = () => {
+    const domainsCount = domains.length;
+    const inboxesPerDomain = parseInt(numberOfInboxes) || 0;
+    return domainsCount * inboxesPerDomain;
   };
 
   const handleAddDomain = () => {
@@ -235,6 +252,14 @@ const OrderGoogleInboxesPage = () => {
             <p className="text-lg font-medium text-white">
               Total Monthly Cost: <span className="font-bold text-white">${calculateTotalCost().toLocaleString()}/month</span>
             </p>
+            <div className="mt-2 space-y-1">
+              <p className="text-sm text-[#B0B0B0]">
+                Domains Added: <span className="font-medium text-white">{domains.length}</span>
+              </p>
+              <p className="text-sm text-[#B0B0B0]">
+                Inboxes Added: <span className="font-medium text-white">{getTotalInboxes()}</span>
+              </p>
+            </div>
           </div>
           
           {/* Pricing Breakdown */}

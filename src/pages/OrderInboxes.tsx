@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ const OrderInboxesPage = () => {
     <MainLayout title="Order Inboxes">
       <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-12 -mt-24">
         <div className="text-center space-y-3">
-          <h2 className="text-2xl font-bold tracking-widest text-white">Select Provider</h2>
+          <h2 className="text-xl font-bold text-white">Select Provider</h2>
           <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-md">
             Choose your inbox provider to get started
           </p>
@@ -101,3 +102,4 @@ const OrderInboxesPage = () => {
 };
 
 export default OrderInboxesPage;
+

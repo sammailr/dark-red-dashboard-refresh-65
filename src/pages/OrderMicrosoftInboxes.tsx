@@ -236,9 +236,9 @@ const OrderMicrosoftInboxesPage = () => {
         {/* Order Summary Section */}
         <div className="bg-[#1A1A1A] rounded-lg border border-[#2D2D2D] p-6">
           <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
-          <div className="border-b border-[#2D2D2D] pb-4 mb-4">
+          <div className="pb-4 mb-4">
             <p className="text-lg font-medium text-white">
-              Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
+              Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toFixed(2)}/month</span>
             </p>
             <div className="mt-2 space-y-1">
               <p className="text-sm text-[#B0B0B0]">
@@ -254,7 +254,7 @@ const OrderMicrosoftInboxesPage = () => {
           </div>
           
           {/* Pricing Breakdown Section */}
-          <div className="mt-4">
+          <div className="pt-4 border-t border-[#2D2D2D]">
             <h3 className="text-xs font-bold text-[#B0B0B0] uppercase tracking-wide mb-3">PRICING BREAKDOWN</h3>
             <div className="space-y-2 text-sm text-[#B0B0B0]">
               <div>1–19 domains: <span className="font-bold text-white">$60</span> each</div>
@@ -292,7 +292,7 @@ const OrderMicrosoftInboxesPage = () => {
                     <div className="flex gap-3">
                       <Input 
                         type="text" 
-                        className="bg-[#101010] border-[#333] text-white placeholder:text-[#777] rounded-md flex-1" 
+                        className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md flex-1 shadow-inset" 
                         placeholder="John Smith" 
                         value={bulkDisplayName} 
                         onChange={e => setBulkDisplayName(e.target.value)} 
@@ -311,7 +311,7 @@ const OrderMicrosoftInboxesPage = () => {
                       <>
                         <div className="mt-4">
                           <h3 className="text-sm font-medium mb-2 text-[#B0B0B0]">Display names to be added:</h3>
-                          <div className="border rounded-md border-[#333] p-2 max-h-48 overflow-y-auto">
+                          <div className="border rounded-md border-[#333] p-2 max-h-48 overflow-y-auto bg-[#1E1E1E]">
                             {bulkDisplayNames.map((name, index) => (
                               <div key={index} className="flex justify-between items-center py-2 border-b border-[#333] last:border-0">
                                 <span className="text-white">{name}</span>
@@ -357,46 +357,49 @@ const OrderMicrosoftInboxesPage = () => {
             </div>
           </div>
           
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1">
-              <Label htmlFor="addDomain" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Add Domain to list:</Label>
-              <div className="flex gap-3">
-                <Input 
-                  id="addDomain" 
-                  type="text" 
-                  className="bg-[#101010] border-[#B85450] text-white placeholder:text-[#777] rounded-md focus:border-[#C66B67] focus:ring-1 focus:ring-[#C66B67]/30" 
-                  value={newDomain} 
-                  onChange={e => setNewDomain(e.target.value)} 
-                  placeholder="Enter domain" 
-                />
-                <Button 
-                  variant="outline" 
-                  className="bg-[#C85A56] border-[#C85A56] text-white hover:bg-[#D16862] hover:border-[#D16862] rounded-md px-4 transition-colors" 
-                  onClick={handleAddDomain}
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
+          {/* Domain Input Section - Unified Container */}
+          <div className="bg-[#0F0F0F] rounded-lg border border-[#2D2D2D] p-4 mb-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <Label htmlFor="addDomain" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Add Domain to list:</Label>
+                <div className="flex gap-3">
+                  <Input 
+                    id="addDomain" 
+                    type="text" 
+                    className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md focus:border-[#C66B67] focus:ring-1 focus:ring-[#C66B67]/30 shadow-inset" 
+                    value={newDomain} 
+                    onChange={e => setNewDomain(e.target.value)} 
+                    placeholder="Enter domain" 
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="bg-[#C85A56] border-[#C85A56] text-white hover:bg-[#D16862] hover:border-[#D16862] rounded-md px-4 transition-colors shadow-sm" 
+                    onClick={handleAddDomain}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </div>
-            
-            <div className="flex-1">
-              <Label htmlFor="csvUpload" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Upload CSV with Domains:</Label>
-              <div className="relative">
-                <Input 
-                  id="csvUpload" 
-                  type="file" 
-                  accept=".csv" 
-                  className="hidden" 
-                  onChange={handleCSVUpload} 
-                />
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-transparent border-[#333] border-dashed text-white hover:bg-[#2A2A2A] rounded-md py-2.5" 
-                  onClick={() => document.getElementById('csvUpload')?.click()}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Click to upload a CSV
-                </Button>
+              
+              <div className="flex-1">
+                <Label htmlFor="csvUpload" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Upload CSV with Domains:</Label>
+                <div className="relative">
+                  <Input 
+                    id="csvUpload" 
+                    type="file" 
+                    accept=".csv" 
+                    className="hidden" 
+                    onChange={handleCSVUpload} 
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="w-full bg-[#1E1E1E] border-[#333] border-dashed text-white hover:bg-[#2A2A2A] rounded-md py-2.5 shadow-inset" 
+                    onClick={() => document.getElementById('csvUpload')?.click()}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Click to upload a CSV
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -439,7 +442,7 @@ const OrderMicrosoftInboxesPage = () => {
                       <TableCell className="px-1">
                         <Input 
                           type="text" 
-                          className="bg-[#101010] border-[#333] text-white placeholder:text-[#777] rounded-md" 
+                          className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md shadow-inset" 
                           value={domain.forwardingUrl} 
                           onChange={e => handleUpdateForwardingUrl(domain.id, e.target.value)} 
                           placeholder="https://example.com" 
@@ -449,7 +452,7 @@ const OrderMicrosoftInboxesPage = () => {
                         <div className="flex gap-2">
                           <Input 
                             type="text" 
-                            className="bg-[#101010] border-[#333] text-white placeholder:text-[#777] rounded-md flex-1" 
+                            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md flex-1 shadow-inset" 
                             placeholder="John Smith" 
                             value={newDisplayNameInputs[domain.id] || ''} 
                             onChange={e => setNewDisplayNameInputs({
@@ -471,7 +474,7 @@ const OrderMicrosoftInboxesPage = () => {
                         <div className="relative">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <div className="border border-[#333] rounded-md p-2 h-[40px] min-h-[40px] cursor-pointer flex justify-between items-center">
+                              <div className="border border-[#333] rounded-md p-2 h-[40px] min-h-[40px] cursor-pointer flex justify-between items-center bg-[#1E1E1E] shadow-inset">
                                 <div className="truncate max-w-[200px] text-white">
                                   {domain.displayNames.length > 0 ? (
                                     domain.displayNames.join(', ')
@@ -484,7 +487,7 @@ const OrderMicrosoftInboxesPage = () => {
                                 </Button>
                               </div>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-[#1A1A1A] border-[#333] min-w-[220px]" align="start">
+                            <DropdownMenuContent className="bg-[#1A1A1A] border-[#333] min-w-[220px] shadow-lg" align="start">
                               <ScrollArea className="h-[200px] w-full p-2">
                                 {domain.displayNames.length > 0 ? (
                                   <div className="space-y-2">
@@ -541,11 +544,11 @@ const OrderMicrosoftInboxesPage = () => {
           </div>
         </div>
         
-        {/* Submit Button */}
-        <div className="flex justify-end">
+        {/* Submit Button Section with Visual Anchoring */}
+        <div className="bg-[#121212] rounded-lg border-t border-[#2D2D2D] pt-6 pb-4 px-6 flex justify-end shadow-lg">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className="bg-[#E00000] hover:bg-[#CC0000] text-white font-bold px-6 py-3 rounded-md">
+              <Button className="bg-[#E00000] hover:bg-[#CC0000] text-white font-bold px-6 py-3 rounded-md shadow-md transition-all hover:shadow-lg">
                 Order Inboxes
               </Button>
             </AlertDialogTrigger>

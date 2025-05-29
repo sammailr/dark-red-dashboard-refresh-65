@@ -180,8 +180,8 @@ const Index = () => {
             {/* Subtle background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.01)_0%,transparent_50%)]"></div>
             
-            {/* Icon vignette effect */}
-            <div className={`absolute top-4 left-4 w-12 h-12 rounded-full opacity-5 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+            {/* Icon vignette effect - aligned with logo position */}
+            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full opacity-5 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
             
             {/* Provider-specific accent border */}
             <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-blue-500/40 via-blue-400/60 to-blue-500/40' : 'bg-gradient-to-r from-red-500/40 via-red-400/60 to-red-500/40'}`}></div>
@@ -249,14 +249,9 @@ const Index = () => {
       <div className="mb-10">
         <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
           {/* Background elements */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent"></div>
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
-          
-          {/* Enhanced watermark icon */}
-          <div className="absolute right-8 top-8 opacity-[0.08]">
-            <CreditCard className="h-20 w-20 text-white" />
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/5 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/30 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-400/40 to-transparent"></div>
           
           <CardHeader className="pb-6 relative z-10">
             <div className="flex justify-between items-start">
@@ -279,7 +274,7 @@ const Index = () => {
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-400 mb-1">Due Date</p>
-                <p className="text-lg font-semibold text-blue-400">{getNextBillingDate()}</p>
+                <p className="text-lg font-semibold text-red-400">{getNextBillingDate()}</p>
               </div>
             </div>
             {/* Enhanced divider */}

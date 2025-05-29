@@ -249,6 +249,12 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/2 to-transparent transition-all duration-300 group-hover:via-green-500/3"></div>
             <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/10 to-transparent transition-all duration-300 group-hover:via-green-400/15"></div>
             
+            {/* Added bottom glow for Monthly Email Volume card */}
+            <div 
+              className="absolute bottom-0 left-0 right-0 h-[8px]" 
+              style={{ boxShadow: 'inset 0 -1px 4px rgba(34, 197, 94, 0.25)' }}
+            ></div>
+            
             <CardHeader className="pb-3 pt-7 px-7 relative z-10">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">

@@ -178,16 +178,16 @@ const Index = () => {
           <FileText className="h-5 w-5 text-gray-400" />
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full table-fixed">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Created</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Total Domains</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Provider</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Tag</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Cost</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Status</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Actions</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Created</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Total Domains</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Provider</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[10%]">Tag</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Cost</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Status</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
               </tr>
             </thead>
             <tbody>

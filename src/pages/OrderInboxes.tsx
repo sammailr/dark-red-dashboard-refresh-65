@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +19,7 @@ const OrderInboxesPage = () => {
         <div className="text-center space-y-3">
           <h2 className="text-2xl font-bold tracking-widest text-white uppercase">SELECT PROVIDER</h2>
           <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-md">
-            Choose your preferred inbox provider to get started with premium email solutions
+            Choose your inbox provider to get started
           </p>
         </div>
         
@@ -30,24 +29,24 @@ const OrderInboxesPage = () => {
             className="group cursor-pointer" 
             onClick={() => handleProviderSelect('google')}
           >
-            <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-6 h-56 flex flex-col justify-between transition-all duration-300 ease-in-out hover:bg-[#1F1F1F] hover:border-gray-700 hover:shadow-2xl hover:shadow-red-500/10 hover:scale-[1.03]">
+            <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-6 h-64 flex flex-col transition-all duration-300 ease-in-out hover:bg-[#1F1F1F] hover:border-gray-700 hover:shadow-2xl hover:shadow-red-500/10 hover:scale-[1.02]">
               {/* Icon Container */}
-              <div className="flex justify-start">
+              <div className="flex justify-start mb-4">
                 <div className="relative">
                   <div className="absolute inset-0 bg-red-500/20 rounded-lg blur-sm group-hover:bg-red-500/30 transition-all duration-300"></div>
-                  <div className="relative bg-gradient-to-br from-red-500 to-red-600 p-3 rounded-lg shadow-lg w-12 h-12 flex items-center justify-center">
+                  <div className="relative bg-gradient-to-br from-red-500 to-red-600 p-3 rounded-lg shadow-lg w-12 h-12 flex items-center justify-center aspect-square">
                     <i className="fa-brands fa-google text-white text-xl"></i>
                   </div>
                 </div>
               </div>
               
               {/* Content */}
-              <div className="flex-1 flex flex-col justify-center space-y-3">
+              <div className="flex-1 space-y-3">
                 <h3 className="text-xl font-bold text-white group-hover:text-red-400 transition-colors duration-300">
                   Google Workspace
                 </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Premium Google workspace inboxes with enterprise-grade security
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  Order Google workspace inboxes
                 </p>
               </div>
 
@@ -65,24 +64,24 @@ const OrderInboxesPage = () => {
             className="group cursor-pointer" 
             onClick={() => handleProviderSelect('microsoft')}
           >
-            <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-6 h-56 flex flex-col justify-between transition-all duration-300 ease-in-out hover:bg-[#1F1F1F] hover:border-gray-700 hover:shadow-2xl hover:shadow-blue-500/10 hover:scale-[1.03]">
+            <div className="bg-[#1A1A1A] border border-gray-800 rounded-xl p-6 h-64 flex flex-col transition-all duration-300 ease-in-out hover:bg-[#1F1F1F] hover:border-gray-700 hover:shadow-2xl hover:shadow-blue-500/10 hover:scale-[1.02]">
               {/* Icon Container */}
-              <div className="flex justify-start">
+              <div className="flex justify-start mb-4">
                 <div className="relative">
                   <div className="absolute inset-0 bg-blue-500/20 rounded-lg blur-sm group-hover:bg-blue-500/30 transition-all duration-300"></div>
-                  <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-lg shadow-lg w-12 h-12 flex items-center justify-center">
+                  <div className="relative bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-lg shadow-lg w-12 h-12 flex items-center justify-center aspect-square">
                     <i className="fa-brands fa-microsoft text-white text-xl"></i>
                   </div>
                 </div>
               </div>
               
               {/* Content */}
-              <div className="flex-1 flex flex-col justify-center space-y-3">
+              <div className="flex-1 space-y-3">
                 <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors duration-300">
                   Microsoft 365
                 </h3>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Professional Microsoft 365 inboxes with advanced collaboration tools
+                <p className="text-sm text-gray-400 leading-relaxed">
+                  Order Microsoft 365 inboxes
                 </p>
               </div>
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -32,8 +31,7 @@ const Login = () => {
       <Card className="w-full max-w-md bg-mailr-darkgray border-mailr-lightgray">
         <CardHeader className="text-center">
           <div className="mb-4">
-            <h1 className="text-3xl font-bold text-mailr-red">Mailr</h1>
-            <p className="text-gray-400 text-sm">Smart Email Solution</p>
+            <h1 className="text-2xl font-semibold text-white">Mailr</h1>
           </div>
           <CardTitle className="text-2xl text-white">Welcome Back</CardTitle>
         </CardHeader>

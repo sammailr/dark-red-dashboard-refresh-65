@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,6 +29,47 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
   const renderCommonFields = () => {
     const isGooglePage = pageType === 'google';
     const isMicrosoftPage = pageType === 'microsoft';
+    
+    // For Google page, always show only the 3 required fields
+    if (isGooglePage) {
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Workspace Name</Label>
+            <Input
+              id="customName"
+              type="text"
+              className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+              value={formData.customName || ''}
+              onChange={(e) => handleInputChange('customName', e.target.value)}
+              placeholder="Enter workspace name"
+            />
+          </div>
+          <div>
+            <Label htmlFor="loginEmail" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
+            <Input
+              id="loginEmail"
+              type="email"
+              className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+              value={formData.loginEmail || ''}
+              onChange={(e) => handleInputChange('loginEmail', e.target.value)}
+              placeholder="Enter login email"
+            />
+          </div>
+          <div>
+            <Label htmlFor="loginPassword" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Password</Label>
+            <Input
+              id="loginPassword"
+              type="password"
+              className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+              value={formData.loginPassword || ''}
+              onChange={(e) => handleInputChange('loginPassword', e.target.value)}
+              placeholder="Enter login password"
+            />
+          </div>
+        </div>
+      );
+    }
     
     // For Microsoft page, customize based on sequencer
     if (isMicrosoftPage) {
@@ -75,52 +117,20 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
         </div>
       );
     }
-    
-    // For Google page, always show all common fields
-    return (
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Workspace Name</Label>
-          <Input
-            id="customName"
-            type="text"
-            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-            value={formData.customName || ''}
-            onChange={(e) => handleInputChange('customName', e.target.value)}
-            placeholder="Enter workspace name"
-          />
-        </div>
-        <div>
-          <Label htmlFor="loginEmail" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
-          <Input
-            id="loginEmail"
-            type="email"
-            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-            value={formData.loginEmail || ''}
-            onChange={(e) => handleInputChange('loginEmail', e.target.value)}
-            placeholder="Enter login email"
-          />
-        </div>
-        <div>
-          <Label htmlFor="loginPassword" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Password</Label>
-          <Input
-            id="loginPassword"
-            type="password"
-            className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-            value={formData.loginPassword || ''}
-            onChange={(e) => handleInputChange('loginPassword', e.target.value)}
-            placeholder="Enter login password"
-          />
-        </div>
-      </div>
-    );
   };
 
   const renderSequencerInputs = () => {
     if (!selectedSequencer) return null;
 
     const commonFields = renderCommonFields();
+    const isGooglePage = pageType === 'google';
 
+    // For Google page, only show the common fields regardless of sequencer
+    if (isGooglePage) {
+      return commonFields;
+    }
+
+    // For Microsoft page, show sequencer-specific fields
     switch (selectedSequencer) {
       case 'smartlead':
         return (

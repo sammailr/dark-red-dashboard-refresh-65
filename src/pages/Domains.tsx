@@ -682,18 +682,20 @@ const DomainsPage = () => {
           <Table>
             <TableHeader className="bg-[#1A1A1A] border-b border-[#2d2d2d]">
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-12 py-3">
-                  <Checkbox 
-                    checked={isAllSelected}
-                    onCheckedChange={handleSelectAll}
-                    className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
-                  />
+                <TableHead className="w-12 px-4 py-4 text-center">
+                  <div className="flex justify-center">
+                    <Checkbox 
+                      checked={isAllSelected}
+                      onCheckedChange={handleSelectAll}
+                      className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
+                    />
+                  </div>
                 </TableHead>
-                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Domain</TableHead>
-                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
-                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Status</TableHead>
-                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider">Provider</TableHead>
-                <TableHead className="py-3 text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
+                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Domain</TableHead>
+                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Status</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-24">Provider</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -706,32 +708,40 @@ const DomainsPage = () => {
                     hover:bg-[#252525]
                   `}
                 >
-                  <TableCell className="py-2.5">
-                    <Checkbox 
-                      checked={selectedDomainIds.includes(domain.id)}
-                      onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
-                      className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
-                    />
+                  <TableCell className="w-12 px-4 py-3">
+                    <div className="flex justify-center">
+                      <Checkbox 
+                        checked={selectedDomainIds.includes(domain.id)}
+                        onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
+                        className="border-gray-500 data-[state=checked]:bg-[#E00000] data-[state=checked]:border-[#E00000]"
+                      />
+                    </div>
                   </TableCell>
-                  <TableCell className="py-2.5 font-medium text-white">{domain.domain}</TableCell>
-                  <TableCell className="py-2.5 text-gray-300">{domain.url}</TableCell>
-                  <TableCell className="py-2.5">
-                    {getStatusBadge(domain.status)}
+                  <TableCell className="px-6 py-3 font-medium text-white text-left">{domain.domain}</TableCell>
+                  <TableCell className="px-6 py-3 text-gray-300 text-left">{domain.url}</TableCell>
+                  <TableCell className="px-6 py-3 w-32">
+                    <div className="flex justify-center">
+                      {getStatusBadge(domain.status)}
+                    </div>
                   </TableCell>
-                  <TableCell className="py-2.5">
-                    {getProviderIcon(domain.provider)}
+                  <TableCell className="px-6 py-3 w-24">
+                    <div className="flex justify-center">
+                      {getProviderIcon(domain.provider)}
+                    </div>
                   </TableCell>
-                  <TableCell className="py-2.5">
-                    {domain.status === 'Update Nameservers' && (
-                      <Button 
-                        variant="ghost"
-                        size="sm" 
-                        onClick={() => handleNameserverClick(domain.id)}
-                        className="h-8 px-3 text-xs border border-[#444] text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/5 transition-colors rounded-md"
-                      >
-                        View Instructions
-                      </Button>
-                    )}
+                  <TableCell className="px-6 py-3 w-32">
+                    <div className="flex justify-center">
+                      {domain.status === 'Update Nameservers' && (
+                        <Button 
+                          variant="ghost"
+                          size="sm" 
+                          onClick={() => handleNameserverClick(domain.id)}
+                          className="h-8 px-3 text-xs border border-[#444] text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/5 transition-colors rounded-md"
+                        >
+                          View Instructions
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

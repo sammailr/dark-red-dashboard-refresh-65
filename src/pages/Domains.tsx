@@ -4,7 +4,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight, Globe, Mail } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -41,6 +41,181 @@ const DomainsPage = () => {
       url: 'https://test.org',
       status: 'Pending',
       provider: 'Microsoft'
+    },
+    {
+      id: 3,
+      domain: 'business.net',
+      url: 'https://business.net',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 4,
+      domain: 'startup.io',
+      url: 'https://startup.io',
+      status: 'Update Nameservers',
+      provider: 'Microsoft'
+    },
+    {
+      id: 5,
+      domain: 'agency.co',
+      url: 'https://agency.co',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 6,
+      domain: 'marketing.biz',
+      url: 'https://marketing.biz',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 7,
+      domain: 'ecommerce.shop',
+      url: 'https://ecommerce.shop',
+      status: 'Active',
+      provider: 'Google'
+    },
+    {
+      id: 8,
+      domain: 'consulting.pro',
+      url: 'https://consulting.pro',
+      status: 'Pending',
+      provider: 'Microsoft'
+    },
+    {
+      id: 9,
+      domain: 'portfolio.me',
+      url: 'https://portfolio.me',
+      status: 'Update Nameservers',
+      provider: 'Google'
+    },
+    {
+      id: 10,
+      domain: 'services.online',
+      url: 'https://services.online',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 11,
+      domain: 'creative.design',
+      url: 'https://creative.design',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 12,
+      domain: 'tech.dev',
+      url: 'https://tech.dev',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 13,
+      domain: 'finance.money',
+      url: 'https://finance.money',
+      status: 'Update Nameservers',
+      provider: 'Google'
+    },
+    {
+      id: 14,
+      domain: 'health.care',
+      url: 'https://health.care',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 15,
+      domain: 'education.academy',
+      url: 'https://education.academy',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 16,
+      domain: 'travel.guide',
+      url: 'https://travel.guide',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 17,
+      domain: 'food.kitchen',
+      url: 'https://food.kitchen',
+      status: 'Update Nameservers',
+      provider: 'Google'
+    },
+    {
+      id: 18,
+      domain: 'sports.team',
+      url: 'https://sports.team',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 19,
+      domain: 'music.studio',
+      url: 'https://music.studio',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 20,
+      domain: 'art.gallery',
+      url: 'https://art.gallery',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 21,
+      domain: 'news.media',
+      url: 'https://news.media',
+      status: 'Update Nameservers',
+      provider: 'Google'
+    },
+    {
+      id: 22,
+      domain: 'gaming.zone',
+      url: 'https://gaming.zone',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 23,
+      domain: 'fashion.style',
+      url: 'https://fashion.style',
+      status: 'Pending',
+      provider: 'Google'
+    },
+    {
+      id: 24,
+      domain: 'auto.motors',
+      url: 'https://auto.motors',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 25,
+      domain: 'realestate.property',
+      url: 'https://realestate.property',
+      status: 'Update Nameservers',
+      provider: 'Google'
+    },
+    {
+      id: 26,
+      domain: 'retail.store',
+      url: 'https://retail.store',
+      status: 'Active',
+      provider: 'Microsoft'
+    },
+    {
+      id: 27,
+      domain: 'photography.pics',
+      url: 'https://photography.pics',
+      status: 'Pending',
+      provider: 'Google'
     }
   ]);
 
@@ -98,16 +273,12 @@ const DomainsPage = () => {
     navigate(`/nameserver-update/${domainId}`);
   };
 
-  const getProviderBadge = (provider: string) => {
+  const getProviderIcon = (provider: string) => {
     const isGoogle = provider === 'Google';
-    return (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${
-        isGoogle 
-          ? 'bg-blue-900/30 text-blue-400 border border-blue-400/30' 
-          : 'bg-orange-900/30 text-orange-400 border border-orange-400/30'
-      }`}>
-        {provider}
-      </span>
+    return isGoogle ? (
+      <Globe className="h-4 w-4 text-blue-400" />
+    ) : (
+      <Mail className="h-4 w-4 text-orange-400" />
     );
   };
 
@@ -174,16 +345,18 @@ const DomainsPage = () => {
                     {getStatusBadge(domain.status)}
                   </div>
                 </TableCell>
-                <TableCell>{getProviderBadge(domain.provider)}</TableCell>
+                <TableCell>{getProviderIcon(domain.provider)}</TableCell>
                 <TableCell>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => openSwapConfirmation(domain)} 
-                    className="h-8 w-8 p-0"
-                  >
-                    <ArrowLeftRight className="h-4 w-4" />
-                  </Button>
+                  {domain.provider === 'Microsoft' && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => openSwapConfirmation(domain)} 
+                      className="h-8 w-8 p-0"
+                    >
+                      <ArrowLeftRight className="h-4 w-4" />
+                    </Button>
+                  )}
                 </TableCell>
                 
                 {/* Hover button for Update Nameservers status */}

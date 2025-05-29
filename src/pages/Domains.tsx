@@ -692,11 +692,11 @@ const DomainsPage = () => {
                     />
                   </div>
                 </TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider min-w-[200px]">Domain</TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider min-w-[280px]">Forwarding URL</TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[140px]">Status</TableHead>
-                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[80px]">Provider</TableHead>
-                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[80px]">Swap</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[25%]">Domain</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[30%]">Forwarding URL</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[15%]">Status</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[10%]">Provider</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[12%]">Swap Domain</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -720,17 +720,17 @@ const DomainsPage = () => {
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-3 font-medium text-white text-left min-w-[200px]">{domain.domain}</TableCell>
-                  <TableCell className="px-4 py-3 text-gray-300 text-left min-w-[280px]">{domain.url}</TableCell>
-                  <TableCell className="px-4 py-3 text-left w-[140px]">
+                  <TableCell className="px-4 py-3 font-medium text-white text-left w-[25%]">{domain.domain}</TableCell>
+                  <TableCell className="px-4 py-3 text-gray-300 text-left w-[30%]">{domain.url}</TableCell>
+                  <TableCell className="px-4 py-3 text-left w-[15%]">
                     {getStatusBadge(domain.status)}
                   </TableCell>
-                  <TableCell className="px-4 py-3 w-[80px]">
+                  <TableCell className="px-4 py-3 w-[10%]">
                     <div className="flex justify-center items-center">
                       {getProviderIcon(domain.provider)}
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-3 w-[80px]">
+                  <TableCell className="px-4 py-3 w-[12%]">
                     <div className="flex justify-center">
                       <Tooltip>
                         <TooltipTrigger asChild>

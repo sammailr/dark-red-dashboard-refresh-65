@@ -20,7 +20,7 @@ const OrderInboxesPage = () => {
         <div className="text-center space-y-3">
           <h2 className="text-2xl font-bold tracking-widest text-white uppercase">SELECT PROVIDER</h2>
           <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-md">
-            Choose your preferred inbox provider to get started with premium email solutions
+            Choose your inbox provider to get started
           </p>
         </div>
         
@@ -47,7 +47,7 @@ const OrderInboxesPage = () => {
                   Google Workspace
                 </h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Premium Google workspace inboxes with enterprise-grade security
+                  Order Google workspace inboxes<br />3 inboxes per domain
                 </p>
               </div>
 
@@ -82,7 +82,7 @@ const OrderInboxesPage = () => {
                   Microsoft 365
                 </h3>
                 <p className="text-xs text-gray-400 leading-relaxed">
-                  Professional Microsoft 365 inboxes with advanced collaboration tools
+                  Order Microsoft 365 inboxes<br />99 inboxes per domain
                 </p>
               </div>
 

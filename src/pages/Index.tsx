@@ -172,7 +172,7 @@ const Index = () => {
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 {provider.logo}
-                <CardTitle className="text-lg font-semibold">{provider.provider}</CardTitle>
+                <CardTitle className="text-xl font-bold">{provider.provider}</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
@@ -191,14 +191,12 @@ const Index = () => {
         {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex justify-between items-start">
-                <CardTitle className="text-lg font-semibold text-gray-400">{stat.title}</CardTitle>
+                <CardTitle className="text-xl font-bold text-gray-400">{stat.title}</CardTitle>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="flex justify-between items-end">
-                <p className="text-xl font-bold">{stat.value}</p>
-              </div>
+              <div className="text-xl font-bold">{stat.value}</div>
             </CardContent>
           </Card>)}
       </div>
@@ -237,14 +235,14 @@ const Index = () => {
         </Card>
       </div>
 
-      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">
-        <div className="p-6 pb-4">
+      <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg mb-6">
+        <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-slate-50">Orders</h2>
+            <CardTitle className="text-xl font-bold text-slate-50">Orders</CardTitle>
             <FileText className="h-5 w-5 text-gray-400" />
           </div>
-        </div>
-        <div className="px-6 pb-6">
+        </CardHeader>
+        <CardContent className="pt-0">
           <div className="overflow-x-auto">
             <table className="w-full table-fixed">
               <thead className="border-b border-mailr-lightgray">
@@ -360,8 +358,8 @@ const Index = () => {
                 </PaginationContent>
               </Pagination>
             </div>}
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </MainLayout>;
 };
 export default Index;

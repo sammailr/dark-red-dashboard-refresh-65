@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -32,7 +31,7 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
     
     // For Microsoft page, customize based on sequencer
     if (isMicrosoftPage) {
-      const shouldShowLoginFields = selectedSequencer === 'smartlead' || selectedSequencer === 'instantly';
+      const shouldShowLoginFields = selectedSequencer === 'instantly';
       
       return (
         <div className="space-y-4">
@@ -167,32 +166,6 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
                 placeholder="Enter API key"
               />
             </div>
-            {pageType === 'google' && (
-              <>
-                <div>
-                  <Label htmlFor="loginEmailDuplicate" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
-                  <Input
-                    id="loginEmailDuplicate"
-                    type="email"
-                    className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-                    value={formData.loginEmailDuplicate || ''}
-                    onChange={(e) => handleInputChange('loginEmailDuplicate', e.target.value)}
-                    placeholder="Enter login email"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="password" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-                    value={formData.password || ''}
-                    onChange={(e) => handleInputChange('password', e.target.value)}
-                    placeholder="Enter password"
-                  />
-                </div>
-              </>
-            )}
           </div>
         );
 

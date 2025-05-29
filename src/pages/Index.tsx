@@ -34,7 +34,7 @@ const Index = () => {
   // Example data - would typically come from an API
   const sendingVolume = 412800;
   const dashboardStats = [{
-    title: 'Sending Volume per Month',
+    title: 'Monthly Email Volume',
     value: sendingVolume.toLocaleString(),
     icon: TrendingUp,
     color: 'text-green-500'
@@ -167,88 +167,125 @@ const Index = () => {
   const startIndex = (currentPage - 1) * ordersPerPage;
   const paginatedOrders = sortedOrders.slice(startIndex, startIndex + ordersPerPage);
   return <MainLayout title="Dashboard">
-      {/* Provider Stats Section - Enhanced Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
+      {/* Provider Stats and Premium Dashboard Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+        {/* Provider Stats */}
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px]">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 {provider.logo}
-                <CardTitle className="text-xl font-bold">{provider.provider}</CardTitle>
+                <CardTitle className="text-xl font-bold text-slate-50">{provider.provider}</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-400">Domains</span>
-                  <span className="text-xl font-bold">{provider.domains}</span>
+                  <span className="text-xl font-bold text-white">{provider.domains}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-400">Mailboxes</span>
-                  <span className="text-xl font-bold">{provider.mailboxes}</span>
+                  <span className="text-xl font-bold text-white">{provider.mailboxes}</span>
                 </div>
               </div>
             </CardContent>
           </Card>)}
-        {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
-            <CardHeader className="pb-4">
+        
+        {/* Premium Sending Volume Card */}
+        {dashboardStats.map(stat => (
+          <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden">
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/5 to-transparent"></div>
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/30 to-transparent"></div>
+            
+            <CardHeader className="pb-2 relative z-10">
               <div className="flex justify-between items-start">
-                <CardTitle className="text-xl font-bold text-gray-400">{stat.title}</CardTitle>
-                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">{stat.title}</p>
+                </div>
+                <div className="relative">
+                  {/* Mini sparkline effect */}
+                  <div className="flex items-end space-x-0.5 opacity-60">
+                    <div className="w-1 h-2 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-1 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-4 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-5 bg-green-400 rounded-sm"></div>
+                  </div>
+                </div>
               </div>
             </CardHeader>
-            <CardContent className="pt-0">
-              <div className="text-xl font-bold">{stat.value}</div>
+            <CardContent className="pt-0 pb-6 relative z-10">
+              <div className="text-4xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-sm text-green-400 flex items-center">
+                <TrendingUp className="h-3 w-3 mr-1" />
+                +12.5% from last month
+              </div>
             </CardContent>
-          </Card>)}
+          </Card>
+        ))}
       </div>
 
-      {/* Subscription Section - Enhanced Card */}
-      <div className="mb-8">
-        <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200 relative">
-          <CardHeader className="pb-4">
+      {/* Premium Subscription Section */}
+      <div className="mb-10">
+        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-400/30 to-transparent"></div>
+          
+          {/* Watermark icon */}
+          <div className="absolute right-6 top-6 opacity-10">
+            <CreditCard className="h-16 w-16 text-white" />
+          </div>
+          
+          <CardHeader className="pb-6 relative z-10">
             <div className="flex justify-between items-start">
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-xl font-bold text-slate-50">Subscription</CardTitle>
+              <div className="space-y-1">
+                <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Subscription</p>
+                <CardTitle className="text-3xl font-bold text-white">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 font-normal ml-1">/month</span></CardTitle>
               </div>
-              <DollarSign className="h-5 w-5 text-yellow-500" />
+              <Link to="/subscriptions">
+                <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/10 transition-all">
+                  View All
+                </Button>
+              </Link>
             </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <CardContent className="pt-0 pb-6 relative z-10">
+            <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-400 mb-1">Total</p>
-                <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/month</span></p>
-              </div>
-              <div className="text-center">
                 <p className="text-sm text-gray-400 mb-1">Next Billing</p>
-                <p className="text-2xl font-bold">${nextBillingAmount.toLocaleString()}</p>
+                <p className="text-xl font-semibold text-white">${nextBillingAmount.toLocaleString()}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-400 mb-1">Next Billing Date</p>
-                <p className="text-2xl font-bold">{getNextBillingDate()}</p>
+                <p className="text-sm text-gray-400 mb-1">Due Date</p>
+                <p className="text-lg font-semibold text-blue-400">{getNextBillingDate()}</p>
+              </div>
+            </div>
+            {/* Subtle divider */}
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <div className="flex items-center text-xs text-gray-500">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                Active subscription • Auto-renewal enabled
               </div>
             </div>
           </CardContent>
-          <Link to="/subscriptions" className="absolute top-4 right-12">
-            <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white">
-              View All
-            </Button>
-          </Link>
         </Card>
       </div>
 
-      {/* Orders Section - Enhanced Table */}
-      <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-xl hover:shadow-2xl transition-shadow duration-200">
-        <CardHeader className="pb-4">
+      {/* Enhanced Orders Section */}
+      <Card className="bg-[#1A1A1A] border-[#2D2D2D] shadow-2xl">
+        <CardHeader className="pb-6">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-bold text-slate-50">Orders</CardTitle>
+            <CardTitle className="text-2xl font-bold text-slate-50">Orders</CardTitle>
             <FileText className="h-5 w-5 text-gray-400" />
           </div>
         </CardHeader>
         <CardContent className="pt-0">
           <div className="overflow-x-auto">
             <table className="w-full table-fixed">
-              <thead className="border-b border-mailr-lightgray">
+              <thead className="border-b border-[#2D2D2D]">
                 <tr>
                   <th 
                     className="text-center py-4 px-4 text-gray-300 font-semibold text-sm w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
@@ -316,32 +353,32 @@ const Index = () => {
               <tbody>
                 {paginatedOrders.map((order, index) => <tr 
                     key={order.id} 
-                    className={`border-b border-mailr-lightgray last:border-b-0 hover:bg-[#2A2A2A] transition-colors duration-150 ${
-                      index % 2 === 0 ? 'bg-mailr-darkgray' : 'bg-[#252525]'
+                    className={`border-b border-[#2D2D2D] last:border-b-0 hover:bg-[#2A2A2A] transition-colors duration-150 ${
+                      index % 2 === 0 ? 'bg-[#1A1A1A]' : 'bg-[#1E1E1E]'
                     }`}
                   >
-                    <td className="py-3 px-4 text-sm text-center text-gray-200">{formatDate(order.date)}</td>
-                    <td className="py-3 px-4 text-sm text-center text-gray-200">{order.domains.length}</td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-4 px-4 text-sm text-center text-gray-200">{formatDate(order.date)}</td>
+                    <td className="py-4 px-4 text-sm text-center text-gray-200">{order.domains.length}</td>
+                    <td className="py-4 px-4 text-center">
                       <div className="flex justify-center items-center">
                         {getProviderLogo(order.provider)}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-sm text-center text-gray-200">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-4 px-4 text-sm text-center text-gray-200">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                    <td className="py-4 px-4 text-center">
                       <input 
                         type="text" 
                         value={orderTags[order.id] || ''} 
                         onChange={e => handleTagUpdate(order.id, e.target.value)} 
                         onClick={e => e.stopPropagation()} 
                         placeholder="Add tag..." 
-                        className="bg-transparent border border-gray-600 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red focus:border-mailr-red rounded px-3 py-1 text-center w-full hover:border-gray-500 transition-colors" 
+                        className="bg-transparent border border-[#2D2D2D] text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red focus:border-mailr-red rounded px-3 py-1 text-center w-full hover:border-gray-500 transition-colors" 
                       />
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-4 px-4 text-center">
                       {getStatusBadge(order.status)}
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-4 px-4 text-center">
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -356,7 +393,7 @@ const Index = () => {
             </table>
           </div>
           
-          {totalPages > 1 && <div className="flex justify-end mt-6 pt-4 border-t border-mailr-lightgray">
+          {totalPages > 1 && <div className="flex justify-end mt-6 pt-4 border-t border-[#2D2D2D]">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>

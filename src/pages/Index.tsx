@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
 const Index = () => {
   const {
     isFreeTrial,
@@ -148,7 +147,7 @@ const Index = () => {
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
-          <CardContent className="py-2">
+          <CardContent className="py-[13px]">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Total</p>
@@ -236,5 +235,4 @@ const Index = () => {
       </div>
     </MainLayout>;
 };
-
 export default Index;

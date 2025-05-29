@@ -184,8 +184,8 @@ const Index = () => {
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Created</th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Total Domains</th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Provider</th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[10%]">Tag</th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Cost</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[10%]">Tag</th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Status</th>
                 <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
               </tr>
@@ -197,10 +197,10 @@ const Index = () => {
                   <td className="py-3 text-center">
                     {getProviderLogo(index)}
                   </td>
+                  <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
                   <td className="py-3 text-center">
                     <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1 text-center w-full" />
                   </td>
-                  <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
                   <td className="py-3 text-center">
                     {getStatusBadge(order.status)}
                   </td>

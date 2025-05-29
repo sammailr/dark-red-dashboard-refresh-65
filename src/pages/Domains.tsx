@@ -535,22 +535,26 @@ const DomainsPage = () => {
 
   const getProviderIcon = (provider: string) => {
     const isGoogle = provider === 'Google';
-    return isGoogle ? (
-      <i className="fa-brands fa-google text-white"></i>
-    ) : (
-      <i className="fa-brands fa-microsoft text-white"></i>
+    return (
+      <div className="w-6 h-6 flex items-center justify-center" title={provider}>
+        {isGoogle ? (
+          <i className="fa-brands fa-google text-white text-base"></i>
+        ) : (
+          <i className="fa-brands fa-microsoft text-white text-base"></i>
+        )}
+      </div>
     );
   };
 
   const getStatusBadge = (status: string) => {
     const statusStyles = {
-      'Active': 'bg-green-900/30 text-green-400',
-      'Pending': 'bg-yellow-900/30 text-yellow-400',
-      'Update Nameservers': 'bg-red-900/30 text-red-400'
+      'Active': 'bg-green-500/20 text-green-400 border-green-500/30',
+      'Pending': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+      'Update Nameservers': 'bg-red-500/20 text-red-400 border-red-500/30'
     };
     
     return (
-      <span className={`px-2 py-1 rounded text-xs ${statusStyles[status as keyof typeof statusStyles] || statusStyles.Pending}`}>
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${statusStyles[status as keyof typeof statusStyles] || statusStyles.Pending}`}>
         {status}
       </span>
     );
@@ -558,15 +562,66 @@ const DomainsPage = () => {
 
   return (
     <MainLayout title="Manage Domains">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-2">
+      <div className="space-y-8">
+        {/* Header Section */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-white tracking-wide">MANAGE DOMAINS</h1>
+          
+          <div className="flex items-center gap-3">
+            {/* Search Input */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                placeholder="Search domains or URLs..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 w-80 h-10 bg-[#1a1a1a] border-[#333] text-white placeholder:text-gray-500 focus:border-gray-400 focus:ring-0 shadow-inner"
+              />
+            </div>
+            
+            {/* Export Button */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-10 px-4 bg-[#1a1a1a] border-[#333] text-white hover:bg-[#262626] hover:border-gray-400 rounded-md"
+                >
+                  <Upload className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-[#1a1a1a] border-[#333]">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-white">Export Domains?</AlertDialogTitle>
+                  <AlertDialogDescription className="text-gray-400">
+                    This will download a CSV file containing all your filtered domains.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="bg-[#1a1a1a] border-[#333] text-white hover:bg-[#262626]">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={handleExport}
+                    className="bg-[#9b1313] hover:bg-[#7a0f0f] text-white"
+                  >
+                    Export
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+
+        {/* Action Bar */}
+        <div className="flex items-center gap-3">
           <Button 
             variant="outline" 
             size="sm" 
-            className={`bg-mailr-darkgray border-mailr-lightgray text-white ${
+            className={`h-10 px-4 bg-[#1a1a1a] border-[#333] text-white rounded-md ${
               selectedDomainIds.length === 0 
-                ? 'opacity-50 cursor-not-allowed hover:bg-mailr-darkgray' 
-                : 'hover:bg-mailr-lightgray'
+                ? 'opacity-50 cursor-not-allowed hover:bg-[#1a1a1a] hover:border-[#333]' 
+                : 'hover:bg-[#262626] hover:border-gray-400'
             }`}
             disabled={selectedDomainIds.length === 0}
             onClick={() => setIsBulkUpdateOpen(true)}
@@ -576,19 +631,19 @@ const DomainsPage = () => {
           
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
+              <Button variant="outline" size="sm" className="h-10 px-4 bg-[#1a1a1a] border-[#333] text-white hover:bg-[#262626] hover:border-gray-400 rounded-md">
                 <Filter className="h-4 w-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80 bg-mailr-darkgray border-mailr-lightgray">
+            <PopoverContent className="w-80 bg-[#1a1a1a] border-[#333]">
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-white mb-2 block">Status</label>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray text-white">
+                    <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
                       <SelectValue placeholder="Filter by status" />
                     </SelectTrigger>
-                    <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                    <SelectContent className="bg-[#1a1a1a] border-[#333]">
                       <SelectItem value="all">All Statuses</SelectItem>
                       <SelectItem value="Active">Active</SelectItem>
                       <SelectItem value="Pending">Pending</SelectItem>
@@ -600,10 +655,10 @@ const DomainsPage = () => {
                 <div>
                   <label className="text-sm font-medium text-white mb-2 block">Provider</label>
                   <Select value={providerFilter} onValueChange={setProviderFilter}>
-                    <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray text-white">
+                    <SelectTrigger className="bg-[#1a1a1a] border-[#333] text-white">
                       <SelectValue placeholder="Filter by provider" />
                     </SelectTrigger>
-                    <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                    <SelectContent className="bg-[#1a1a1a] border-[#333]">
                       <SelectItem value="all">All Providers</SelectItem>
                       <SelectItem value="Google">Google</SelectItem>
                       <SelectItem value="Microsoft">Microsoft</SelectItem>
@@ -615,111 +670,80 @@ const DomainsPage = () => {
           </Popover>
         </div>
         
-        <div className="flex items-center gap-2">
-          <div className="relative w-80">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Search domains or URLs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-mailr-darkgray border-mailr-lightgray text-white placeholder:text-gray-400"
-            />
-          </div>
-          
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray text-white"
-              >
-                <Upload className="h-4 w-4" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="bg-mailr-darkgray border-mailr-lightgray">
-              <AlertDialogHeader>
-                <AlertDialogTitle className="text-white">Export Domains?</AlertDialogTitle>
-                <AlertDialogDescription className="text-gray-400">
-                  This will download a CSV file containing all your filtered domains.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="bg-mailr-darkgray border-mailr-lightgray text-white hover:bg-mailr-lightgray">
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction 
-                  onClick={handleExport}
-                  className="bg-mailr-red hover:bg-red-700 text-white"
+        {/* Alert for no domain slots */}
+        {availableDomainSlots === 0 && (
+          <Alert className="bg-red-500/10 border-red-500/30 text-red-400">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              You have no domain slots available. Please upgrade your subscription to add more domains.
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {/* Table Section */}
+        <div className="bg-[#1a1a1a] rounded-lg border border-[#333] shadow-lg overflow-hidden">
+          <Table>
+            <TableHeader className="bg-[#0f0f0f] border-b border-[#2d2d2d]">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="w-12 py-4">
+                  <Checkbox 
+                    checked={isAllSelected}
+                    onCheckedChange={handleSelectAll}
+                    className="border-gray-500 data-[state=checked]:bg-[#9b1313] data-[state=checked]:border-[#9b1313]"
+                  />
+                </TableHead>
+                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Domain</TableHead>
+                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
+                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Status</TableHead>
+                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider">Provider</TableHead>
+                <TableHead className="py-4 text-xs font-semibold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredDomains.map((domain, index) => (
+                <TableRow 
+                  key={domain.id} 
+                  className={`
+                    border-b border-[#2d2d2d] transition-colors
+                    ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#1f1f1f]'}
+                    hover:bg-[#262626]
+                  `}
                 >
-                  Export
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+                  <TableCell className="py-3">
+                    <Checkbox 
+                      checked={selectedDomainIds.includes(domain.id)}
+                      onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
+                      className="border-gray-500 data-[state=checked]:bg-[#9b1313] data-[state=checked]:border-[#9b1313]"
+                    />
+                  </TableCell>
+                  <TableCell className="py-3 font-medium text-white">{domain.domain}</TableCell>
+                  <TableCell className="py-3 text-gray-300">{domain.url}</TableCell>
+                  <TableCell className="py-3">
+                    {getStatusBadge(domain.status)}
+                  </TableCell>
+                  <TableCell className="py-3">
+                    {getProviderIcon(domain.provider)}
+                  </TableCell>
+                  <TableCell className="py-3">
+                    {domain.status === 'Update Nameservers' && (
+                      <Button 
+                        variant="ghost"
+                        size="sm" 
+                        onClick={() => handleNameserverClick(domain.id)}
+                        className="h-8 px-3 text-xs border border-gray-600 text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/10 transition-colors"
+                      >
+                        View Instructions
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
-      
-      {availableDomainSlots === 0 && (
-        <Alert className="bg-red-900/30 border-red-400/30 text-red-400 mb-4">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            You have no domain slots available. Please upgrade your subscription to add more domains.
-          </AlertDescription>
-        </Alert>
-      )}
-      
-      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
-        <Table>
-          <TableHeader className="bg-black/30">
-            <TableRow className="hover:bg-transparent border-mailr-lightgray">
-              <TableHead className="w-12">
-                <Checkbox 
-                  checked={isAllSelected}
-                  onCheckedChange={handleSelectAll}
-                />
-              </TableHead>
-              <TableHead>Domain</TableHead>
-              <TableHead>Forwarding URL</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Provider</TableHead>
-              <TableHead className="w-32">Instructions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredDomains.map(domain => (
-              <TableRow 
-                key={domain.id} 
-                className="hover:bg-mailr-lightgray/10 border-mailr-lightgray"
-              >
-                <TableCell>
-                  <Checkbox 
-                    checked={selectedDomainIds.includes(domain.id)}
-                    onCheckedChange={(checked) => handleSelectDomain(domain.id, checked as boolean)}
-                  />
-                </TableCell>
-                <TableCell>{domain.domain}</TableCell>
-                <TableCell>{domain.url}</TableCell>
-                <TableCell>
-                  {getStatusBadge(domain.status)}
-                </TableCell>
-                <TableCell>{getProviderIcon(domain.provider)}</TableCell>
-                <TableCell>
-                  {domain.status === 'Update Nameservers' && (
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleNameserverClick(domain.id)}
-                      className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1 h-6 w-full"
-                    >
-                      View Instructions
-                    </Button>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
 
+      {/* Modals */}
       <ImportDomainModal 
         open={isImportModalOpen} 
         onOpenChange={setIsImportModalOpen} 

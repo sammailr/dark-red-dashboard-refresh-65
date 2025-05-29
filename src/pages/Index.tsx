@@ -446,7 +446,7 @@ const Index = () => {
                       {getStatusBadge(order.status)}
                     </td>
                     <td className="py-5 px-5 text-center">
-                      <Button variant="default" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs bg-[#252525] text-white hover:bg-[#2A2A2A] hover:text-white border border-[#3A3A3A] hover:border-[#4A4A4A] transition-all px-3 py-2 rounded-lg font-medium shadow-sm hover:shadow-md flex items-center gap-2 opacity-70 group-hover:opacity-100 hover:scale-105">
+                      <Button variant="default" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs bg-[#252525] text-white hover:bg-[#2A2A2A] hover:text-white border border-[#3A3A3A] hover:border-[#4A4A4A] transition-all px-3 py-2 rounded-lg font-medium shadow-sm hover:shadow-md inline-flex items-center gap-2 opacity-70 group-hover:opacity-100 hover:scale-105">
                         <Eye className="h-3 w-3" />
                         View Details
                       </Button>

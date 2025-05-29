@@ -13,6 +13,7 @@ import OrderGoogleInboxesPage from "./pages/OrderGoogleInboxes";
 import OrderMicrosoftInboxesPage from "./pages/OrderMicrosoftInboxes";
 import SendingPlatformPage from "./pages/SendingPlatform";
 import DomainsPage from "./pages/Domains";
+import NameserverUpdatePage from "./pages/NameserverUpdate";
 import MasterInboxPage from "./pages/MasterInbox";
 import GuidePage from "./pages/Guide";
 import ToolsPage from "./pages/Tools";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/order-microsoft-inboxes" element={<OrderMicrosoftInboxesPage />} />
               <Route path="/sending-platform" element={<SendingPlatformPage />} />
               <Route path="/domains" element={<DomainsPage />} />
+              <Route path="/nameserver-update/:domainId" element={<NameserverUpdatePage />} />
               <Route path="/master-inbox" element={<MasterInboxPage />} />
               <Route path="/guide" element={<GuidePage />} />
               <Route path="/tools" element={<ToolsPage />} />

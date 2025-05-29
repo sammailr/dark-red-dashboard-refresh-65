@@ -64,13 +64,13 @@ const Index = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'cancelled':
-        return <Badge className="bg-red-500/80 text-white px-3 py-1 text-xs font-medium rounded-full">Canceled</Badge>;
+        return <Badge className="bg-red-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Canceled</Badge>;
       case 'processing':
-        return <Badge className="bg-amber-500/80 text-white px-3 py-1 text-xs font-medium rounded-full">In Progress</Badge>;
+        return <Badge className="bg-amber-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">In Progress</Badge>;
       case 'completed':
-        return <Badge className="bg-green-500/80 text-white px-3 py-1 text-xs font-medium rounded-full">Completed</Badge>;
+        return <Badge className="bg-green-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Completed</Badge>;
       default:
-        return <Badge className="bg-gray-500/80 text-white px-3 py-1 text-xs font-medium rounded-full">Unknown</Badge>;
+        return <Badge className="bg-gray-500/60 text-white px-3 py-1 text-xs font-medium rounded-full">Unknown</Badge>;
     }
   };
   const getProviderLogo = (provider: 'google' | 'microsoft') => {
@@ -180,8 +180,8 @@ const Index = () => {
             {/* Subtle background texture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.015)_0%,transparent_60%)]"></div>
             
-            {/* Fixed circle positioning for logos */}
-            <div className={`absolute left-12 top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full opacity-20 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+            {/* Fixed circle positioning for logos - properly centered */}
+            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full opacity-20 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
             
             {/* Subdued provider-specific accent border */}
             <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/15 to-transparent' : 'bg-gradient-to-r from-transparent via-red-500/15 to-transparent'}`}></div>
@@ -211,8 +211,8 @@ const Index = () => {
         {dashboardStats.map(stat => (
           <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-1px] relative overflow-hidden">
             {/* More subtle background elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/2 to-transparent"></div>
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/15 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/1 to-transparent"></div>
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/8 to-transparent"></div>
             
             <CardHeader className="pb-2 relative z-10">
               <div className="flex justify-between items-start">
@@ -221,14 +221,14 @@ const Index = () => {
                 </div>
                 <div className="relative">
                   {/* More subtle sparkline with softer green */}
-                  <div className="flex items-end space-x-0.5 opacity-60">
-                    <div className="w-1 h-2 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-1 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-4 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-2 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-5 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-gradient-to-t from-green-600/70 to-green-400/70 rounded-sm"></div>
+                  <div className="flex items-end space-x-0.5 opacity-40">
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-1 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-4 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-5 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-600/50 to-green-400/50 rounded-sm"></div>
                   </div>
                 </div>
               </div>
@@ -237,7 +237,7 @@ const Index = () => {
               <div className="text-4xl font-bold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-shadow-sm" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
                 {stat.value}
               </div>
-              <div className="text-sm text-green-400/80 flex items-center font-medium">
+              <div className="text-sm text-green-400/60 flex items-center font-medium">
                 <TrendingUp className="h-3 w-3 mr-1" />
                 +12.5% from last month
               </div>
@@ -455,4 +455,5 @@ const Index = () => {
       </Card>
     </MainLayout>;
 };
+
 export default Index;

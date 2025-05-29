@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -183,6 +184,14 @@ const Index = () => {
             {/* Enhanced provider-specific accent border with glow effect */}
             <div className={`absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/20 to-transparent group-hover:via-blue-500/30' : 'bg-gradient-to-r from-transparent via-red-500/20 to-transparent group-hover:via-red-500/30'}`}></div>
             
+            {/* Added bottom border glow for Microsoft card to match Google card */}
+            {provider.provider === 'Microsoft' && (
+              <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ boxShadow: 'inset 0 -2px 0 0 #3E78FA' }}></div>
+            )}
+            {provider.provider === 'Google' && (
+              <div className="absolute bottom-0 left-0 right-0 h-[2px]" style={{ boxShadow: 'inset 0 -2px 0 0 #F1413D' }}></div>
+            )}
+            
             <CardHeader className="pb-3 pt-7 px-7 relative z-10">
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
@@ -212,15 +221,15 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              {/* Display domains and inboxes side by side */}
+              {/* Display domains and inboxes side by side with aligned numbers */}
               <div className="space-y-3">
                 <div className="flex items-center gap-6">
                   <div>
-                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.domains}</div>
+                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{provider.domains}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Domains</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105">{provider.mailboxes}</div>
+                    <div className="text-3xl font-bold text-white mb-1 transition-all duration-300 group-hover:scale-105 leading-none">{provider.mailboxes}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Inboxes</div>
                   </div>
                 </div>
@@ -228,7 +237,7 @@ const Index = () => {
             </CardContent>
           </Card>)}
         
-        {/* Enhanced Sending Volume Card with matching height and smaller font sizes */}
+        {/* Enhanced Sending Volume Card with matching height and aligned numbers */}
         {dashboardStats.map(stat => (
           <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
             {/* Enhanced background elements with hover state */}
@@ -257,7 +266,7 @@ const Index = () => {
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
               <div className="space-y-3">
                 <div>
-                  <div className="text-3xl font-bold text-white mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
+                  <div className="text-3xl font-bold text-white mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105 leading-none" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
                     {stat.value}
                   </div>
                 </div>

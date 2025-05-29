@@ -40,12 +40,12 @@ const Index = () => {
     provider: 'Microsoft',
     domains: 8,
     mailboxes: 624,
-    logo: <i className="fa-brands fa-microsoft text-blue-500 text-2xl"></i>
+    logo: <i className="fa-brands fa-microsoft text-gray-400 text-2xl"></i>
   }, {
     provider: 'Google',
     domains: 7,
     mailboxes: 623,
-    logo: <i className="fa-brands fa-google text-blue-500 text-2xl"></i>
+    logo: <i className="fa-brands fa-google text-gray-400 text-2xl"></i>
   }];
   const totalSubscriptionCost = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
   const nextBillingAmount = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
@@ -74,9 +74,9 @@ const Index = () => {
     // Alternate between google and microsoft based on index
     const provider = index % 2 === 0 ? 'google' : 'microsoft';
     if (provider === 'google') {
-      return <i className="fa-brands fa-google text-blue-500 text-lg"></i>;
+      return <i className="fa-brands fa-google text-gray-400 text-lg"></i>;
     } else {
-      return <i className="fa-brands fa-microsoft text-blue-500 text-lg"></i>;
+      return <i className="fa-brands fa-microsoft text-gray-400 text-lg"></i>;
     }
   };
   const handleOrderClick = (orderId: string) => {

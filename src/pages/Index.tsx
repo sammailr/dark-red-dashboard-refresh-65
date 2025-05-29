@@ -296,43 +296,47 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent transition-all duration-300 group-hover:via-red-500/3"></div>
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/12 to-transparent transition-all duration-300 group-hover:via-red-400/18"></div>
           
-          <CardContent className="p-7 h-full flex flex-col justify-center relative z-10">
-            {/* Two-column layout */}
-            <div className="flex items-center justify-between h-full">
-              {/* Left Column - Subscription info */}
-              <div className="flex flex-col justify-center space-y-2">
-                <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold opacity-60 transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold text-white transition-all duration-300 group-hover:scale-105">${totalSubscriptionCost.toLocaleString()}</span>
-                  <span className="text-lg text-gray-400 font-normal">/month</span>
-                </div>
-                <div className="space-y-1 mt-3">
-                  <p className="text-sm text-gray-400 opacity-60 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</p>
-                  <p className="text-xl font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</p>
-                </div>
+          <CardContent className="p-7 h-full flex flex-col justify-between relative z-10">
+            {/* Top Row - Header with label and view all link */}
+            <div className="flex items-center justify-between">
+              <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold opacity-60 transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
+              <Link to="/subscriptions">
+                <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-4 py-2 rounded-lg border border-transparent hover:border-white/15 font-medium hover:scale-105">
+                  View All
+                </Button>
+              </Link>
+            </div>
+
+            {/* Middle Row - Main details in 2 columns */}
+            <div className="flex items-center justify-between">
+              {/* Left side - Price */}
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-bold text-white transition-all duration-300 group-hover:scale-105">${totalSubscriptionCost.toLocaleString()}</span>
+                <span className="text-lg text-gray-400 font-normal">/month</span>
               </div>
 
-              {/* Right Column - Actions and due date */}
-              <div className="flex flex-col justify-center items-end space-y-3 h-full">
-                <Link to="/subscriptions">
-                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-4 py-2 rounded-lg border border-transparent hover:border-white/15 font-medium hover:scale-105">
-                    View All
-                  </Button>
-                </Link>
-                <div className="text-right space-y-1">
-                  <p className="text-sm text-gray-400 opacity-60 font-medium flex items-center justify-end gap-1 transition-colors duration-300 group-hover:text-gray-300">
-                    <Calendar className="h-3 w-3" />
-                    Due Date
-                  </p>
-                  <p className="text-lg font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</p>
-                </div>
+              {/* Right side - Due date */}
+              <div className="text-right space-y-1">
+                <p className="text-sm text-gray-400 opacity-60 font-medium flex items-center justify-end gap-1 transition-colors duration-300 group-hover:text-gray-300">
+                  <Calendar className="h-3 w-3" />
+                  Due Date
+                </p>
+                <p className="text-lg font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</p>
               </div>
             </div>
 
-            {/* Bottom status indicator */}
-            <div className="absolute bottom-4 left-7 flex items-center text-xs text-gray-500 transition-colors duration-300 group-hover:text-gray-400">
-              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/20 transition-all duration-300 group-hover:shadow-green-400/40 group-hover:scale-110"></div>
-              Active subscription • Auto-renewal enabled
+            {/* Bottom Row - Next billing and status */}
+            <div className="space-y-2">
+              <div className="space-y-1">
+                <p className="text-sm text-gray-400 opacity-60 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</p>
+                <p className="text-xl font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</p>
+              </div>
+              
+              {/* Status indicator */}
+              <div className="flex items-center text-xs text-gray-500 transition-colors duration-300 group-hover:text-gray-400">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/20 transition-all duration-300 group-hover:shadow-green-400/40 group-hover:scale-110"></div>
+                Active subscription • Auto-renewal enabled
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -1,10 +1,5 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Globe,
-  LayoutDashboard
-} from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
@@ -15,7 +10,7 @@ const Sidebar = () => {
     { 
       name: 'Dashboard', 
       path: '/', 
-      icon: <LayoutDashboard className="h-5 w-5" /> 
+      icon: <i className="fa-solid fa-house text-base" /> 
     },
     { 
       name: 'Order Inboxes', 
@@ -25,7 +20,7 @@ const Sidebar = () => {
     { 
       name: 'Domains', 
       path: '/domains', 
-      icon: <Globe className="h-5 w-5" /> 
+      icon: <i className="fa-solid fa-globe text-base" /> 
     },
     { 
       name: 'Guide', 

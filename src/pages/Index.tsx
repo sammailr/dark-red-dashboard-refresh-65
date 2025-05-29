@@ -189,13 +189,13 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">{provider.provider.toUpperCase()}</p>
                 </div>
                 <div className="flex-shrink-0 relative group">
-                  {/* Enhanced circle with hover glow - updated colors */}
-                  <div className={`absolute inset-0 w-12 h-12 rounded-full opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:scale-110 ${provider.provider === 'Microsoft' ? 'bg-blue-600 group-hover:shadow-[0_0_20px_rgba(37,99,235,0.3)]' : 'bg-red-600 group-hover:shadow-[0_0_20px_rgba(220,38,38,0.3)]'}`}></div>
+                  {/* Enhanced circle with hover glow - fixed colors to match order inboxes page */}
+                  <div className={`absolute inset-0 w-12 h-12 rounded-full opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:scale-110 ${provider.provider === 'Microsoft' ? 'bg-blue-500 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-red-500 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]'}`}></div>
                   <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
                     {provider.provider === 'Microsoft' ? (
-                      <i className="fa-brands fa-microsoft text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(37,99,235,0.4)]"></i>
+                      <i className="fa-brands fa-microsoft text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.4)]"></i>
                     ) : (
-                      <i className="fa-brands fa-google text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(220,38,38,0.4)]"></i>
+                      <i className="fa-brands fa-google text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"></i>
                     )}
                   </div>
                 </div>

@@ -1,10 +1,11 @@
+
 import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, Search, Filter, FileDown } from 'lucide-react';
+import { AlertTriangle, Search, Filter, Upload } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -16,6 +17,17 @@ import BulkUpdateModal from '@/components/domain/BulkUpdateModal';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useNavigate } from 'react-router-dom';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const DomainsPage = () => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -535,7 +547,7 @@ const DomainsPage = () => {
     const statusStyles = {
       'Active': 'bg-green-900/30 text-green-400',
       'Pending': 'bg-yellow-900/30 text-yellow-400',
-      'Update Nameservers': 'bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1'
+      'Update Nameservers': 'bg-red-900/30 text-red-400'
     };
     
     return (
@@ -615,14 +627,36 @@ const DomainsPage = () => {
             />
           </div>
           
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleExport}
-            className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray text-white"
-          >
-            <FileDown className="h-4 w-4" />
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray text-white"
+              >
+                <Upload className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-mailr-darkgray border-mailr-lightgray">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-white">Export Domains?</AlertDialogTitle>
+                <AlertDialogDescription className="text-gray-400">
+                  This will download a CSV file containing all your filtered domains.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-mailr-darkgray border-mailr-lightgray text-white hover:bg-mailr-lightgray">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction 
+                  onClick={handleExport}
+                  className="bg-mailr-red hover:bg-red-700 text-white"
+                >
+                  Yes
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       

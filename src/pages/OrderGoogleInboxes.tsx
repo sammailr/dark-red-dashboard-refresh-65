@@ -217,9 +217,25 @@ const OrderGoogleInboxesPage = () => {
           <p className="text-lg">
             Total Monthly Cost: <span className="font-bold text-slate-50">${calculateTotalCost().toLocaleString()}/month</span>
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground mb-4">
             {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × {numberOfInboxes || 0} {numberOfInboxes === '1' ? 'inbox' : 'inboxes'} × $1.50/month each
           </p>
+          
+          {/* Pricing Breakdown */}
+          <div className="mt-4 pt-4 border-t border-mailr-lightgray">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3">Pricing Breakdown</h3>
+            <div className="space-y-2">
+              <div className="text-sm text-gray-400">
+                1–99 inboxes: <span className="font-semibold text-white">$2.50</span> each
+              </div>
+              <div className="text-sm text-gray-400">
+                100–299 inboxes: <span className="font-semibold text-white">$2.25</span> each
+              </div>
+              <div className="text-sm text-gray-400">
+                300+ inboxes: <span className="font-semibold text-white">$2.00</span> each
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="bg-mailr-darkgray rounded-lg border border-mailr-lightgray p-6">

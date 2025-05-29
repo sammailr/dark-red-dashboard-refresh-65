@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -253,7 +254,7 @@ const OrderMicrosoftInboxesPage = () => {
           </div>
           
           {/* Pricing Breakdown Section */}
-          <div className="mt-4 pt-4 border-t border-[#2D2D2D]">
+          <div className="mt-4">
             <h3 className="text-xs font-bold text-[#B0B0B0] uppercase tracking-wide mb-3">PRICING BREAKDOWN</h3>
             <div className="space-y-2 text-sm text-[#B0B0B0]">
               <div>1–19 domains: <span className="font-bold text-white">$60</span> each</div>

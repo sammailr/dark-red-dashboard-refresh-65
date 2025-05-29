@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -64,6 +63,11 @@ const OrderGoogleInboxesPage = () => {
     return domainsCount * inboxesPerDomain;
   };
 
+  // Calculate daily sending volume
+  const getDailySendingVolume = () => {
+    return getTotalInboxes() * 15;
+  };
+
   const handleAddDomain = () => {
     if (!newDomain.trim()) {
       toast.error('Please enter a domain');
@@ -82,6 +86,30 @@ const OrderGoogleInboxesPage = () => {
   const handleRemoveDomain = (id: number) => {
     setDomains(domains.filter(domain => domain.id !== id));
     toast.success('Domain removed');
+  };
+
+  const toggleDomainSelection = (domainId: number) => {
+    setDomains(prevDomains => prevDomains.map(domain => domain.id === domainId ? {
+      ...domain,
+      selected: !domain.selected
+    } : domain));
+  };
+
+  const toggleAllDomains = (selected: boolean) => {
+    setDomains(prevDomains => prevDomains.map(domain => ({
+      ...domain,
+      selected
+    })));
+  };
+
+  const handleDeleteSelected = () => {
+    const selectedCount = domains.filter(domain => domain.selected).length;
+    if (selectedCount === 0) {
+      toast.error('Please select at least one domain to delete');
+      return;
+    }
+    setDomains(domains.filter(domain => !domain.selected));
+    toast.success(`Deleted ${selectedCount} domain(s)`);
   };
 
   const handleAddDisplayName = (domainId: number) => {
@@ -179,20 +207,6 @@ const OrderGoogleInboxesPage = () => {
     toast.success(`Added display names to ${selectedDomains.length} domains`);
   };
 
-  const toggleDomainSelection = (domainId: number) => {
-    setDomains(prevDomains => prevDomains.map(domain => domain.id === domainId ? {
-      ...domain,
-      selected: !domain.selected
-    } : domain));
-  };
-
-  const toggleAllDomains = (selected: boolean) => {
-    setDomains(prevDomains => prevDomains.map(domain => ({
-      ...domain,
-      selected
-    })));
-  };
-
   const resetDisplayNames = () => {
     const selectedCount = domains.filter(domain => domain.selected).length;
     if (selectedCount === 0) {
@@ -258,6 +272,9 @@ const OrderGoogleInboxesPage = () => {
               </p>
               <p className="text-sm text-[#B0B0B0]">
                 Inboxes Added: <span className="font-medium text-white">{getTotalInboxes()}</span>
+              </p>
+              <p className="text-sm text-[#B0B0B0]">
+                Daily Sending Volume: <span className="font-medium text-white">{getDailySendingVolume().toLocaleString()}</span>
               </p>
             </div>
           </div>
@@ -407,7 +424,17 @@ const OrderGoogleInboxesPage = () => {
                       />
                     </TableHead>
                     <TableHead className="px-1 text-gray-300 font-medium">Domain</TableHead>
-                    <TableHead className="w-16 px-1 text-gray-300 font-medium">Delete</TableHead>
+                    <TableHead className="w-16 px-1 text-gray-300 font-medium">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={handleDeleteSelected}
+                        disabled={selectedCount === 0}
+                        className="text-red-400 hover:text-red-300 hover:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Delete
+                      </Button>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

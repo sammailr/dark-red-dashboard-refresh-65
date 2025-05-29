@@ -416,8 +416,8 @@ const OrderMicrosoftInboxesPage = () => {
                     </TableHead>
                     <TableHead className="px-1 text-[#B0B0B0] font-medium">Domain</TableHead>
                     <TableHead className="px-1 text-[#B0B0B0] font-medium">Forwarding URL</TableHead>
-                    <TableHead className="w-1/5 px-1 text-[#B0B0B0] font-medium">Add Display Names</TableHead>
-                    <TableHead className="w-1/4 px-1 text-[#B0B0B0] font-medium">Display Names</TableHead>
+                    <TableHead className="w-1/6 px-1 text-[#B0B0B0] font-medium">Add Display Names</TableHead>
+                    <TableHead className="w-1/5 px-1 text-[#B0B0B0] font-medium">Display Names</TableHead>
                     <TableHead className="w-16 px-1 text-[#B0B0B0] font-medium">
                       <Button 
                         variant="ghost" 
@@ -460,12 +460,12 @@ const OrderMicrosoftInboxesPage = () => {
                             })} 
                           />
                           <Button 
-                            variant="ghost" 
-                            size="icon" 
+                            variant="outline" 
+                            size="sm" 
                             onClick={() => handleAddDisplayName(domain.id)} 
-                            className="bg-transparent border-[#333] text-white hover:bg-[#2A2A2A] rounded-md"
+                            className="bg-transparent border-[#333] text-white hover:bg-[#2A2A2A] rounded-md px-3"
                           >
-                            <Plus className="h-4 w-4" />
+                            Add
                           </Button>
                         </div>
                       </TableCell>
@@ -531,17 +531,10 @@ const OrderMicrosoftInboxesPage = () => {
         </div>
         
         {/* Sending Platform Section */}
-        <div className="bg-[#1A1A1A] rounded-lg border border-[#2D2D2D] p-6">
-          <h2 className="text-xl font-bold mb-6 text-white">Sending Platform</h2>
-          
-          <div>
-            <Label htmlFor="sendingPlatform" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Sending Platform:</Label>
-            <SendingPlatformSelect 
-              onSelect={value => setSelectedSendingPlatform(value)} 
-              onAddNew={() => toast.info('Add new platform functionality to be implemented')} 
-            />
-          </div>
-        </div>
+        <SendingPlatformSection
+          selectedSendingPlatform={selectedSendingPlatform}
+          setSelectedSendingPlatform={setSelectedSendingPlatform}
+        />
         
         {/* Submit Button Section with Visual Anchoring */}
         <div className="bg-[#121212] rounded-lg pt-6 pb-4 px-6 flex justify-end shadow-lg">

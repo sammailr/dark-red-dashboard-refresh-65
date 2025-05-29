@@ -28,17 +28,19 @@ const SendingPlatformSelect = ({ onSelect, onAddNew }: SendingPlatformSelectProp
         <SelectItem value="platform1">Platform 1</SelectItem>
         <SelectItem value="platform2">Platform 2</SelectItem>
         <SelectItem value="custom">Custom Platform</SelectItem>
-        <Button 
-          variant="ghost" 
-          className="w-full justify-start px-2 py-1.5 h-8 hover:bg-mailr-lightgray/10"
-          onClick={(e) => {
-            e.preventDefault();
-            onAddNew();
-          }}
-        >
-          <Plus className="h-4 w-4 mr-1" />
-          Add new platform
-        </Button>
+        <div className="p-1">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start px-2 py-1.5 h-8 hover:bg-mailr-lightgray/10"
+            onClick={(e) => {
+              e.preventDefault();
+              onAddNew();
+            }}
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add new platform
+          </Button>
+        </div>
       </SelectContent>
     </Select>
   );

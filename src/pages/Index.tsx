@@ -291,14 +291,14 @@ const Index = () => {
 
       {/* Enhanced Subscription Section with redesigned layout */}
       <div className="mb-10">
-        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[160px]">
+        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[140px]">
           {/* Enhanced background elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent transition-all duration-300 group-hover:via-red-500/3"></div>
           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/12 to-transparent transition-all duration-300 group-hover:via-red-400/18"></div>
           
           <CardContent className="p-7 h-full flex flex-col justify-between relative z-10">
             {/* Top Row - Header with label and view all link */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-4">
               <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold opacity-60 transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
               <Link to="/subscriptions">
                 <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-4 py-2 rounded-lg border border-transparent hover:border-white/15 font-medium hover:scale-105">
@@ -308,7 +308,7 @@ const Index = () => {
             </div>
 
             {/* Middle Row - Main details in 2 columns */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between mb-4">
               {/* Left side - Price */}
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-white transition-all duration-300 group-hover:scale-105">${totalSubscriptionCost.toLocaleString()}</span>
@@ -325,17 +325,11 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Bottom Row - Next billing and status */}
-            <div className="space-y-2">
+            {/* Bottom Row - Next billing only */}
+            <div>
               <div className="space-y-1">
                 <p className="text-sm text-gray-400 opacity-60 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</p>
                 <p className="text-xl font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</p>
-              </div>
-              
-              {/* Status indicator */}
-              <div className="flex items-center text-xs text-gray-500 transition-colors duration-300 group-hover:text-gray-400">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/20 transition-all duration-300 group-hover:shadow-green-400/40 group-hover:scale-110"></div>
-                Active subscription • Auto-renewal enabled
               </div>
             </div>
           </CardContent>

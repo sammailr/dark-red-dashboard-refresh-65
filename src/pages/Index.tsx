@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -301,47 +302,54 @@ const Index = () => {
 
       {/* Second row with subscription and email volume cards */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-        {/* Enhanced Subscription Section with optimized layout */}
+        {/* Redesigned Subscription Card to match other top cards */}
         <div className="lg:col-span-2">
-          <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[160px]">
-            {/* Enhanced background elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent transition-all duration-300 group-hover:via-red-500/3"></div>
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/12 to-transparent transition-all duration-300 group-hover:via-red-400/18"></div>
+          <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] relative overflow-hidden group rounded-lg h-[160px]">
+            {/* Enhanced background texture */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
             
-            <CardContent className="p-5 h-full flex flex-col justify-between relative z-10">
-              {/* Top Row - Header with label and view all link */}
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold opacity-60 transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
+            {/* Red accent border with glow effect */}
+            <div className="absolute bottom-0 left-0 right-0 h-[1px] transition-all duration-300 bg-gradient-to-r from-transparent via-red-500/20 to-transparent group-hover:via-red-500/30"></div>
+            
+            {/* Bottom glow for Subscription card */}
+            <div 
+              className="absolute bottom-0 left-0 right-0 h-[8px]" 
+              style={{ boxShadow: 'inset 0 -1px 4px rgba(239, 68, 68, 0.25)' }}
+            ></div>
+            
+            <CardHeader className="pb-3 pt-7 px-7 relative z-10">
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
+                </div>
                 <Link to="/subscriptions">
                   <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/8 transition-all px-3 py-1.5 rounded-lg border border-transparent hover:border-white/15 font-medium hover:scale-105">
                     View All
                   </Button>
                 </Link>
               </div>
-
-              {/* Middle Row - Main details in 2 columns with better spacing */}
-              <div className="flex items-start justify-between mb-2">
-                {/* Left side - Price */}
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-bold text-white transition-all duration-300 group-hover:scale-105">${totalSubscriptionCost.toLocaleString()}</span>
-                  <span className="text-sm text-gray-400 font-normal">/month</span>
+            </CardHeader>
+            <CardContent className="pt-0 pb-7 px-7 relative z-10">
+              <div className="space-y-3">
+                {/* Main price display matching other cards */}
+                <div className="flex items-baseline gap-2">
+                  <div className="text-3xl font-bold text-white transition-all duration-300 group-hover:scale-105 leading-none">${totalSubscriptionCost.toLocaleString()}</div>
+                  <div className="text-sm text-gray-400 font-medium">/month</div>
                 </div>
-
-                {/* Right side - Due date */}
-                <div className="text-right space-y-0.5">
-                  <p className="text-xs text-gray-400 opacity-60 font-medium flex items-center justify-end gap-1 transition-colors duration-300 group-hover:text-gray-300">
-                    <Calendar className="h-3 w-3" />
-                    Due Date
-                  </p>
-                  <p className="text-sm font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</p>
-                </div>
-              </div>
-
-              {/* Bottom Row - Next billing with optimized spacing */}
-              <div>
-                <div className="space-y-0.5">
-                  <p className="text-xs text-gray-400 opacity-60 font-medium transition-colors duration-300 group-hover:text-gray-300">Next Billing</p>
-                  <p className="text-lg font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</p>
+                
+                {/* Supporting information in two columns */}
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300 mb-1">Next Billing</div>
+                    <div className="text-lg font-semibold text-white transition-all duration-300 group-hover:scale-105">${nextBillingAmount.toLocaleString()}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-400 font-medium flex items-center justify-end gap-1 transition-colors duration-300 group-hover:text-gray-300 mb-1">
+                      <Calendar className="h-3 w-3" />
+                      Due Date
+                    </div>
+                    <div className="text-sm font-semibold text-red-400 transition-all duration-300 group-hover:text-red-300 group-hover:scale-105">{getNextBillingDate()}</div>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -351,9 +359,9 @@ const Index = () => {
         {/* Enhanced Sending Volume Card moved to right side */}
         <div className="lg:col-span-1">
           {dashboardStats.map(stat => (
-            <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
+            <Card key={stat.title} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden rounded-lg group h-[160px]">
               {/* Enhanced background elements with hover state */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/2 to-transparent transition-all duration-300 group-hover:via-green-500/3"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.02)_0%,transparent_60%)]"></div>
               <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/10 to-transparent transition-all duration-300 group-hover:via-green-400/15"></div>
               
               {/* Added bottom glow for Monthly Email Volume card */}

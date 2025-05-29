@@ -736,10 +736,10 @@ const DomainsPage = () => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button 
-                              variant="ghost"
+                              variant="outline"
                               size="sm" 
                               onClick={() => handleNameserverClick(domain.id)}
-                              className="h-8 px-3 text-xs text-blue-400 hover:text-white hover:bg-[#2A2A2A] rounded-md"
+                              className="h-8 px-3 text-xs text-white bg-[#1E1E1E] border border-[#444] hover:bg-[#2A2A2A] hover:border-[#555] rounded-md"
                             >
                               Instructions
                             </Button>
@@ -749,7 +749,7 @@ const DomainsPage = () => {
                           </TooltipContent>
                         </Tooltip>
                       )}
-                      {domain.provider === 'Microsoft' && (
+                      {domain.provider === 'Microsoft' && domain.status !== 'Update Nameservers' && (
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button 

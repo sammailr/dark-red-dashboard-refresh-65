@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight, Plus } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -19,7 +19,6 @@ const DomainsPage = () => {
   const [isSwapModalOpen, setIsSwapModalOpen] = useState(false);
   const [isSwapConfirmOpen, setIsSwapConfirmOpen] = useState(false);
   const [selectedDomainForSwap, setSelectedDomainForSwap] = useState<any>(null);
-  const [newDomain, setNewDomain] = useState('');
   const [hoveredRowId, setHoveredRowId] = useState<number | null>(null);
   
   const navigate = useNavigate();
@@ -47,32 +46,6 @@ const DomainsPage = () => {
 
   // Calculate available domain slots from all active subscriptions
   const availableDomainSlots = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + (sub.availableDomainSlots || 0), 0);
-
-  const handleAddDomain = () => {
-    if (!newDomain.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a domain name.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const domainToAdd = {
-      id: Math.max(0, ...domains.map(d => d.id)) + 1,
-      domain: newDomain,
-      url: `https://${newDomain}`,
-      status: 'Pending',
-      provider: 'Google'
-    };
-
-    setDomains(prev => [...prev, domainToAdd]);
-    setNewDomain('');
-    toast({
-      title: "Domain Added",
-      description: `Successfully added ${newDomain}.`
-    });
-  };
 
   const handleImportDomains = (newDomains: Array<{ domain: string; url: string; }>) => {
     // In a real application, you would send this data to your backend API
@@ -107,9 +80,18 @@ const DomainsPage = () => {
     setIsSwapConfirmOpen(true);
   };
 
-  const handleConfirmSwap = () => {
+  const handleConfirmSwap = (newDomain: string) => {
+    // Update the selected domain with new domain name
+    setDomains(prev => prev.map(domain => 
+      domain.id === selectedDomainForSwap?.id 
+        ? { ...domain, domain: newDomain, status: 'Update Nameservers' }
+        : domain
+    ));
+    
     setIsSwapConfirmOpen(false);
-    setIsSwapModalOpen(true);
+    
+    // Navigate to nameserver update page
+    navigate(`/nameserver-update/${selectedDomainForSwap?.id}`);
   };
 
   const handleNameserverClick = (domainId: number) => {
@@ -159,28 +141,6 @@ const DomainsPage = () => {
           </AlertDescription>
         </Alert>
       )}
-
-      {/* Add Domain Bar */}
-      <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-4">
-        <div className="flex gap-3 items-end">
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-2 text-gray-300">Add New Domain</label>
-            <Input
-              type="text"
-              className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500"
-              value={newDomain}
-              onChange={(e) => setNewDomain(e.target.value)}
-              placeholder="Enter domain name"
-            />
-          </div>
-          <Button 
-            onClick={handleAddDomain}
-            className="bg-[#E00000] hover:bg-[#CC0000] text-white"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
       
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
         <Table>

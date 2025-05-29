@@ -536,6 +536,7 @@ const OrderMicrosoftInboxesPage = () => {
         <SendingPlatformSection
           selectedSendingPlatform={selectedSendingPlatform}
           setSelectedSendingPlatform={setSelectedSendingPlatform}
+          pageType="microsoft"
         />
         
         {/* Submit Button Section with Visual Anchoring */}

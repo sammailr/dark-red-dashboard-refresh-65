@@ -12,6 +12,7 @@ interface CustomPlatformFormProps {
   setSelectedSequencer: React.Dispatch<React.SetStateAction<Sequencer | null>>;
   formData: Record<string, string>;
   setFormData: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+  pageType?: 'microsoft' | 'google';
 }
 
 const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
@@ -19,15 +20,65 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
   setSelectedSequencer,
   formData,
   setFormData,
+  pageType = 'google',
 }) => {
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const renderSequencerInputs = () => {
-    if (!selectedSequencer) return null;
-
-    const commonFields = (
+  const renderCommonFields = () => {
+    const isGooglePage = pageType === 'google';
+    const isMicrosoftPage = pageType === 'microsoft';
+    
+    // For Microsoft page, customize based on sequencer
+    if (isMicrosoftPage) {
+      const shouldShowLoginFields = selectedSequencer === 'smartlead' || selectedSequencer === 'instantly';
+      
+      return (
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Workspace Name</Label>
+            <Input
+              id="customName"
+              type="text"
+              className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+              value={formData.customName || ''}
+              onChange={(e) => handleInputChange('customName', e.target.value)}
+              placeholder="Enter workspace name"
+            />
+          </div>
+          {shouldShowLoginFields && (
+            <>
+              <div>
+                <Label htmlFor="loginEmail" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
+                <Input
+                  id="loginEmail"
+                  type="email"
+                  className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+                  value={formData.loginEmail || ''}
+                  onChange={(e) => handleInputChange('loginEmail', e.target.value)}
+                  placeholder="Enter login email"
+                />
+              </div>
+              <div>
+                <Label htmlFor="loginPassword" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Password</Label>
+                <Input
+                  id="loginPassword"
+                  type="password"
+                  className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+                  value={formData.loginPassword || ''}
+                  onChange={(e) => handleInputChange('loginPassword', e.target.value)}
+                  placeholder="Enter login password"
+                />
+              </div>
+            </>
+          )}
+        </div>
+      );
+    }
+    
+    // For Google page, always show all common fields
+    return (
       <div className="space-y-4">
         <div>
           <Label htmlFor="customName" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Workspace Name</Label>
@@ -64,6 +115,12 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
         </div>
       </div>
     );
+  };
+
+  const renderSequencerInputs = () => {
+    if (!selectedSequencer) return null;
+
+    const commonFields = renderCommonFields();
 
     switch (selectedSequencer) {
       case 'smartlead':
@@ -110,28 +167,32 @@ const CustomPlatformForm: React.FC<CustomPlatformFormProps> = ({
                 placeholder="Enter API key"
               />
             </div>
-            <div>
-              <Label htmlFor="loginEmail" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
-              <Input
-                id="loginEmail"
-                type="email"
-                className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-                value={formData.loginEmail || ''}
-                onChange={(e) => handleInputChange('loginEmail', e.target.value)}
-                placeholder="Enter login email"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
-                value={formData.password || ''}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder="Enter password"
-              />
-            </div>
+            {pageType === 'google' && (
+              <>
+                <div>
+                  <Label htmlFor="loginEmailDuplicate" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Login Email</Label>
+                  <Input
+                    id="loginEmailDuplicate"
+                    type="email"
+                    className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+                    value={formData.loginEmailDuplicate || ''}
+                    onChange={(e) => handleInputChange('loginEmailDuplicate', e.target.value)}
+                    placeholder="Enter login email"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="password" className="block text-sm font-medium mb-2 text-[#B0B0B0]">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    className="bg-[#1E1E1E] border-[#333] text-white placeholder:text-[#777] rounded-md"
+                    value={formData.password || ''}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
+                    placeholder="Enter password"
+                  />
+                </div>
+              </>
+            )}
           </div>
         );
 

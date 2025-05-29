@@ -8,11 +8,13 @@ import CustomPlatformForm from '@/components/order/CustomPlatformForm';
 interface SendingPlatformSectionProps {
   selectedSendingPlatform: string | null;
   setSelectedSendingPlatform: React.Dispatch<React.SetStateAction<string | null>>;
+  pageType?: 'microsoft' | 'google';
 }
 
 const SendingPlatformSection: React.FC<SendingPlatformSectionProps> = ({
   selectedSendingPlatform,
   setSelectedSendingPlatform,
+  pageType = 'google',
 }) => {
   const [showAddNew, setShowAddNew] = useState(false);
   const [selectedSequencer, setSelectedSequencer] = useState<Sequencer | null>(null);
@@ -51,6 +53,7 @@ const SendingPlatformSection: React.FC<SendingPlatformSectionProps> = ({
             setSelectedSequencer={setSelectedSequencer}
             formData={formData}
             setFormData={setFormData}
+            pageType={pageType}
           />
         )}
       </div>

@@ -692,11 +692,11 @@ const DomainsPage = () => {
                     />
                   </div>
                 </TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[25%]">Domain</TableHead>
-                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[30%]">Forwarding URL</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[28%]">Domain</TableHead>
+                <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[32%]">Forwarding URL</TableHead>
                 <TableHead className="px-4 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-[15%]">Status</TableHead>
                 <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[10%]">Provider</TableHead>
-                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[12%]">Swap Domain</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-[12%] whitespace-nowrap">Swap Domain</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -720,8 +720,8 @@ const DomainsPage = () => {
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="px-4 py-3 font-medium text-white text-left w-[25%]">{domain.domain}</TableCell>
-                  <TableCell className="px-4 py-3 text-gray-300 text-left w-[30%]">{domain.url}</TableCell>
+                  <TableCell className="px-4 py-3 font-medium text-white text-left w-[28%]">{domain.domain}</TableCell>
+                  <TableCell className="px-4 py-3 text-gray-300 text-left w-[32%]">{domain.url}</TableCell>
                   <TableCell className="px-4 py-3 text-left w-[15%]">
                     {getStatusBadge(domain.status)}
                   </TableCell>

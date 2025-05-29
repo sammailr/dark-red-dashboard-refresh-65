@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,7 +32,11 @@ const Login = () => {
       <Card className="w-full max-w-md bg-mailr-darkgray border-mailr-lightgray">
         <CardHeader className="text-center">
           <div className="mb-4">
-            <h1 className="text-2xl font-semibold text-white">Mailr</h1>
+            <img 
+              src="/lovable-uploads/4ffe8de8-ff92-410c-bac8-b65725b56be0.png" 
+              alt="Mailr" 
+              className="h-8 w-auto mx-auto"
+            />
           </div>
           <CardTitle className="text-2xl text-white">Welcome Back</CardTitle>
         </CardHeader>

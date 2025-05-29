@@ -1,10 +1,13 @@
+
 import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight, Search, ArrowUpDown } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight, Search, Filter } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -21,8 +24,8 @@ const DomainsPage = () => {
   const [selectedDomainForSwap, setSelectedDomainForSwap] = useState<any>(null);
   const [hoveredRowId, setHoveredRowId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState<'status' | 'provider' | null>(null);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [providerFilter, setProviderFilter] = useState<string>('all');
   
   const navigate = useNavigate();
   const { subscriptions } = useSubscription();
@@ -400,37 +403,18 @@ const DomainsPage = () => {
   // Calculate available domain slots from all active subscriptions
   const availableDomainSlots = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + (sub.availableDomainSlots || 0), 0);
 
-  // Filter and sort domains
-  const filteredAndSortedDomains = useMemo(() => {
-    let filtered = domains.filter(domain => 
-      domain.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      domain.url.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    if (sortField) {
-      filtered = filtered.sort((a, b) => {
-        let aValue = a[sortField];
-        let bValue = b[sortField];
-        
-        if (sortDirection === 'asc') {
-          return aValue.localeCompare(bValue);
-        } else {
-          return bValue.localeCompare(aValue);
-        }
-      });
-    }
-
-    return filtered;
-  }, [domains, searchTerm, sortField, sortDirection]);
-
-  const handleSort = (field: 'status' | 'provider') => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
+  // Filter domains based on search term, status, and provider
+  const filteredDomains = useMemo(() => {
+    return domains.filter(domain => {
+      const matchesSearch = domain.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        domain.url.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesStatus = statusFilter === 'all' || domain.status === statusFilter;
+      const matchesProvider = providerFilter === 'all' || domain.provider === providerFilter;
+      
+      return matchesSearch && matchesStatus && matchesProvider;
+    });
+  }, [domains, searchTerm, statusFilter, providerFilter]);
 
   const handleImportDomains = (newDomains: Array<{ domain: string; url: string; }>) => {
     // In a real application, you would send this data to your backend API
@@ -509,9 +493,51 @@ const DomainsPage = () => {
   return (
     <MainLayout title="Manage Domains">
       <div className="flex items-center justify-between mb-8">
-        <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
-          <Settings className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
+            <Settings className="h-4 w-4" />
+          </Button>
+          
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray">
+                <Filter className="h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 bg-mailr-darkgray border-mailr-lightgray">
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-white mb-2 block">Status</label>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray text-white">
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                      <SelectItem value="Update Nameservers">Update Nameservers</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <label className="text-sm font-medium text-white mb-2 block">Provider</label>
+                  <Select value={providerFilter} onValueChange={setProviderFilter}>
+                    <SelectTrigger className="bg-mailr-darkgray border-mailr-lightgray text-white">
+                      <SelectValue placeholder="Filter by provider" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-mailr-darkgray border-mailr-lightgray">
+                      <SelectItem value="all">All Providers</SelectItem>
+                      <SelectItem value="Google">Google</SelectItem>
+                      <SelectItem value="Microsoft">Microsoft</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         
         <div className="relative w-80">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -542,23 +568,13 @@ const DomainsPage = () => {
               </TableHead>
               <TableHead>Domain</TableHead>
               <TableHead>Forwarding URL</TableHead>
-              <TableHead className="cursor-pointer hover:bg-mailr-lightgray/10" onClick={() => handleSort('status')}>
-                <div className="flex items-center gap-2">
-                  Status
-                  <ArrowUpDown className="h-4 w-4" />
-                </div>
-              </TableHead>
-              <TableHead className="cursor-pointer hover:bg-mailr-lightgray/10" onClick={() => handleSort('provider')}>
-                <div className="flex items-center gap-2">
-                  Provider
-                  <ArrowUpDown className="h-4 w-4" />
-                </div>
-              </TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Provider</TableHead>
               <TableHead className="w-32">Swap Domain</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredAndSortedDomains.map(domain => (
+            {filteredDomains.map(domain => (
               <TableRow 
                 key={domain.id} 
                 className="hover:bg-mailr-lightgray/10 border-mailr-lightgray relative"

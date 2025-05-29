@@ -696,7 +696,7 @@ const DomainsPage = () => {
                 <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-2/5">Forwarding URL</TableHead>
                 <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-40">Status</TableHead>
                 <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Provider</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Swap Domains</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -732,30 +732,14 @@ const DomainsPage = () => {
                   </TableCell>
                   <TableCell className="px-6 py-3 w-32">
                     <div className="flex justify-center">
-                      {domain.status === 'Update Nameservers' && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button 
-                              variant="ghost"
-                              size="sm" 
-                              onClick={() => handleNameserverClick(domain.id)}
-                              className={`
-                                h-7 px-3 py-1 text-xs font-medium text-white 
-                                bg-transparent border border-[#444] rounded-full
-                                hover:border-[#E00000] hover:bg-[#E00000]/10 hover:text-[#E00000]
-                                transition-all duration-200
-                                ${hoveredRowId === domain.id ? 'opacity-100' : 'opacity-0'}
-                              `}
-                            >
-                              <HelpCircle className="h-3 w-3 mr-1" />
-                              Instructions
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
-                            View nameserver setup instructions
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
+                      <Button 
+                        variant="outline"
+                        size="sm" 
+                        onClick={() => openSwapConfirmation(domain)}
+                        className="h-8 px-3 py-1 text-xs font-medium text-white bg-[#1E1E1E] border border-[#444] hover:bg-[#2A2A2A] hover:border-[#555] rounded-md"
+                      >
+                        Swap Domain
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>

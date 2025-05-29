@@ -341,12 +341,12 @@ const Index = () => {
               </CardHeader>
               <CardContent className="pt-0 pb-7 px-7 relative z-10">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-6 mt-3">
                     <div>
                       <div className="text-3xl font-bold text-white mb-1 leading-none">
                         {stat.value}
                       </div>
-                      <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Emails</div>
+                      
                     </div>
                   </div>
                 </div>

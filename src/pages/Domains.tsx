@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Settings, AlertTriangle, ArrowLeftRight, Globe, Mail } from 'lucide-react';
+import { Settings, AlertTriangle, ArrowLeftRight } from 'lucide-react';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -276,9 +275,9 @@ const DomainsPage = () => {
   const getProviderIcon = (provider: string) => {
     const isGoogle = provider === 'Google';
     return isGoogle ? (
-      <Globe className="h-4 w-4 text-blue-400" />
+      <i className="fa-brands fa-google text-blue-400"></i>
     ) : (
-      <Mail className="h-4 w-4 text-orange-400" />
+      <i className="fa-brands fa-microsoft text-orange-400"></i>
     );
   };
 
@@ -286,7 +285,7 @@ const DomainsPage = () => {
     const statusStyles = {
       'Active': 'bg-green-900/30 text-green-400',
       'Pending': 'bg-yellow-900/30 text-yellow-400',
-      'Update Nameservers': 'bg-orange-900/30 text-orange-400 cursor-pointer hover:bg-orange-800/40'
+      'Update Nameservers': 'bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1'
     };
     
     return (
@@ -365,7 +364,7 @@ const DomainsPage = () => {
                     <Button 
                       size="sm" 
                       onClick={() => handleNameserverClick(domain.id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1"
+                      className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1"
                     >
                       View Instructions
                     </Button>

@@ -102,13 +102,10 @@ const Index = () => {
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
-      if (sortDirection === 'asc') {
-        setSortDirection('desc');
-      } else {
-        setSortColumn('');
-        setSortDirection('asc');
-      }
+      // If clicking the same column, toggle between asc and desc
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
+      // If clicking a new column, set it as the sort column with asc direction
       setSortColumn(column);
       setSortDirection('asc');
     }

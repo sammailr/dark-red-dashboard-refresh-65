@@ -7,14 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { User, CreditCard, Bell, Lock, Shield, Languages } from 'lucide-react';
+import { User, CreditCard, Bell } from 'lucide-react';
 
 const SettingsPage = () => {
   return (
-    <MainLayout title="Settings">
+    <MainLayout title="Account Settings">
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray overflow-hidden">
         <Tabs defaultValue="account" className="p-4">
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 bg-black/30">
+          <TabsList className="grid grid-cols-3 bg-black/30">
             <TabsTrigger value="account" className="data-[state=active]:bg-mailr-red">
               <User className="h-4 w-4 mr-2" />
               Account
@@ -26,18 +26,6 @@ const SettingsPage = () => {
             <TabsTrigger value="notifications" className="data-[state=active]:bg-mailr-red">
               <Bell className="h-4 w-4 mr-2" />
               Notifications
-            </TabsTrigger>
-            <TabsTrigger value="security" className="data-[state=active]:bg-mailr-red">
-              <Lock className="h-4 w-4 mr-2" />
-              Security
-            </TabsTrigger>
-            <TabsTrigger value="api" className="data-[state=active]:bg-mailr-red">
-              <Shield className="h-4 w-4 mr-2" />
-              API
-            </TabsTrigger>
-            <TabsTrigger value="localization" className="data-[state=active]:bg-mailr-red">
-              <Languages className="h-4 w-4 mr-2" />
-              Localization
             </TabsTrigger>
           </TabsList>
           
@@ -115,18 +103,6 @@ const SettingsPage = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-          
-          <TabsContent value="security">
-            <p className="text-gray-400">Security settings content here</p>
-          </TabsContent>
-          
-          <TabsContent value="api">
-            <p className="text-gray-400">API settings content here</p>
-          </TabsContent>
-          
-          <TabsContent value="localization">
-            <p className="text-gray-400">Localization settings content here</p>
           </TabsContent>
         </Tabs>
       </div>

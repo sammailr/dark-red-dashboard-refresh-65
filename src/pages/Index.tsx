@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+
 const Index = () => {
   const {
     isFreeTrial,
@@ -180,30 +181,30 @@ const Index = () => {
           <table className="w-full">
             <thead className="border-b border-mailr-lightgray">
               <tr>
-                <th className="text-left py-2 text-gray-400 font-medium text-sm">Created</th>
-                <th className="text-left py-2 text-gray-400 font-medium text-sm">Total Domains</th>
-                <th className="text-left py-2 text-gray-400 font-medium">Provider</th>
-                <th className="text-left py-2 text-gray-400 font-medium">Tag</th>
-                <th className="text-left py-2 text-gray-400 font-medium">Cost</th>
-                <th className="text-left py-2 text-gray-400 font-medium">Status</th>
-                <th className="text-right py-2 text-gray-400 font-medium">Actions</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Created</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Total Domains</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Provider</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Tag</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Cost</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Status</th>
+                <th className="text-center py-2 text-gray-400 font-medium text-sm w-1/7">Actions</th>
               </tr>
             </thead>
             <tbody>
               {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
-                  <td className="py-3 text-sm">{formatDate(order.date)}</td>
-                  <td className="py-3 text-sm">{order.domains.length}</td>
-                  <td className="py-3">
+                  <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
+                  <td className="py-3 text-sm text-center">{order.domains.length}</td>
+                  <td className="py-3 text-center">
                     {getProviderLogo(index)}
                   </td>
-                  <td className="py-3">
-                    <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1" />
+                  <td className="py-3 text-center">
+                    <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1 text-center w-full" />
                   </td>
-                  <td className="py-3 text-sm">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                  <td className="py-3">
+                  <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                  <td className="py-3 text-center">
                     {getStatusBadge(order.status)}
                   </td>
-                  <td className="py-3 text-right">
+                  <td className="py-3 text-center">
                     <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
                       View Details
                     </Button>

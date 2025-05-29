@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Index = () => {
   const {
@@ -39,21 +40,12 @@ const Index = () => {
     provider: 'Microsoft',
     domains: 8,
     mailboxes: 624,
-    logo: <div className="w-8 h-8 bg-blue-500 flex items-center justify-center rounded">
-          <div className="w-4 h-4 grid grid-cols-2 gap-0.5">
-            <div className="bg-white w-1.5 h-1.5"></div>
-            <div className="bg-white w-1.5 h-1.5"></div>
-            <div className="bg-white w-1.5 h-1.5"></div>
-            <div className="bg-white w-1.5 h-1.5"></div>
-          </div>
-        </div>
+    logo: <i className="fa-brands fa-microsoft text-blue-500 text-2xl"></i>
   }, {
     provider: 'Google',
     domains: 7,
     mailboxes: 623,
-    logo: <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center border">
-          <div className="text-lg font-bold text-blue-500">G</div>
-        </div>
+    logo: <i className="fa-brands fa-google text-blue-500 text-2xl"></i>
   }];
   const totalSubscriptionCost = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
   const nextBillingAmount = subscriptions.filter(sub => sub.status === 'active').reduce((total, sub) => total + sub.price * sub.quantity, 0);
@@ -82,18 +74,9 @@ const Index = () => {
     // Alternate between google and microsoft based on index
     const provider = index % 2 === 0 ? 'google' : 'microsoft';
     if (provider === 'google') {
-      return <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
-          <div className="text-xs font-bold text-blue-500">G</div>
-        </div>;
+      return <i className="fa-brands fa-google text-blue-500 text-lg"></i>;
     } else {
-      return <div className="w-6 h-6 bg-blue-500 flex items-center justify-center">
-          <div className="w-3 h-3 grid grid-cols-2 gap-0.5">
-            <div className="bg-white w-1 h-1"></div>
-            <div className="bg-white w-1 h-1"></div>
-            <div className="bg-white w-1 h-1"></div>
-            <div className="bg-white w-1 h-1"></div>
-          </div>
-        </div>;
+      return <i className="fa-brands fa-microsoft text-blue-500 text-lg"></i>;
     }
   };
   const handleOrderClick = (orderId: string) => {

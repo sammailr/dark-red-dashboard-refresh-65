@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -24,14 +25,14 @@ const Sidebar = () => {
       icon: <i className="fa-solid fa-globe text-base" /> 
     },
     { 
-      name: 'Affiliate Portal', 
-      path: '/affiliate', 
-      icon: <i className="fa-solid fa-diagram-project text-base" /> 
-    },
-    { 
       name: 'Guide', 
       path: '/guide', 
       icon: <i className="fa-solid fa-book text-base" /> 
+    },
+    { 
+      name: 'Affiliate Portal', 
+      path: '/affiliate', 
+      icon: <i className="fa-solid fa-diagram-project text-base" /> 
     },
   ];
   
@@ -71,3 +72,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

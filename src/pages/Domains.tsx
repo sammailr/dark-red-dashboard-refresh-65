@@ -683,7 +683,7 @@ const DomainsPage = () => {
           <Table>
             <TableHeader className="bg-[#1A1A1A] border-b border-[#2d2d2d]">
               <TableRow className="hover:bg-transparent border-b border-[#2A2A2A]">
-                <TableHead className="w-12 px-4 py-4 text-center">
+                <TableHead className="w-12 px-6 py-4 text-center">
                   <div className="flex justify-center">
                     <Checkbox 
                       checked={isAllSelected}
@@ -692,10 +692,10 @@ const DomainsPage = () => {
                     />
                   </div>
                 </TableHead>
-                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Domain</TableHead>
-                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Status</TableHead>
-                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Provider</TableHead>
+                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-1/4">Domain</TableHead>
+                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-2/5">Forwarding URL</TableHead>
+                <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-40">Status</TableHead>
+                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Provider</TableHead>
                 <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
               </TableRow>
             </TableHeader>
@@ -711,7 +711,7 @@ const DomainsPage = () => {
                   onMouseEnter={() => setHoveredRowId(domain.id)}
                   onMouseLeave={() => setHoveredRowId(null)}
                 >
-                  <TableCell className="w-12 px-4 py-3">
+                  <TableCell className="w-12 px-6 py-3">
                     <div className="flex justify-center">
                       <Checkbox 
                         checked={selectedDomainIds.includes(domain.id)}
@@ -720,14 +720,12 @@ const DomainsPage = () => {
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3 font-medium text-white text-left">{domain.domain}</TableCell>
-                  <TableCell className="px-6 py-3 text-gray-300 text-left">{domain.url}</TableCell>
-                  <TableCell className="px-6 py-3 w-32">
-                    <div className="flex justify-center">
-                      {getStatusBadge(domain.status)}
-                    </div>
+                  <TableCell className="px-6 py-3 font-medium text-white text-left w-1/4">{domain.domain}</TableCell>
+                  <TableCell className="px-6 py-3 text-gray-300 text-left w-2/5">{domain.url}</TableCell>
+                  <TableCell className="px-6 py-3 text-left w-40">
+                    {getStatusBadge(domain.status)}
                   </TableCell>
-                  <TableCell className="px-4 py-3 w-20">
+                  <TableCell className="px-6 py-3 w-20">
                     <div className="flex justify-center items-center">
                       {getProviderIcon(domain.provider)}
                     </div>
@@ -744,9 +742,9 @@ const DomainsPage = () => {
                               className={`
                                 h-7 px-3 py-1 text-xs font-medium text-white 
                                 bg-transparent border border-[#444] rounded-full
-                                hover:border-[#666] hover:bg-[#262626] 
+                                hover:border-[#E00000] hover:bg-[#E00000]/10 hover:text-[#E00000]
                                 transition-all duration-200
-                                ${hoveredRowId === domain.id ? 'opacity-100' : 'opacity-80'}
+                                ${hoveredRowId === domain.id ? 'opacity-100' : 'opacity-0'}
                               `}
                             >
                               <HelpCircle className="h-3 w-3 mr-1" />

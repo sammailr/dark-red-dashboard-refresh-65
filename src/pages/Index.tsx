@@ -317,7 +317,7 @@ const Index = () => {
             ></div>
             
             <CardHeader className="pb-3 pt-7 px-7 relative z-10">
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-center">
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">SUBSCRIPTION</p>
                 </div>
@@ -329,9 +329,9 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              {/* Display subscription info in three columns like other cards */}
+              {/* Display subscription info in three columns like other cards with more spacing */}
               <div className="space-y-3">
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-12">
                   <div>
                     <div className="text-3xl font-bold text-white mb-1 leading-none">${totalSubscriptionCost}</div>
                     <div className="text-xs text-gray-400 font-medium transition-colors duration-300 group-hover:text-gray-300">Per Month</div>

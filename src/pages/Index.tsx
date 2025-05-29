@@ -189,15 +189,15 @@ const Index = () => {
             </CardContent>
           </Card>)}
         {dashboardStats.map(stat => <Card key={stat.title} className="bg-mailr-darkgray border-mailr-lightgray shadow-lg">
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-4">
               <div className="flex justify-between items-start">
-                <CardTitle className="text-sm font-medium text-gray-400">{stat.title}</CardTitle>
+                <CardTitle className="text-lg font-semibold text-gray-400">{stat.title}</CardTitle>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0">
               <div className="flex justify-between items-end">
-                <p className="text-2xl font-bold">{stat.value}</p>
+                <p className="text-xl font-bold">{stat.value}</p>
               </div>
             </CardContent>
           </Card>)}
@@ -205,7 +205,7 @@ const Index = () => {
 
       <div className="grid grid-cols-1 gap-6 mb-6">
         <Card className="bg-mailr-darkgray border-mailr-lightgray shadow-lg relative">
-          <CardHeader className="pb-2">
+          <CardHeader className="pb-4">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
                 <CardTitle className="text-xl font-bold text-slate-50">Subscription</CardTitle>
@@ -213,7 +213,7 @@ const Index = () => {
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
-          <CardContent className="py-[13px]">
+          <CardContent className="pt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Total</p>
@@ -238,125 +238,129 @@ const Index = () => {
       </div>
 
       <div className="bg-mailr-darkgray rounded-md border border-mailr-lightgray p-4 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-slate-50">Orders</h2>
-          <FileText className="h-5 w-5 text-gray-400" />
+        <div className="p-6 pb-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-slate-50">Orders</h2>
+            <FileText className="h-5 w-5 text-gray-400" />
+          </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full table-fixed">
-            <thead className="border-b border-mailr-lightgray">
-              <tr>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('created')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                  onClick={() => handleSort('created')}
-                >
-                  <div className="flex items-center justify-center">
-                    Created
-                    {renderSortIcon('created')}
-                  </div>
-                </th>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('domains')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                  onClick={() => handleSort('domains')}
-                >
-                  <div className="flex items-center justify-center">
-                    Total Domains
-                    {renderSortIcon('domains')}
-                  </div>
-                </th>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('provider')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                  onClick={() => handleSort('provider')}
-                >
-                  <div className="flex items-center justify-center">
-                    Provider
-                    {renderSortIcon('provider')}
-                  </div>
-                </th>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[10%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('cost')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                  onClick={() => handleSort('cost')}
-                >
-                  <div className="flex items-center justify-center">
-                    Cost
-                    {renderSortIcon('cost')}
-                  </div>
-                </th>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('tag')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                >
-                  <div className="flex items-center justify-center">
-                    Tag
-                    {renderSortIcon('tag')}
-                  </div>
-                </th>
-                <th 
-                  className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
-                  onMouseEnter={() => setHoveredColumn('status')}
-                  onMouseLeave={() => setHoveredColumn('')}
-                  onClick={() => handleSort('status')}
-                >
-                  <div className="flex items-center justify-center">
-                    Status
-                    {renderSortIcon('status')}
-                  </div>
-                </th>
-                <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
-                  <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
-                  <td className="py-3 text-sm text-center">{order.domains.length}</td>
-                  <td className="py-3 text-center">
-                    {getProviderLogo(order.provider)}
-                  </td>
-                  <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                  <td className="py-3 text-center">
-                    <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1 text-center w-full" />
-                  </td>
-                  <td className="py-3 text-center">
-                    {getStatusBadge(order.status)}
-                  </td>
-                  <td className="py-3 text-center">
-                    <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
-                      View Details
-                    </Button>
-                  </td>
-                </tr>)}
-            </tbody>
-          </table>
+        <div className="px-6 pb-6">
+          <div className="overflow-x-auto">
+            <table className="w-full table-fixed">
+              <thead className="border-b border-mailr-lightgray">
+                <tr>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('created')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                    onClick={() => handleSort('created')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Created
+                      {renderSortIcon('created')}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('domains')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                    onClick={() => handleSort('domains')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Total Domains
+                      {renderSortIcon('domains')}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('provider')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                    onClick={() => handleSort('provider')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Provider
+                      {renderSortIcon('provider')}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[10%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('cost')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                    onClick={() => handleSort('cost')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Cost
+                      {renderSortIcon('cost')}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('tag')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Tag
+                      {renderSortIcon('tag')}
+                    </div>
+                  </th>
+                  <th 
+                    className="text-center py-2 text-gray-400 font-medium text-sm w-[15%] cursor-pointer hover:text-gray-200 transition-colors"
+                    onMouseEnter={() => setHoveredColumn('status')}
+                    onMouseLeave={() => setHoveredColumn('')}
+                    onClick={() => handleSort('status')}
+                  >
+                    <div className="flex items-center justify-center">
+                      Status
+                      {renderSortIcon('status')}
+                    </div>
+                  </th>
+                  <th className="text-center py-2 text-gray-400 font-medium text-sm w-[15%]">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedOrders.map((order, index) => <tr key={order.id} className="border-b border-mailr-lightgray last:border-b-0 hover:bg-mailr-lightgray/10">
+                    <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
+                    <td className="py-3 text-sm text-center">{order.domains.length}</td>
+                    <td className="py-3 text-center">
+                      {getProviderLogo(order.provider)}
+                    </td>
+                    <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                    <td className="py-3 text-center">
+                      <input type="text" value={orderTags[order.id] || ''} onChange={e => handleTagUpdate(order.id, e.target.value)} onClick={e => e.stopPropagation()} placeholder="Add tag..." className="bg-transparent border-none text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-mailr-red rounded px-2 py-1 text-center w-full" />
+                    </td>
+                    <td className="py-3 text-center">
+                      {getStatusBadge(order.status)}
+                    </td>
+                    <td className="py-3 text-center">
+                      <Button variant="ghost" size="sm" onClick={() => handleOrderClick(order.id)} className="text-xs text-gray-400 hover:text-white">
+                        View Details
+                      </Button>
+                    </td>
+                  </tr>)}
+              </tbody>
+            </table>
+          </div>
+          
+          {totalPages > 1 && <div className="flex justify-end mt-2">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                  </PaginationItem>
+                  {Array.from({
+                length: totalPages
+              }, (_, i) => i + 1).map(page => <PaginationItem key={page}>
+                      <PaginationLink onClick={() => setCurrentPage(page)} isActive={currentPage === page} className="cursor-pointer">
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>)}
+                  <PaginationItem>
+                    <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>}
         </div>
-        
-        {totalPages > 1 && <div className="flex justify-end mt-2">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
-                </PaginationItem>
-                {Array.from({
-              length: totalPages
-            }, (_, i) => i + 1).map(page => <PaginationItem key={page}>
-                    <PaginationLink onClick={() => setCurrentPage(page)} isActive={currentPage === page} className="cursor-pointer">
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>)}
-                <PaginationItem>
-                  <PaginationNext onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>}
       </div>
     </MainLayout>;
 };

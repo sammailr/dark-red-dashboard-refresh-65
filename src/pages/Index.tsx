@@ -416,7 +416,11 @@ const Index = () => {
                       {renderSortIcon('status')}
                     </div>
                   </th>
-                  <th className="text-center py-5 px-4 text-gray-300 font-bold text-[10px] uppercase tracking-[0.12em] w-[15%] border-b border-[#2A2A2A]">ACTIONS</th>
+                  <th className="text-center py-5 px-4 text-gray-300 font-bold text-[10px] uppercase tracking-[0.12em] w-[15%] border-b border-[#2A2A2A]">
+                    <div className="flex items-center justify-center">
+                      ACTIONS
+                    </div>
+                  </th>
                 </tr>
               </thead>
               {/* Premium table body with alternating backgrounds and enhanced hover */}

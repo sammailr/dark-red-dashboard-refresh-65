@@ -42,9 +42,10 @@ const OrderGoogleInboxesPage = () => {
 
   // Calculate price per inbox based on total inboxes
   const calculatePricePerInbox = (totalInboxes: number) => {
-    if (totalInboxes >= 300) return 2.00;
-    if (totalInboxes >= 100) return 2.25;
-    return 2.50;
+    if (totalInboxes >= 400) return 2.00;
+    if (totalInboxes >= 150) return 2.25;
+    if (totalInboxes >= 30) return 2.50;
+    return 2.50; // For less than 30, still use 2.50 but will show minimum order message
   };
 
   // Calculate total monthly cost
@@ -227,6 +228,14 @@ const OrderGoogleInboxesPage = () => {
       toast.error('Please add at least one domain');
       return;
     }
+    
+    // Check minimum order requirement
+    const totalInboxes = getTotalInboxes();
+    if (totalInboxes < 30) {
+      toast.error('The minimum order is 30 inboxes');
+      return;
+    }
+    
     for (const domain of domains) {
       if (!domain.forwardingUrl) {
         toast.error(`Please provide a forwarding URL for domain ${domain.domain}`);
@@ -284,13 +293,13 @@ const OrderGoogleInboxesPage = () => {
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3 text-white">Pricing Breakdown</h3>
             <div className="space-y-2">
               <div className="text-sm text-gray-400">
-                1–99 inboxes: <span className="font-bold text-white">$2.50</span> each
+                30–149 Inboxes: <span className="font-bold text-white">$2.50</span> each
               </div>
               <div className="text-sm text-gray-400">
-                100–299 inboxes: <span className="font-bold text-white">$2.25</span> each
+                150–399 Inboxes: <span className="font-bold text-white">$2.25</span> each
               </div>
               <div className="text-sm text-gray-400">
-                300+ inboxes: <span className="font-bold text-white">$2.00</span> each
+                400+ Inboxes: <span className="font-bold text-white">$2.00</span> each
               </div>
             </div>
           </div>

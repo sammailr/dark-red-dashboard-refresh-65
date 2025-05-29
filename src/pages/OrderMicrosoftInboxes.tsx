@@ -544,7 +544,7 @@ const OrderMicrosoftInboxesPage = () => {
         </div>
         
         {/* Submit Button Section with Visual Anchoring */}
-        <div className="bg-[#121212] rounded-lg border-t border-[#2D2D2D] pt-6 pb-4 px-6 flex justify-end shadow-lg">
+        <div className="bg-[#121212] rounded-lg pt-6 pb-4 px-6 flex justify-end shadow-lg">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button className="bg-[#E00000] hover:bg-[#CC0000] text-white font-bold px-6 py-3 rounded-md shadow-md transition-all hover:shadow-lg">

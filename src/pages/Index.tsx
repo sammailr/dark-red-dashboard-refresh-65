@@ -148,8 +148,8 @@ const Index = () => {
               <DollarSign className="h-5 w-5 text-yellow-500" />
             </div>
           </CardHeader>
-          <CardContent className="my-[6px]">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <CardContent className="py-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Total</p>
                 <p className="text-2xl font-bold">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 ml-1">/month</span></p>

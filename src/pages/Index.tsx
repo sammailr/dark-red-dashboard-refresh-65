@@ -176,23 +176,35 @@ const Index = () => {
       {/* Provider Stats and Premium Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
         {/* Enhanced Provider Stats */}
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden">
-            {/* Gradient background overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-gray-800/5 to-transparent"></div>
-            {/* Provider-specific accent border */}
-            <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${provider.provider === 'Microsoft' ? 'from-blue-500/50 via-blue-400/70 to-blue-500/50' : 'from-red-500/50 via-red-400/70 to-red-500/50'}`}></div>
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden group">
+            {/* Subtle background texture */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.01)_0%,transparent_50%)]"></div>
             
-            <CardHeader className="pb-4 relative z-10">
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0">
-                  {provider.logo}
-                </div>
-                <div className="space-y-1">
-                  <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">{provider.provider.toUpperCase()}</p>
-                  <CardTitle className="text-lg font-bold text-slate-50">{provider.domains} Domains | {provider.mailboxes} Mailboxes</CardTitle>
+            {/* Icon vignette effect */}
+            <div className={`absolute top-4 left-4 w-12 h-12 rounded-full opacity-5 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+            
+            {/* Provider-specific accent border */}
+            <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-blue-500/40 via-blue-400/60 to-blue-500/40' : 'bg-gradient-to-r from-red-500/40 via-red-400/60 to-red-500/40'}`}></div>
+            
+            <CardContent className="p-6 relative z-10 flex items-center gap-4 h-full">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 flex items-center justify-center">
+                  {provider.provider === 'Microsoft' ? (
+                    <i className="fa-brands fa-microsoft text-white/90 text-2xl"></i>
+                  ) : (
+                    <i className="fa-brands fa-google text-white/90 text-2xl"></i>
+                  )}
                 </div>
               </div>
-            </CardHeader>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-medium uppercase tracking-[0.1em] text-[#B0B0B0] mb-1.5 leading-tight">
+                  {provider.provider.toUpperCase()}
+                </p>
+                <p className="text-[15px] font-medium text-[#F0F0F0] leading-tight tracking-[-0.01em]">
+                  {provider.domains} Domains • {provider.mailboxes} Mailboxes
+                </p>
+              </div>
+            </CardContent>
           </Card>)}
         
         {/* Premium Sending Volume Card */}

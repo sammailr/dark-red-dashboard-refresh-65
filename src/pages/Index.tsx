@@ -84,7 +84,7 @@ const Index = () => {
     return provider === 'google' ? 'border-red-500/50' : 'border-blue-500/50';
   };
   const getProviderRowAccent = (provider: 'google' | 'microsoft') => {
-    return provider === 'google' ? 'border-l-red-500/40' : 'border-l-blue-500/40';
+    return provider === 'google' ? 'border-l-red-500/25' : 'border-l-blue-500/25';
   };
   const handleOrderClick = (orderId: string) => {
     navigate(`/orders/${orderId}`);
@@ -175,16 +175,16 @@ const Index = () => {
   return <MainLayout title="Dashboard">
       {/* Provider Stats and Premium Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-        {/* Enhanced Provider Stats */}
-        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden group">
+        {/* Refined Provider Stats */}
+        {providerStats.map(provider => <Card key={provider.provider} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-1px] relative overflow-hidden group">
             {/* Subtle background texture */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.01)_0%,transparent_50%)]"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.015)_0%,transparent_60%)]"></div>
             
-            {/* Icon vignette effect - aligned with logo position */}
-            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full opacity-5 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+            {/* Reduced icon vignette effect */}
+            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full opacity-3 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
             
-            {/* Provider-specific accent border */}
-            <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-blue-500/40 via-blue-400/60 to-blue-500/40' : 'bg-gradient-to-r from-red-500/40 via-red-400/60 to-red-500/40'}`}></div>
+            {/* Subdued provider-specific accent border */}
+            <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/20 to-transparent' : 'bg-gradient-to-r from-transparent via-red-500/20 to-transparent'}`}></div>
             
             <CardContent className="p-6 relative z-10 flex items-center gap-4 h-full">
               <div className="flex-shrink-0">
@@ -207,13 +207,12 @@ const Index = () => {
             </CardContent>
           </Card>)}
         
-        {/* Premium Sending Volume Card */}
+        {/* Refined Sending Volume Card */}
         {dashboardStats.map(stat => (
-          <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:translate-y-[-2px] relative overflow-hidden">
-            {/* Background elements */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/5 to-transparent"></div>
-            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/30 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-400/50 to-transparent"></div>
+          <Card key={stat.title} className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 transform hover:translate-y-[-1px] relative overflow-hidden">
+            {/* Subtle background elements */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500/3 to-transparent"></div>
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-400/20 to-transparent"></div>
             
             <CardHeader className="pb-2 relative z-10">
               <div className="flex justify-between items-start">
@@ -221,21 +220,21 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">{stat.title}</p>
                 </div>
                 <div className="relative">
-                  {/* Enhanced sparkline effect */}
+                  {/* Enhanced multi-tone sparkline */}
                   <div className="flex items-end space-x-0.5 opacity-70">
-                    <div className="w-1 h-2 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-1 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-4 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-2 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-5 bg-green-400 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-green-400 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-1 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-4 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-5 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
                   </div>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-6 relative z-10">
-              <div className="text-4xl font-bold text-white mb-2">{stat.value}</div>
+              <div className="text-4xl font-bold text-white mb-2 drop-shadow-sm">{stat.value}</div>
               <div className="text-sm text-green-400 flex items-center font-medium">
                 <TrendingUp className="h-3 w-3 mr-1" />
                 +12.5% from last month
@@ -245,13 +244,12 @@ const Index = () => {
         ))}
       </div>
 
-      {/* Premium Subscription Section */}
+      {/* Refined Subscription Section */}
       <div className="mb-10">
-        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
-          {/* Background elements */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/5 to-transparent"></div>
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/30 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-400/40 to-transparent"></div>
+        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#181818] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+          {/* Reduced background elements */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/15 to-transparent"></div>
           
           <CardHeader className="pb-6 relative z-10">
             <div className="flex justify-between items-start">
@@ -260,7 +258,7 @@ const Index = () => {
                 <CardTitle className="text-4xl font-bold text-white">${totalSubscriptionCost.toLocaleString()}<span className="text-lg text-gray-400 font-normal ml-1">/month</span></CardTitle>
               </div>
               <Link to="/subscriptions">
-                <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/10 transition-all px-4 py-2 rounded-md border border-transparent hover:border-white/20">
+                <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white hover:bg-white/5 transition-all px-4 py-2 rounded-md border border-transparent hover:border-white/10">
                   View All
                 </Button>
               </Link>
@@ -277,10 +275,9 @@ const Index = () => {
                 <p className="text-lg font-semibold text-red-400">{getNextBillingDate()}</p>
               </div>
             </div>
-            {/* Enhanced divider */}
-            <div className="mt-6 pt-4 border-t border-white/10">
+            <div className="mt-6 pt-4 border-t border-white/5">
               <div className="flex items-center text-xs text-gray-500">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/30"></div>
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-sm shadow-green-400/20"></div>
                 Active subscription • Auto-renewal enabled
               </div>
             </div>
@@ -288,25 +285,24 @@ const Index = () => {
         </Card>
       </div>
 
-      {/* Enhanced Orders Section */}
-      <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1E1E1E] to-[#1A1A1A] border-[#2D2D2D] shadow-2xl relative overflow-hidden">
-        {/* Card background enhancement */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/5 to-transparent"></div>
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400/20 to-transparent"></div>
+      {/* Premium Orders Section */}
+      <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg relative overflow-hidden">
+        {/* Subtle card background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/2 to-transparent"></div>
         
         <CardHeader className="pb-6 relative z-10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold text-slate-50">Orders</CardTitle>
-            <FileText className="h-5 w-5 text-gray-400" />
+            <CardTitle className="text-xl font-bold text-slate-50 uppercase tracking-wide">ORDERS</CardTitle>
+            <FileText className="h-5 w-5 text-gray-500" />
           </div>
         </CardHeader>
         <CardContent className="pt-0 relative z-10">
           <div className="overflow-x-auto">
             <table className="w-full table-fixed">
-              <thead className="border-b-2 border-[#2D2D2D]">
+              <thead className="border-b border-[#2A2A2A]">
                 <tr>
                   <th 
-                    className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
+                    className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('created')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('created')}
@@ -317,7 +313,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
+                    className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('domains')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('domains')}
@@ -328,7 +324,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
+                    className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('provider')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('provider')}
@@ -339,7 +335,7 @@ const Index = () => {
                     </div>
                   </th>
                   <th 
-                    className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[10%] cursor-pointer hover:text-gray-100 transition-colors"
+                    className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[10%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('cost')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('cost')}
@@ -349,13 +345,13 @@ const Index = () => {
                       {renderSortIcon('cost')}
                     </div>
                   </th>
-                  <th className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%]">
+                  <th className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%]">
                     <div className="flex items-center justify-center">
                       TAG
                     </div>
                   </th>
                   <th 
-                    className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
+                    className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
                     onMouseEnter={() => setHoveredColumn('status')}
                     onMouseLeave={() => setHoveredColumn('')}
                     onClick={() => handleSort('status')}
@@ -365,52 +361,52 @@ const Index = () => {
                       {renderSortIcon('status')}
                     </div>
                   </th>
-                  <th className="text-center py-5 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%]">ACTIONS</th>
+                  <th className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%]">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {paginatedOrders.map((order, index) => <tr 
                     key={order.id} 
-                    className={`border-b border-[#2D2D2D] last:border-b-0 hover:bg-[#2A2A2A] hover:shadow-lg hover:shadow-black/20 transition-all duration-200 transform hover:translate-y-[-1px] ${
-                      index % 2 === 0 ? 'bg-[#1A1A1A]' : 'bg-[#1E1E1E]'
-                    } border-l-4 ${getProviderRowAccent(order.provider)}`}
+                    className={`border-b border-[#232323] last:border-b-0 hover:bg-[#1F1F1F] hover:shadow-sm transition-all duration-200 transform hover:translate-y-[-0.5px] ${
+                      index % 2 === 0 ? 'bg-[#1A1A1A]' : 'bg-[#1C1C1C]'
+                    } border-l-2 ${getProviderRowAccent(order.provider)}`}
                   >
-                    <td className="py-4 px-5 text-sm text-center text-gray-200 font-medium">{formatDate(order.date)}</td>
-                    <td className="py-4 px-5 text-sm text-center text-gray-200 font-medium">{order.domains.length}</td>
-                    <td className="py-4 px-5 text-center">
+                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">{formatDate(order.date)}</td>
+                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">{order.domains.length}</td>
+                    <td className="py-5 px-5 text-center">
                       <div className="flex justify-center items-center">
                         {getProviderLogo(order.provider)}
                       </div>
                     </td>
-                    <td className="py-4 px-5 text-sm text-center text-gray-200 font-medium">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                    <td className="py-4 px-5 text-center">
+                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                    <td className="py-5 px-5 text-center">
                       {orderTags[order.id] ? (
                         <input 
                           type="text" 
                           value={orderTags[order.id]} 
                           onChange={e => handleTagUpdate(order.id, e.target.value)} 
                           onClick={e => e.stopPropagation()} 
-                          className="bg-transparent border border-[#2D2D2D] text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 rounded-md px-3 py-1.5 text-center w-full hover:border-gray-500 transition-colors" 
+                          className="bg-transparent border border-[#2A2A2A] text-sm text-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500/30 focus:border-blue-500/30 rounded-md px-3 py-1.5 text-center w-full hover:border-gray-500 transition-colors" 
                         />
                       ) : (
                         <button
                           onClick={() => handleTagUpdate(order.id, '')}
-                          className="flex items-center justify-center gap-2 text-xs text-gray-500 hover:text-gray-300 transition-colors bg-[#2A2A2A] hover:bg-[#333333] border border-dashed border-gray-600 hover:border-gray-500 rounded-md px-3 py-1.5 w-full"
+                          className="flex items-center justify-center gap-2 text-xs text-gray-500 hover:text-gray-300 transition-colors bg-[#222222] hover:bg-[#2A2A2A] border border-dashed border-gray-600 hover:border-gray-500 rounded-full px-3 py-2 w-full"
                         >
                           <Tag className="h-3 w-3" />
                           Add Tag
                         </button>
                       )}
                     </td>
-                    <td className="py-4 px-5 text-center">
+                    <td className="py-5 px-5 text-center">
                       {getStatusBadge(order.status)}
                     </td>
-                    <td className="py-4 px-5 text-center">
+                    <td className="py-5 px-5 text-center">
                       <Button 
                         variant="ghost" 
                         size="sm" 
                         onClick={() => handleOrderClick(order.id)} 
-                        className="text-xs text-gray-400 hover:text-white hover:bg-gray-700 hover:border-gray-600 border border-transparent transition-all px-4 py-1.5 rounded-md font-medium"
+                        className="text-xs text-gray-400 hover:text-white hover:bg-gray-700/30 hover:border-gray-600/50 border border-transparent transition-all px-4 py-2 rounded-full font-medium"
                       >
                         View Details
                       </Button>
@@ -420,13 +416,13 @@ const Index = () => {
             </table>
           </div>
           
-          {totalPages > 1 && <div className="flex justify-end mt-6 pt-4 border-t border-[#2D2D2D]">
+          {totalPages > 1 && <div className="flex justify-end mt-6 pt-4 border-t border-[#2A2A2A]">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious 
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} 
-                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700'} 
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700/30'} 
                     />
                   </PaginationItem>
                   {Array.from({
@@ -435,7 +431,7 @@ const Index = () => {
                       <PaginationLink 
                         onClick={() => setCurrentPage(page)} 
                         isActive={currentPage === page} 
-                        className="cursor-pointer hover:bg-gray-700"
+                        className="cursor-pointer hover:bg-gray-700/30"
                       >
                         {page}
                       </PaginationLink>
@@ -443,7 +439,7 @@ const Index = () => {
                   <PaginationItem>
                     <PaginationNext 
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} 
-                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700'} 
+                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer hover:bg-gray-700/30'} 
                     />
                   </PaginationItem>
                 </PaginationContent>

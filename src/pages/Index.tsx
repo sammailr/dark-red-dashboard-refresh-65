@@ -189,13 +189,23 @@ const Index = () => {
                   <p className="text-xs uppercase tracking-[0.15em] text-gray-400 font-semibold transition-colors duration-300 group-hover:text-gray-300">{provider.provider.toUpperCase()}</p>
                 </div>
                 <div className="flex-shrink-0 relative group">
-                  {/* Enhanced circle with hover glow - fixed colors to match order inboxes page */}
-                  <div className={`absolute inset-0 w-12 h-12 rounded-full opacity-20 transition-all duration-300 group-hover:opacity-30 group-hover:scale-110 ${provider.provider === 'Microsoft' ? 'bg-blue-500 group-hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-red-500 group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]'}`}></div>
+                  {/* Updated circle with exact gradients and glows to match order inboxes page */}
+                  <div 
+                    className="absolute inset-0 w-12 h-12 rounded-full transition-all duration-300 group-hover:scale-110"
+                    style={{
+                      background: provider.provider === 'Microsoft' 
+                        ? 'linear-gradient(to bottom, #3E78FA, #1F5BEA)' 
+                        : 'linear-gradient(to bottom, #F1413D, #C62F2B)',
+                      boxShadow: provider.provider === 'Microsoft'
+                        ? '0 0 12px rgba(62, 120, 250, 0.35)'
+                        : '0 0 12px rgba(241, 65, 61, 0.35)'
+                    }}
+                  ></div>
                   <div className="w-12 h-12 flex items-center justify-center relative z-10 transition-transform duration-300 group-hover:scale-105">
                     {provider.provider === 'Microsoft' ? (
-                      <i className="fa-brands fa-microsoft text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.4)]"></i>
+                      <i className="fa-brands fa-microsoft text-white text-2xl transition-all duration-300 group-hover:text-white"></i>
                     ) : (
-                      <i className="fa-brands fa-google text-white/90 text-2xl transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.4)]"></i>
+                      <i className="fa-brands fa-google text-white text-2xl transition-all duration-300 group-hover:text-white"></i>
                     )}
                   </div>
                 </div>

@@ -15,9 +15,9 @@ const OrderInboxesPage = () => {
 
   return (
     <MainLayout title="Order Inboxes">
-      <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-12">
+      <div className="min-h-[80vh] flex flex-col items-center justify-center space-y-12 -mt-16">
         <div className="text-center space-y-3">
-          <h2 className="text-2xl font-bold tracking-widest text-white uppercase">SELECT PROVIDER</h2>
+          <h2 className="text-2xl font-bold tracking-widest text-white uppercase">Select Provider</h2>
           <p className="text-sm text-gray-400 font-medium leading-relaxed max-w-md">
             Choose your inbox provider to get started
           </p>

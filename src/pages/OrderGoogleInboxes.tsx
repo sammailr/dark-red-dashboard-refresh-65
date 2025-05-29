@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -277,7 +278,7 @@ const OrderGoogleInboxesPage = () => {
         {/* Order Summary Section */}
         <div className="bg-[#1A1A1A] rounded-lg border border-[#333] p-6">
           <h2 className="text-xl font-bold mb-4 text-white">Order Summary</h2>
-          <div className="border-b border-[#2D2D2D] pb-4 mb-4">
+          <div className="pb-4 mb-6">
             <p className="text-lg font-medium text-white">
               Total Monthly Cost: <span className="font-bold text-white">${calculateTotalCost().toFixed(2)}/month</span>
             </p>
@@ -294,8 +295,8 @@ const OrderGoogleInboxesPage = () => {
             </div>
           </div>
           
-          {/* Pricing Breakdown */}
-          <div>
+          {/* Pricing Breakdown with improved spacing */}
+          <div className="border-t border-[#2D2D2D] pt-4">
             <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3 text-white">Pricing Breakdown</h3>
             <div className="space-y-2">
               <div className="text-sm text-gray-400">
@@ -315,14 +316,14 @@ const OrderGoogleInboxesPage = () => {
         <div className="bg-[#1A1A1A] rounded-lg border border-[#333] p-6">
           <h2 className="text-xl font-bold mb-6 text-white">Domains</h2>
           
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <Label htmlFor="mainForwardingUrl" className="block text-sm font-medium mb-2 text-gray-300">Main Forwarding URL</Label>
               <p className="text-sm text-gray-500 mb-3">The primary website your domains will forward to</p>
               <Input 
                 id="mainForwardingUrl" 
                 type="text" 
-                className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
+                className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
                 value={mainForwardingUrl} 
                 onChange={e => setMainForwardingUrl(e.target.value)} 
                 placeholder="https://example.com" 
@@ -334,10 +335,10 @@ const OrderGoogleInboxesPage = () => {
               <p className="text-sm text-gray-500 mb-3">E.g. GoDaddy</p>
               <div className="flex gap-3">
                 <Select value={domainRegistrar} onValueChange={setDomainRegistrar}>
-                  <SelectTrigger className="bg-[#101010] border-[#444] text-white rounded-md">
+                  <SelectTrigger className="bg-[#1E1E1E] border-[#444] text-white rounded-md shadow-[inset_0_0_0_1px_#333]">
                     <SelectValue placeholder="Select registrar" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1A1A1A] border-[#444]">
+                  <SelectContent className="bg-[#1A1A1A] border-[#444] z-50">
                     <SelectItem value="godaddy">GoDaddy</SelectItem>
                     <SelectItem value="namecheap">Namecheap</SelectItem>
                     <SelectItem value="cloudflare">Cloudflare</SelectItem>
@@ -348,7 +349,7 @@ const OrderGoogleInboxesPage = () => {
                 {domainRegistrar === 'other' && (
                   <Input 
                     type="text" 
-                    className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
+                    className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
                     value={customDomainRegistrar} 
                     onChange={e => setCustomDomainRegistrar(e.target.value)} 
                     placeholder="Specify Domain Registrar" 
@@ -363,7 +364,7 @@ const OrderGoogleInboxesPage = () => {
                 <Input 
                   id="domainRegistrarLogin" 
                   type="text" 
-                  className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
+                  className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
                   value={domainRegistrarLogin} 
                   onChange={e => setDomainRegistrarLogin(e.target.value)} 
                   placeholder="username@example.com" 
@@ -374,7 +375,7 @@ const OrderGoogleInboxesPage = () => {
                 <Input 
                   id="domainRegistrarPassword" 
                   type="password" 
-                  className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
+                  className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
                   value={domainRegistrarPassword} 
                   onChange={e => setDomainRegistrarPassword(e.target.value)} 
                   placeholder="••••••••" 
@@ -382,46 +383,49 @@ const OrderGoogleInboxesPage = () => {
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <Label htmlFor="addDomain" className="block text-sm font-medium mb-2 text-gray-300">Add Domain to list</Label>
-                <div className="flex gap-3">
-                  <Input 
-                    id="addDomain" 
-                    type="text" 
-                    className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
-                    value={newDomain} 
-                    onChange={e => setNewDomain(e.target.value)} 
-                    placeholder="Enter domain" 
-                  />
-                  <Button 
-                    variant="outline" 
-                    className="bg-transparent border-[#444] text-white hover:bg-[#2A2A2A] rounded-md px-4" 
-                    onClick={handleAddDomain}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
+            {/* Enhanced Domain Entry Section */}
+            <div className="bg-[#151515] rounded-lg p-4 border border-[#2A2A2A]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="addDomain" className="block text-sm font-medium mb-2 text-gray-300">Add Domain to list</Label>
+                  <div className="flex gap-3">
+                    <Input 
+                      id="addDomain" 
+                      type="text" 
+                      className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333] focus:border-[#E00000] focus:shadow-[0_0_0_1px_#E00000]" 
+                      value={newDomain} 
+                      onChange={e => setNewDomain(e.target.value)} 
+                      placeholder="Enter domain" 
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="bg-[#E00000] border-[#E00000] text-white hover:bg-[#CC0000] hover:border-[#CC0000] rounded-md px-4 min-w-[44px]" 
+                      onClick={handleAddDomain}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="flex-1">
-                <Label htmlFor="csvUpload" className="block text-sm font-medium mb-2 text-gray-300">Upload CSV with Domains</Label>
-                <div className="relative">
-                  <Input 
-                    id="csvUpload" 
-                    type="file" 
-                    accept=".csv" 
-                    className="hidden" 
-                    onChange={handleCSVUpload} 
-                  />
-                  <Button 
-                    variant="outline" 
-                    className="w-full bg-transparent border-[#444] border-dashed text-white hover:bg-[#2A2A2A] rounded-md py-2.5" 
-                    onClick={() => document.getElementById('csvUpload')?.click()}
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Click to upload a CSV
-                  </Button>
+                
+                <div>
+                  <Label htmlFor="csvUpload" className="block text-sm font-medium mb-2 text-gray-300">Upload CSV with Domains</Label>
+                  <div className="relative">
+                    <Input 
+                      id="csvUpload" 
+                      type="file" 
+                      accept=".csv" 
+                      className="hidden" 
+                      onChange={handleCSVUpload} 
+                    />
+                    <Button 
+                      variant="outline" 
+                      className="w-full bg-[#1E1E1E] border-[#444] border-dashed text-white hover:bg-[#2A2A2A] hover:border-[#555] rounded-md py-2.5 shadow-[inset_0_0_0_1px_#333]" 
+                      onClick={() => document.getElementById('csvUpload')?.click()}
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Click to upload a CSV
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -477,18 +481,18 @@ const OrderGoogleInboxesPage = () => {
           )}
         </div>
         
-        {/* Inboxes Section */}
+        {/* Inboxes Section with improved spacing */}
         <div className="bg-[#1A1A1A] rounded-lg border border-[#333] p-6">
           <h2 className="text-xl font-bold mb-6 text-white">Inboxes</h2>
           
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <Label htmlFor="numberOfInboxes" className="block text-sm font-medium mb-2 text-gray-300">Number of Inboxes per Domain</Label>
               <Select value={numberOfInboxes} onValueChange={setNumberOfInboxes}>
-                <SelectTrigger className="bg-[#101010] border-[#444] text-white rounded-md">
+                <SelectTrigger className="bg-[#1E1E1E] border-[#444] text-white rounded-md shadow-[inset_0_0_0_1px_#333]">
                   <SelectValue placeholder="Select number of inboxes" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1A1A1A] border-[#444]">
+                <SelectContent className="bg-[#1A1A1A] border-[#444] z-50">
                   <SelectItem value="1">1</SelectItem>
                   <SelectItem value="2">2</SelectItem>
                   <SelectItem value="3">3</SelectItem>
@@ -496,30 +500,33 @@ const OrderGoogleInboxesPage = () => {
               </Select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="userFullName" className="block text-sm font-medium mb-2 text-gray-300">User Full Name</Label>
-                <p className="text-sm text-gray-500 mb-3">E.g. John Smith</p>
-                <Input 
-                  id="userFullName" 
-                  type="text" 
-                  className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
-                  value={userFullName} 
-                  onChange={e => setUserFullName(e.target.value)} 
-                  placeholder="John Smith" 
-                />
-              </div>
-              <div>
-                <Label htmlFor="preferredPassword" className="block text-sm font-medium mb-2 text-gray-300">Preferred Inboxes Password</Label>
-                <p className="text-sm text-gray-500 mb-3">One Password to use on all mailboxes</p>
-                <Input 
-                  id="preferredPassword" 
-                  type="password" 
-                  className="bg-[#101010] border-[#444] text-white placeholder:text-gray-500 rounded-md" 
-                  value={preferredPassword} 
-                  onChange={e => setPreferredPassword(e.target.value)} 
-                  placeholder="••••••••" 
-                />
+            {/* Divider for visual separation */}
+            <div className="border-t border-[#2D2D2D] pt-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="userFullName" className="block text-sm font-medium mb-2 text-gray-300">User Full Name</Label>
+                  <p className="text-sm text-gray-500 mb-3">E.g. John Smith</p>
+                  <Input 
+                    id="userFullName" 
+                    type="text" 
+                    className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
+                    value={userFullName} 
+                    onChange={e => setUserFullName(e.target.value)} 
+                    placeholder="John Smith" 
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="preferredPassword" className="block text-sm font-medium mb-2 text-gray-300">Preferred Inboxes Password</Label>
+                  <p className="text-sm text-gray-500 mb-3">One Password to use on all mailboxes</p>
+                  <Input 
+                    id="preferredPassword" 
+                    type="password" 
+                    className="bg-[#1E1E1E] border-[#444] text-white placeholder:text-gray-500 rounded-md shadow-[inset_0_0_0_1px_#333]" 
+                    value={preferredPassword} 
+                    onChange={e => setPreferredPassword(e.target.value)} 
+                    placeholder="••••••••" 
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -538,11 +545,11 @@ const OrderGoogleInboxesPage = () => {
           </div>
         </div>
         
-        {/* Submit Button */}
-        <div className="flex justify-end">
+        {/* Submit Button Section with Visual Anchoring */}
+        <div className="bg-[#121212] rounded-lg pt-6 pb-4 px-6 flex justify-end shadow-lg">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button className="bg-[#E00000] hover:bg-[#CC0000] text-white font-bold px-6 py-3 rounded-md">
+              <Button className="bg-[#E00000] hover:bg-[#CC0000] text-white font-bold px-6 py-3 rounded-md shadow-md transition-all hover:shadow-lg">
                 Order Inboxes
               </Button>
             </AlertDialogTrigger>

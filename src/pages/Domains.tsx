@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, Search, Filter, Download } from 'lucide-react';
+import { AlertTriangle, Search, Filter, Download, HelpCircle } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useOrders } from '@/contexts/OrderContext';
 import ImportDomainModal from '@/components/domain/ImportDomainModal';
@@ -677,11 +678,11 @@ const DomainsPage = () => {
           </Alert>
         )}
         
-        {/* Table Section */}
-        <div className="bg-[#1a1a1a] rounded-lg border border-[#333] shadow-lg overflow-hidden">
+        {/* Table Section with Enhanced Visual Polish */}
+        <div className="bg-[#1a1a1a] rounded-lg border border-[#333] shadow-[0_0_0_1px_#222,0_1px_3px_rgba(0,0,0,0.3)] overflow-hidden">
           <Table>
             <TableHeader className="bg-[#1A1A1A] border-b border-[#2d2d2d]">
-              <TableRow className="hover:bg-transparent">
+              <TableRow className="hover:bg-transparent border-b border-[#2A2A2A]">
                 <TableHead className="w-12 px-4 py-4 text-center">
                   <div className="flex justify-center">
                     <Checkbox 
@@ -694,7 +695,7 @@ const DomainsPage = () => {
                 <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Domain</TableHead>
                 <TableHead className="px-6 py-4 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Forwarding URL</TableHead>
                 <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Status</TableHead>
-                <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-24">Provider</TableHead>
+                <TableHead className="px-4 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Provider</TableHead>
                 <TableHead className="px-6 py-4 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-32">Instructions</TableHead>
               </TableRow>
             </TableHeader>
@@ -703,10 +704,12 @@ const DomainsPage = () => {
                 <TableRow 
                   key={domain.id} 
                   className={`
-                    border-b border-[#2d2d2d] transition-colors
-                    ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#1f1f1f]'}
-                    hover:bg-[#252525]
+                    border-b border-[#2A2A2A] transition-all duration-200 cursor-pointer
+                    ${index % 2 === 0 ? 'bg-[#121212]' : 'bg-[#161616]'}
+                    hover:bg-[#1A1A1A] hover:border-[#333]
                   `}
+                  onMouseEnter={() => setHoveredRowId(domain.id)}
+                  onMouseLeave={() => setHoveredRowId(null)}
                 >
                   <TableCell className="w-12 px-4 py-3">
                     <div className="flex justify-center">
@@ -724,22 +727,36 @@ const DomainsPage = () => {
                       {getStatusBadge(domain.status)}
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3 w-24">
-                    <div className="flex justify-center">
+                  <TableCell className="px-4 py-3 w-20">
+                    <div className="flex justify-center items-center">
                       {getProviderIcon(domain.provider)}
                     </div>
                   </TableCell>
                   <TableCell className="px-6 py-3 w-32">
                     <div className="flex justify-center">
                       {domain.status === 'Update Nameservers' && (
-                        <Button 
-                          variant="ghost"
-                          size="sm" 
-                          onClick={() => handleNameserverClick(domain.id)}
-                          className="h-8 px-3 text-xs border border-[#444] text-gray-300 hover:text-red-400 hover:border-red-400 hover:bg-red-500/5 transition-colors rounded-md"
-                        >
-                          View Instructions
-                        </Button>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button 
+                              variant="ghost"
+                              size="sm" 
+                              onClick={() => handleNameserverClick(domain.id)}
+                              className={`
+                                h-7 px-3 py-1 text-xs font-medium text-white 
+                                bg-transparent border border-[#444] rounded-full
+                                hover:border-[#666] hover:bg-[#262626] 
+                                transition-all duration-200
+                                ${hoveredRowId === domain.id ? 'opacity-100' : 'opacity-80'}
+                              `}
+                            >
+                              <HelpCircle className="h-3 w-3 mr-1" />
+                              Instructions
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-[#1a1a1a] border-[#333] text-white">
+                            View nameserver setup instructions
+                          </TooltipContent>
+                        </Tooltip>
                       )}
                     </div>
                   </TableCell>

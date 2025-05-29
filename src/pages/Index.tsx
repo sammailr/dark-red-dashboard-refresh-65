@@ -181,10 +181,10 @@ const Index = () => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.015)_0%,transparent_60%)]"></div>
             
             {/* Reduced icon vignette effect */}
-            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full opacity-3 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
+            <div className={`absolute left-6 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full opacity-20 ${provider.provider === 'Microsoft' ? 'bg-blue-400' : 'bg-red-400'}`}></div>
             
             {/* Subdued provider-specific accent border */}
-            <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/20 to-transparent' : 'bg-gradient-to-r from-transparent via-red-500/20 to-transparent'}`}></div>
+            <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${provider.provider === 'Microsoft' ? 'bg-gradient-to-r from-transparent via-blue-500/15 to-transparent' : 'bg-gradient-to-r from-transparent via-red-500/15 to-transparent'}`}></div>
             
             <CardContent className="p-6 relative z-10 flex items-center gap-4 h-full">
               <div className="flex-shrink-0">
@@ -222,19 +222,21 @@ const Index = () => {
                 <div className="relative">
                   {/* Enhanced multi-tone sparkline */}
                   <div className="flex items-end space-x-0.5 opacity-70">
-                    <div className="w-1 h-2 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-1 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-4 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-2 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-5 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
-                    <div className="w-1 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-1 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-4 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-2 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-5 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
+                    <div className="w-1 h-3 bg-gradient-to-t from-green-600 to-green-400 rounded-sm"></div>
                   </div>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-6 relative z-10">
-              <div className="text-4xl font-bold text-white mb-2 drop-shadow-sm">{stat.value}</div>
+              <div className="text-4xl font-bold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] text-shadow-sm" style={{ textShadow: '0 0 8px rgba(255,255,255,0.1)' }}>
+                {stat.value}
+              </div>
               <div className="text-sm text-green-400 flex items-center font-medium">
                 <TrendingUp className="h-3 w-3 mr-1" />
                 +12.5% from last month
@@ -246,10 +248,10 @@ const Index = () => {
 
       {/* Refined Subscription Section */}
       <div className="mb-10">
-        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1C1C1C] to-[#181818] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+        <Card className="bg-gradient-to-br from-[#1A1A1A] via-[#1B1B1B] to-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
           {/* Reduced background elements */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/2 to-transparent"></div>
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/15 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/1 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-400/10 to-transparent"></div>
           
           <CardHeader className="pb-6 relative z-10">
             <div className="flex justify-between items-start">
@@ -286,20 +288,24 @@ const Index = () => {
       </div>
 
       {/* Premium Orders Section */}
-      <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg relative overflow-hidden">
+      <Card className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
         {/* Subtle card background */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-800/2 to-transparent"></div>
         
         <CardHeader className="pb-6 relative z-10">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-bold text-slate-50 uppercase tracking-wide">ORDERS</CardTitle>
-            <FileText className="h-5 w-5 text-gray-500" />
+            <div className="flex items-center gap-3">
+              <CardTitle className="text-xs font-medium uppercase tracking-[0.1em] text-gray-400">ORDERS</CardTitle>
+              <FileText className="h-4 w-4 text-gray-500" />
+            </div>
           </div>
+          {/* Subtle divider line */}
+          <div className="absolute bottom-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-gray-700/30 to-transparent"></div>
         </CardHeader>
         <CardContent className="pt-0 relative z-10">
           <div className="overflow-x-auto">
             <table className="w-full table-fixed">
-              <thead className="border-b border-[#2A2A2A]">
+              <thead className="border-b border-[#2D2D2D]">
                 <tr>
                   <th 
                     className="text-center py-6 px-4 text-gray-300 font-bold text-xs uppercase tracking-wider w-[15%] cursor-pointer hover:text-gray-100 transition-colors"
@@ -367,19 +373,19 @@ const Index = () => {
               <tbody>
                 {paginatedOrders.map((order, index) => <tr 
                     key={order.id} 
-                    className={`border-b border-[#232323] last:border-b-0 hover:bg-[#1F1F1F] hover:shadow-sm transition-all duration-200 transform hover:translate-y-[-0.5px] ${
+                    className={`border-b border-[#232323] last:border-b-0 hover:bg-[#1F1F1F]/60 hover:shadow-sm transition-all duration-200 transform hover:translate-y-[-0.5px] group ${
                       index % 2 === 0 ? 'bg-[#1A1A1A]' : 'bg-[#1C1C1C]'
-                    } border-l-2 ${getProviderRowAccent(order.provider)}`}
+                    } border-l-2 ${order.provider === 'google' ? 'border-l-red-500/20 hover:border-l-red-500/30' : 'border-l-blue-500/20 hover:border-l-blue-500/30'}`}
                   >
-                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">{formatDate(order.date)}</td>
-                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">{order.domains.length}</td>
-                    <td className="py-5 px-5 text-center">
+                    <td className="py-6 px-5 text-sm text-center text-gray-200 font-medium">{formatDate(order.date)}</td>
+                    <td className="py-6 px-5 text-sm text-center text-gray-200 font-medium">{order.domains.length}</td>
+                    <td className="py-6 px-5 text-center">
                       <div className="flex justify-center items-center">
                         {getProviderLogo(order.provider)}
                       </div>
                     </td>
-                    <td className="py-5 px-5 text-sm text-center text-gray-200 font-medium">${(order.domains.length * 25).toLocaleString()}/mo</td>
-                    <td className="py-5 px-5 text-center">
+                    <td className="py-6 px-5 text-sm text-center text-gray-200 font-medium">${(order.domains.length * 25).toLocaleString()}/mo</td>
+                    <td className="py-6 px-5 text-center">
                       {orderTags[order.id] ? (
                         <input 
                           type="text" 
@@ -391,22 +397,22 @@ const Index = () => {
                       ) : (
                         <button
                           onClick={() => handleTagUpdate(order.id, '')}
-                          className="flex items-center justify-center gap-2 text-xs text-gray-500 hover:text-gray-300 transition-colors bg-[#222222] hover:bg-[#2A2A2A] border border-dashed border-gray-600 hover:border-gray-500 rounded-full px-3 py-2 w-full"
+                          className="flex items-center justify-center gap-2 text-xs text-gray-400 hover:text-gray-200 transition-all bg-[#1F1F1F] hover:bg-[#252525] border border-transparent hover:border-gray-600/30 rounded-full px-4 py-2.5 w-full group-hover:border-gray-600/20"
                         >
                           <Tag className="h-3 w-3" />
-                          Add Tag
+                          + Add Tag
                         </button>
                       )}
                     </td>
-                    <td className="py-5 px-5 text-center">
+                    <td className="py-6 px-5 text-center">
                       {getStatusBadge(order.status)}
                     </td>
-                    <td className="py-5 px-5 text-center">
+                    <td className="py-6 px-5 text-center">
                       <Button 
                         variant="ghost" 
                         size="sm" 
                         onClick={() => handleOrderClick(order.id)} 
-                        className="text-xs text-gray-400 hover:text-white hover:bg-gray-700/30 hover:border-gray-600/50 border border-transparent transition-all px-4 py-2 rounded-full font-medium"
+                        className="text-xs text-gray-400 hover:text-white hover:bg-[#252525] hover:border-gray-600/50 border border-transparent transition-all px-4 py-2.5 rounded-full font-medium hover:shadow-sm"
                       >
                         View Details
                       </Button>

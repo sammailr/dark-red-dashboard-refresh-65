@@ -1,11 +1,10 @@
-
 import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertTriangle, ArrowLeftRight, Search, Filter } from 'lucide-react';
+import { AlertTriangle, ArrowLeftRight, Search, Filter, FileDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -502,6 +501,27 @@ const DomainsPage = () => {
     });
   };
 
+  const handleExport = () => {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Domain,Forwarding URL,Status,Provider\n"
+      + filteredDomains.map(domain => 
+          `${domain.domain},${domain.url},${domain.status},${domain.provider}`
+        ).join("\n");
+    
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "domains.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Export Complete",
+      description: "Domains have been exported to CSV file."
+    });
+  };
+
   const getProviderIcon = (provider: string) => {
     const isGoogle = provider === 'Google';
     return isGoogle ? (
@@ -584,14 +604,25 @@ const DomainsPage = () => {
           </Popover>
         </div>
         
-        <div className="relative w-80">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-          <Input
-            placeholder="Search domains or URLs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-mailr-darkgray border-mailr-lightgray text-white placeholder:text-gray-400"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative w-80">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Search domains or URLs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 bg-mailr-darkgray border-mailr-lightgray text-white placeholder:text-gray-400"
+            />
+          </div>
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleExport}
+            className="bg-mailr-darkgray border-mailr-lightgray hover:bg-mailr-lightgray text-white"
+          >
+            <FileDown className="h-4 w-4" />
+          </Button>
         </div>
       </div>
       
@@ -625,9 +656,7 @@ const DomainsPage = () => {
             {filteredDomains.map(domain => (
               <TableRow 
                 key={domain.id} 
-                className="hover:bg-mailr-lightgray/10 border-mailr-lightgray relative"
-                onMouseEnter={() => setHoveredRowId(domain.id)}
-                onMouseLeave={() => setHoveredRowId(null)}
+                className="hover:bg-mailr-lightgray/10 border-mailr-lightgray"
               >
                 <TableCell>
                   <Checkbox 
@@ -638,8 +667,19 @@ const DomainsPage = () => {
                 <TableCell>{domain.domain}</TableCell>
                 <TableCell>{domain.url}</TableCell>
                 <TableCell>
-                  <div onClick={() => domain.status === 'Update Nameservers' ? handleNameserverClick(domain.id) : undefined}>
-                    {getStatusBadge(domain.status)}
+                  <div className="flex items-center gap-2">
+                    <div onClick={() => domain.status === 'Update Nameservers' ? handleNameserverClick(domain.id) : undefined}>
+                      {getStatusBadge(domain.status)}
+                    </div>
+                    {domain.status === 'Update Nameservers' && (
+                      <Button 
+                        size="sm" 
+                        onClick={() => handleNameserverClick(domain.id)}
+                        className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1 h-6"
+                      >
+                        View Instructions
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell>{getProviderIcon(domain.provider)}</TableCell>
@@ -655,19 +695,6 @@ const DomainsPage = () => {
                     </Button>
                   )}
                 </TableCell>
-                
-                {/* Hover button for Update Nameservers status */}
-                {hoveredRowId === domain.id && domain.status === 'Update Nameservers' && (
-                  <TableCell className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleNameserverClick(domain.id)}
-                      className="bg-mailr-red hover:bg-red-700 text-white text-xs px-2 py-1"
-                    >
-                      View Instructions
-                    </Button>
-                  </TableCell>
-                )}
               </TableRow>
             ))}
           </TableBody>

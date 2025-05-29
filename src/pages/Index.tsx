@@ -329,7 +329,7 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-0 pb-7 px-7 relative z-10">
-              {/* Display subscription info in three columns like other cards with matching spacing */}
+              {/* Display subscription info in three columns like other cards with matching bottom alignment */}
               <div className="space-y-3">
                 <div className="flex items-center gap-12">
                   <div>
@@ -350,7 +350,7 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* Enhanced Sending Volume Card with exact height */}
+        {/* Enhanced Sending Volume Card with exact height and matching bottom alignment */}
         <div className="lg:col-span-1">
           {dashboardStats.map(stat => (
             <Card key={stat.title} className="bg-[#1A1A1A] border-[#2A2A2A] shadow-lg hover:shadow-2xl hover:shadow-[0_8px_32px_rgba(255,255,255,0.06)] transition-all duration-300 relative overflow-hidden rounded-lg group h-[160px]">

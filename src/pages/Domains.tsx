@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -652,7 +651,7 @@ const DomainsPage = () => {
                   onClick={handleExport}
                   className="bg-mailr-red hover:bg-red-700 text-white"
                 >
-                  Yes
+                  Export
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

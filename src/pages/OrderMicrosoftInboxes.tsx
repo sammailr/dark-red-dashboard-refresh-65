@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layout/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -211,9 +210,20 @@ const OrderMicrosoftInboxesPage = () => {
           <p className="text-lg font-medium text-white">
             Total Monthly Cost: <span className="font-bold text-white">${totalMonthlyCost.toLocaleString()}/month</span>
           </p>
-          <p className="text-sm text-[#B0B0B0] mt-1">
+          <p className="text-sm text-[#B0B0B0] mt-1 mb-4">
             {domains.length} {domains.length === 1 ? 'domain' : 'domains'} × $60/month each
           </p>
+          
+          {/* Pricing Breakdown Section */}
+          <div className="mt-4 pt-4 border-t border-[#2D2D2D]">
+            <h3 className="text-xs font-bold text-[#B0B0B0] uppercase tracking-wide mb-3">PRICING BREAKDOWN</h3>
+            <div className="space-y-2 text-sm text-[#B0B0B0]">
+              <div>1–19 domains: <span className="font-bold text-white">$60</span> each</div>
+              <div>20–49 domains: <span className="font-bold text-white">$50</span> each</div>
+              <div>50–99 domains: <span className="font-bold text-white">$40</span> each</div>
+              <div>100+ domains: <span className="font-bold text-white">$25</span> each</div>
+            </div>
+          </div>
         </div>
 
         {/* Domains Section */}
@@ -315,14 +325,14 @@ const OrderMicrosoftInboxesPage = () => {
                 <Input 
                   id="addDomain" 
                   type="text" 
-                  className="bg-[#101010] border-[#333] text-white placeholder:text-[#777] rounded-md" 
+                  className="bg-[#101010] border-[#D93737] text-white placeholder:text-[#777] rounded-md focus:border-[#D93737] focus:ring-1 focus:ring-[#D93737]" 
                   value={newDomain} 
                   onChange={e => setNewDomain(e.target.value)} 
                   placeholder="Enter domain" 
                 />
                 <Button 
                   variant="outline" 
-                  className="bg-transparent border-[#333] text-white hover:bg-[#2A2A2A] rounded-md px-4" 
+                  className="bg-[#E00000] border-[#E00000] text-white hover:bg-white hover:text-[#E00000] hover:border-[#E00000] rounded-md px-4 transition-colors" 
                   onClick={handleAddDomain}
                 >
                   <Plus className="h-4 w-4" />

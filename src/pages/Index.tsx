@@ -73,9 +73,7 @@ const Index = () => {
         return <Badge className="bg-gray-600 text-white px-2 py-1 text-xs">Unknown</Badge>;
     }
   };
-  const getProviderLogo = (index: number) => {
-    // Alternate between google and microsoft based on index
-    const provider = index % 2 === 0 ? 'google' : 'microsoft';
+  const getProviderLogo = (provider: 'google' | 'microsoft') => {
     if (provider === 'google') {
       return <i className="fa-brands fa-google text-white text-lg"></i>;
     } else {
@@ -128,14 +126,9 @@ const Index = () => {
           return sortDirection === 'asc' ? domainsA - domainsB : domainsB - domainsA;
         
         case 'provider':
-          // Use the original order index to determine provider consistently
-          const originalIndexA = orders.findIndex(order => order.id === a.id);
-          const originalIndexB = orders.findIndex(order => order.id === b.id);
-          const providerA = originalIndexA % 2 === 0 ? 'google' : 'microsoft';
-          const providerB = originalIndexB % 2 === 0 ? 'google' : 'microsoft';
           return sortDirection === 'asc' 
-            ? providerA.localeCompare(providerB)
-            : providerB.localeCompare(providerA);
+            ? a.provider.localeCompare(b.provider)
+            : b.provider.localeCompare(a.provider);
         
         case 'cost':
           const costA = a.domains.length * 25;
@@ -326,7 +319,7 @@ const Index = () => {
                   <td className="py-3 text-sm text-center">{formatDate(order.date)}</td>
                   <td className="py-3 text-sm text-center">{order.domains.length}</td>
                   <td className="py-3 text-center">
-                    {getProviderLogo(startIndex + index)}
+                    {getProviderLogo(order.provider)}
                   </td>
                   <td className="py-3 text-sm text-center">${(order.domains.length * 25).toLocaleString()}/mo</td>
                   <td className="py-3 text-center">

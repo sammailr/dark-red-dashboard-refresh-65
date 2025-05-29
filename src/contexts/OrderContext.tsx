@@ -16,6 +16,7 @@ export type Order = {
   date: string;
   status: 'processing' | 'completed' | 'cancelled';
   domains: Domain[];
+  provider: 'google' | 'microsoft';
 };
 
 type OrderContextType = {
@@ -33,6 +34,7 @@ const sampleOrders: Order[] = [
     id: "ordlgcLwveoDwOOBOWqNnEi",
     date: "2025-04-15",
     status: "cancelled",
+    provider: "google",
     domains: [
       { 
         id: "dom-001", 
@@ -64,6 +66,7 @@ const sampleOrders: Order[] = [
     id: "ordDYfy4M5FkmloHlIyMls8",
     date: "2025-04-18",
     status: "cancelled",
+    provider: "microsoft",
     domains: [
       { 
         id: "dom-004", 
@@ -87,6 +90,7 @@ const sampleOrders: Order[] = [
     id: "ordAgVdFyRiSEsg9VpmaTOM",
     date: "2025-04-18",
     status: "cancelled",
+    provider: "google",
     domains: [
       { 
         id: "dom-006", 
@@ -126,6 +130,7 @@ const sampleOrders: Order[] = [
     id: "ordZZzHA1pWq9Cauiz7CA0o",
     date: "2025-04-20",
     status: "processing",
+    provider: "microsoft",
     domains: [
       { 
         id: "dom-010", 
@@ -157,6 +162,7 @@ const sampleOrders: Order[] = [
     id: "ordlZ0LHSDi87RSIWBjmLqw",
     date: "2025-04-22",
     status: "processing",
+    provider: "google",
     domains: [
       { 
         id: "dom-013", 
@@ -180,6 +186,7 @@ const sampleOrders: Order[] = [
     id: "ordKL9mNx2PqRs4TuvWxYz",
     date: "2025-04-24",
     status: "completed",
+    provider: "microsoft",
     domains: [
       { 
         id: "dom-015", 

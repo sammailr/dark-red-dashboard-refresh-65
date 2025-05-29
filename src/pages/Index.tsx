@@ -33,7 +33,7 @@ const Index = () => {
   // Example data - would typically come from an API
   const sendingVolume = 412800;
   const dashboardStats = [{
-    title: 'Monthly Sending Volume',
+    title: 'Sending Volume',
     value: sendingVolume.toLocaleString(),
     icon: TrendingUp,
     color: 'text-green-500'
